@@ -1,0 +1,49 @@
+spring:
+  # druid连接池配置
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/koj
+      username: xxx
+      password: 1234
+      initialSize: 5
+      maxActive: 20
+      # 获取连接时最大等待时间，单位毫秒
+      maxWait: 6000
+      # 最小连接池数量
+      minIdle: 1
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      timeBetweenEvictionRunsMillis: 60000
+      # 连接保持空闲而不被驱逐的最小时间，单位是毫秒
+      minEvictableIdleTimeMillis: 600000
+      maxEvictableIdleTimeMillis: 900000
+      # 用来检测连接是否有效的sql
+      validationQuery: select 1
+      # 申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效
+      testWhileIdle: true
+      # 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能
+      testOnBorrow: false
+      # 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能
+      testOnReturn: false
+      # asyncInit是1.1.4中新增加的配置，如果有initialSize数量较多时，打开会加快应用启动时间
+      asyncInit: true
+      # 开启web监控可视化
+      stat-view-servlet:
+        enabled: true
+        # 白名单，不填则允许所有访问
+        allow: ""
+        url-pattern: /druid/*
+        login-username: xxx
+        login-password: 1234
+      # 开启监控
+      filter:
+        stat:
+          enabled: true
+          # 慢SQL记录
+          log-slow-sql: true
+          slow-sql-millis: 2000
+          merge-sql: true
+        # 防SQL注入
+        wall:
+          config:
+            multi-statement-allow: true
