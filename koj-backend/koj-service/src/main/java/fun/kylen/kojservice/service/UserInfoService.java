@@ -23,4 +23,6 @@ public interface UserInfoService extends IService<UserInfo> {
     UserInfoVO getCurrentUserInfo();
 
     UserHomeInfoVO getUserHomeInfo(String userId, String username);
+
+    void sendRegisterCode(String email);
 }

@@ -77,7 +77,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = {ConstraintViolationException.class})
     public R<Void> handleArgumentNotValidException(ConstraintViolationException e) {
         String message = new ArrayList<>(e.getConstraintViolations()).get(0).getMessage();
-        return R.fail(ResultEnum.PARAMS_ERROR);
+        return R.fail(ResultEnum.PARAMS_ERROR.getCode(), message);
     }
 
     /**

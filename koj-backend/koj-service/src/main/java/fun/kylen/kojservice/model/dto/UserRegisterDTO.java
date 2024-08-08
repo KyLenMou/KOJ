@@ -3,7 +3,9 @@ package fun.kylen.kojservice.model.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * @Author: KyLen
@@ -18,4 +20,8 @@ public class UserRegisterDTO {
     private String password;
     @NotBlank(message = "确认密码不能为空")
     private String confirmPassword;
+    @Email
+    private String email;
+    @NotBlank(message = "验证码不能为空")
+    private String code;
 }

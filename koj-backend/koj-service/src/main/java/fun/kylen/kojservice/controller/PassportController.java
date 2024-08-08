@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Email;
+
 /**
  * @Author: KyLen
  * @Date: 2024/7/19 下午3:55
@@ -25,6 +27,12 @@ public class PassportController {
     public R<Void> userRegister(@Validated @RequestBody UserRegisterDTO userRegisterDTO) {
         userInfoService.userRegister(userRegisterDTO);
         return R.ok("注册成功");
+    }
+
+    @GetMapping("/get-register-code")
+    public R<Void> getRegisterCode(@RequestParam("email") @Email String email) {
+        userInfoService.sendRegisterCode(email);
+        return R.ok("已发送验证码");
     }
 
     @PostMapping("/login")

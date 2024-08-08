@@ -9,7 +9,7 @@ import cn.hutool.crypto.digest.DigestUtil;
  * @Date: 2024/7/19 下午10:26
  * @Description:
  */
-public class PasswordUtils {
+public class PasswordUtil {
     /**
      * 加盐加密
      * @param originPassword
