@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="fun.kylen.kojservice.mapper.UserInfoMapper">
+<mapper namespace="model.mapper.UserInfoMapper">
 
-    <resultMap id="BaseResultMap" type="fun.kylen.kojservice.model.domain.UserInfo">
+    <resultMap id="BaseResultMap" type="model.domain.UserInfo">
             <id property="id" column="id" jdbcType="VARCHAR"/>
             <result property="username" column="username" jdbcType="VARCHAR"/>
             <result property="userPassword" column="userPassword" jdbcType="VARCHAR"/>
@@ -16,7 +16,8 @@
             <result property="studentNumber" column="studentNumber" jdbcType="VARCHAR"/>
             <result property="realname" column="realname" jdbcType="VARCHAR"/>
             <result property="gender" column="gender" jdbcType="VARCHAR"/>
-            <result property="githubUrl" column="githubUrl" jdbcType="VARCHAR"/>
+            <result property="githubUsername" column="githubUsername" jdbcType="VARCHAR"/>
+            <result property="githubId" column="githubId" jdbcType="VARCHAR"/>
             <result property="blogUrl" column="blogUrl" jdbcType="VARCHAR"/>
             <result property="cfUsername" column="cfUsername" jdbcType="VARCHAR"/>
             <result property="leetcodeUsername" column="leetcodeUsername" jdbcType="VARCHAR"/>
@@ -35,10 +36,11 @@
         id,username,userPassword,
         email,qq,nickname,
         school,course,studentNumber,
-        realname,gender,githubUrl,
-        blogUrl,cfUsername,leetcodeUsername,
-        nowcoderId,avatar,signature,
-        titleName,titleColor,userStatus,
-        createTime,updateTime,deleted
+        realname,gender,githubUsername,
+        githubId,blogUrl,cfUsername,
+        leetcodeUsername,nowcoderId,avatar,
+        signature,titleName,titleColor,
+        userStatus,createTime,updateTime,
+        deleted
     </sql>
 </mapper>

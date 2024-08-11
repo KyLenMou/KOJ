@@ -14,15 +14,5 @@ import fun.kylen.kojservice.model.vo.UserInfoVO;
 */
 public interface UserInfoService extends IService<UserInfo> {
 
-    void userRegister(UserRegisterDTO userRegisterDTO);
-
-    UserInfoVO userLogin(UserLoginDTO userLoginDTO);
-
-    void userLogout();
-
-    UserInfoVO getCurrentUserInfo();
-
     UserHomeInfoVO getUserHomeInfo(String userId, String username);
-
-    void sendRegisterCode(String email);
 }

@@ -1,10 +1,10 @@
 package fun.kylen.kojservice.model.domain;
 
 import com.baomidou.mybatisplus.annotation.*;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * 
@@ -70,9 +70,14 @@ public class UserInfo implements Serializable {
     private String gender;
 
     /**
-     * github地址
+     * github用户名
      */
-    private String githubUrl;
+    private String githubUsername;
+
+    /**
+     * githubId
+     */
+    private String githubId;
 
     /**
      * 博客地址
@@ -161,7 +166,8 @@ public class UserInfo implements Serializable {
             && (this.getStudentNumber() == null ? other.getStudentNumber() == null : this.getStudentNumber().equals(other.getStudentNumber()))
             && (this.getRealname() == null ? other.getRealname() == null : this.getRealname().equals(other.getRealname()))
             && (this.getGender() == null ? other.getGender() == null : this.getGender().equals(other.getGender()))
-            && (this.getGithubUrl() == null ? other.getGithubUrl() == null : this.getGithubUrl().equals(other.getGithubUrl()))
+            && (this.getGithubUsername() == null ? other.getGithubUsername() == null : this.getGithubUsername().equals(other.getGithubUsername()))
+            && (this.getGithubId() == null ? other.getGithubId() == null : this.getGithubId().equals(other.getGithubId()))
             && (this.getBlogUrl() == null ? other.getBlogUrl() == null : this.getBlogUrl().equals(other.getBlogUrl()))
             && (this.getCfUsername() == null ? other.getCfUsername() == null : this.getCfUsername().equals(other.getCfUsername()))
             && (this.getLeetcodeUsername() == null ? other.getLeetcodeUsername() == null : this.getLeetcodeUsername().equals(other.getLeetcodeUsername()))
@@ -191,7 +197,8 @@ public class UserInfo implements Serializable {
         result = prime * result + ((getStudentNumber() == null) ? 0 : getStudentNumber().hashCode());
         result = prime * result + ((getRealname() == null) ? 0 : getRealname().hashCode());
         result = prime * result + ((getGender() == null) ? 0 : getGender().hashCode());
-        result = prime * result + ((getGithubUrl() == null) ? 0 : getGithubUrl().hashCode());
+        result = prime * result + ((getGithubUsername() == null) ? 0 : getGithubUsername().hashCode());
+        result = prime * result + ((getGithubId() == null) ? 0 : getGithubId().hashCode());
         result = prime * result + ((getBlogUrl() == null) ? 0 : getBlogUrl().hashCode());
         result = prime * result + ((getCfUsername() == null) ? 0 : getCfUsername().hashCode());
         result = prime * result + ((getLeetcodeUsername() == null) ? 0 : getLeetcodeUsername().hashCode());
@@ -224,7 +231,8 @@ public class UserInfo implements Serializable {
         sb.append(", studentNumber=").append(studentNumber);
         sb.append(", realname=").append(realname);
         sb.append(", gender=").append(gender);
-        sb.append(", githubUrl=").append(githubUrl);
+        sb.append(", githubUsername=").append(githubUsername);
+        sb.append(", githubId=").append(githubId);
         sb.append(", blogUrl=").append(blogUrl);
         sb.append(", cfUsername=").append(cfUsername);
         sb.append(", leetcodeUsername=").append(leetcodeUsername);

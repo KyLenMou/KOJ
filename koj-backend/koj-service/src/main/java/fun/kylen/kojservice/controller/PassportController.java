@@ -4,7 +4,7 @@ import fun.kylen.kojservice.common.R;
 import fun.kylen.kojservice.model.dto.UserLoginDTO;
 import fun.kylen.kojservice.model.dto.UserRegisterDTO;
 import fun.kylen.kojservice.model.vo.UserInfoVO;
-import fun.kylen.kojservice.service.UserInfoService;
+import fun.kylen.kojservice.service.PassportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -21,34 +21,33 @@ import javax.validation.constraints.Email;
 @Validated
 public class PassportController {
     @Autowired
-    private UserInfoService userInfoService;
+    private PassportService passportService;
 
     @PostMapping("/register")
-    public R<Void> userRegister(@Validated @RequestBody UserRegisterDTO userRegisterDTO) {
-        userInfoService.userRegister(userRegisterDTO);
-        return R.ok("注册成功");
+    public R<UserInfoVO> userRegister(@Validated @RequestBody UserRegisterDTO userRegisterDTO) {
+        return R.ok(passportService.userRegister(userRegisterDTO));
     }
 
     @GetMapping("/get-register-code")
     public R<Void> getRegisterCode(@RequestParam("email") @Email String email) {
-        userInfoService.sendRegisterCode(email);
+        passportService.sendRegisterCode(email);
         return R.ok("已发送验证码");
     }
 
     @PostMapping("/login")
     public R<UserInfoVO> userLogin(@Validated @RequestBody UserLoginDTO userLoginDTO) {
-        return R.ok(userInfoService.userLogin(userLoginDTO));
+        return R.ok(passportService.userLogin(userLoginDTO));
     }
 
     @PostMapping("/logout")
     public R<Void> userLogout() {
-        userInfoService.userLogout();
+        passportService.userLogout();
         return R.ok("退出登录成功");
     }
 
     @GetMapping("/current-user")
     public R<UserInfoVO> getCurrentUserInfo() {
-        return R.ok(userInfoService.getCurrentUserInfo());
+        return R.ok(passportService.getCurrentUserInfo());
     }
 
 }
