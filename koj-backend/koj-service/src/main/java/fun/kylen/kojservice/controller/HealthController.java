@@ -1,5 +1,6 @@
 package fun.kylen.kojservice.controller;
 
+import fun.kylen.kojservice.common.R;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/health")
 public class HealthController {
     @GetMapping
-    public String getHealth() {
-        return "ok\ntime: " + System.currentTimeMillis();
+    public R<String> getHealth() {
+        return R.ok(System.currentTimeMillis() + "");
     }
 }

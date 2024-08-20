@@ -13,11 +13,8 @@ public class R<T> {
     public static <T> R<T> ok() {
         return new R<>(ResultEnum.SUCCESS.getCode(), "", null);
     }
-    public static <T> R<T> ok(String message) {
+    public static R<Void> okWithMessage(String message) {
         return new R<>(ResultEnum.SUCCESS.getCode(), message, null);
-    }
-    public static R<String> okWithStr(String data) {
-        return new R<>(ResultEnum.SUCCESS.getCode(), "", data);
     }
     public static <T> R<T> ok(T data) {
         return new R<>(ResultEnum.SUCCESS.getCode(), "", data);

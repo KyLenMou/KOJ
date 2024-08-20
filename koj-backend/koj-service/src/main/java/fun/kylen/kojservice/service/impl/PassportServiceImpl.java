@@ -53,8 +53,8 @@ public class PassportServiceImpl implements PassportService {
             throw new BusinessException(ResultEnum.FAIL, "两次输入密码不相同");
         }
         // 密码要求
-        if (password.length() <= 5 || password.length() > 32) {
-            throw new BusinessException(ResultEnum.FAIL, "密码长度应在6-32位之间");
+        if (password.length() < 5 || password.length() > 32) {
+            throw new BusinessException(ResultEnum.FAIL, "密码长度应在5-32位之间");
         }
         // 用户名要求
         if (username.length() > 32) {
@@ -140,6 +140,7 @@ public class PassportServiceImpl implements PassportService {
     public UserInfoVO userLogin(UserLoginDTO userLoginDTO) {
         String username = userLoginDTO.getUsername();
         String password = userLoginDTO.getPassword();
+        Boolean remember = userLoginDTO.getRemember();
         // 查询用户名是否存在
         UserInfo user = userInfoService.lambdaQuery().eq(UserInfo::getUsername, username).one();
         if (user == null) {
@@ -155,7 +156,7 @@ public class PassportServiceImpl implements PassportService {
         UserInfoVO userInfoVO = new UserInfoVO();
         BeanUtil.copyProperties(user, userInfoVO);
         // 记录登录态
-        StpUtil.login(user.getId());
+        StpUtil.login(user.getId(), remember);
         StpUtil.getSession().set(StpConstant.CURRENT_USER, userInfoVO);
         return userInfoVO;
     }
@@ -165,14 +166,6 @@ public class PassportServiceImpl implements PassportService {
         StpUtil.logout();
     }
 
-    @Override
-    public UserInfoVO getCurrentUserInfo() {
-        UserInfoVO currentUser = (UserInfoVO) StpUtil.getSession().get(StpConstant.CURRENT_USER);
-        if (currentUser == null) {
-            throw new BusinessException(ResultEnum.NOT_LOGIN);
-        }
-        return currentUser;
-    }
 
     @Override
     public void sendRegisterCode(String email) {

@@ -65,6 +65,14 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         userHomeInfoVO.setLeetcodeRating(1599);
         return userHomeInfoVO;
     }
+    @Override
+    public UserInfoVO getCurrentUserInfo() {
+        UserInfoVO currentUser = (UserInfoVO) StpUtil.getSession().get(StpConstant.CURRENT_USER);
+        if (currentUser == null) {
+            throw new BusinessException(ResultEnum.NOT_LOGIN);
+        }
+        return currentUser;
+    }
 }
 
 

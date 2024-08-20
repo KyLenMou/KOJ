@@ -15,4 +15,6 @@ import fun.kylen.kojservice.model.vo.UserInfoVO;
 public interface UserInfoService extends IService<UserInfo> {
 
     UserHomeInfoVO getUserHomeInfo(String userId, String username);
+
+    UserInfoVO getCurrentUserInfo();
 }

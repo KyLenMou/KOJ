@@ -31,7 +31,7 @@ public class PassportController {
     @GetMapping("/get-register-code")
     public R<Void> getRegisterCode(@RequestParam("email") @Email String email) {
         passportService.sendRegisterCode(email);
-        return R.ok("已发送验证码");
+        return R.okWithMessage("已发送验证码");
     }
 
     @PostMapping("/login")
@@ -42,12 +42,7 @@ public class PassportController {
     @PostMapping("/logout")
     public R<Void> userLogout() {
         passportService.userLogout();
-        return R.ok("退出登录成功");
-    }
-
-    @GetMapping("/current-user")
-    public R<UserInfoVO> getCurrentUserInfo() {
-        return R.ok(passportService.getCurrentUserInfo());
+        return R.okWithMessage("退出登录成功");
     }
 
 }

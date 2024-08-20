@@ -3,6 +3,7 @@ package fun.kylen.kojservice.model.dto;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * @Author: KyLen
@@ -15,4 +16,6 @@ public class UserLoginDTO {
     private String username;
     @NotBlank(message = "密码不能为空")
     private String password;
+    @NotNull(message = "记住我参数不能为空")
+    private Boolean remember;
 }

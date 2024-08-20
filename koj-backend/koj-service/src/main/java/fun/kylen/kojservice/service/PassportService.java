@@ -19,7 +19,5 @@ public interface PassportService {
 
     void userLogout();
 
-    UserInfoVO getCurrentUserInfo();
-
     void sendRegisterCode(String email);
 }
