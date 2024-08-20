@@ -12,7 +12,7 @@
             <el-input :prefix-icon="User" v-model="formData.username"/>
           </el-form-item>
           <el-form-item label="Password">
-            <el-input :prefix-icon="Lock" v-model="formData.password"/>
+            <el-input :prefix-icon="Lock" v-model="formData.password" type="password" show-password/>
           </el-form-item>
           <el-form-item label=" ">
             <el-checkbox v-model="formData.remember">
@@ -20,8 +20,9 @@
             </el-checkbox>
           </el-form-item>
           <el-form-item label=" ">
-            <el-button @click="doLogin">Login</el-button>
-            <el-button type="primary" link  style="margin-left: auto" @click="goToRegister">Forgot your password?</el-button>
+            <el-button @click="doLogin" type="primary">Login</el-button>
+            <el-button type="primary" link style="margin-left: auto">Forgot your password?
+            </el-button>
           </el-form-item>
         </el-form>
       </template>
@@ -31,20 +32,24 @@
 
 <script setup lang="ts">
 import { PassportControllerService, type UserLoginDTO } from "@/api";
-import { User,Lock } from "@element-plus/icons-vue";
+import { User, Lock } from "@element-plus/icons-vue";
 import { useCurrentUserStore } from "@/stores/currentUser";
 import { ElMessage } from "element-plus";
 
 const router = useRouter();
-const useCurrentUser = useCurrentUserStore();
+const {getCurrentUser, setCurrentUser} = useCurrentUserStore();
 
-const goToRegister = () => {
-  router.push("/register");
-}
+onMounted(() => {
+  if (getCurrentUser().username) {
+    ElMessage.success("You have already logged in")
+    router.push("/home");
+  }
+})
+
 
 const doLogin = async () => {
   await PassportControllerService.userLoginUsingPost(formData);
-  await useCurrentUser.getCurrentUser()
+  await setCurrentUser()
   ElMessage.success("Login success")
   await router.push("/home")
 }

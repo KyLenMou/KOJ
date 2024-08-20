@@ -1,10 +1,16 @@
 import axios from "axios";
 import { ElMessage } from 'element-plus'
+import { useCurrentUserStore } from "@/stores/currentUser";
+
+const clearCurrentUserIfNeeded = () => {
+  const { clearCurrentUser } = useCurrentUserStore()
+  clearCurrentUser()
+}
 
 axios.interceptors.request.use(
   function (config) {
     // 把url前缀（http://127.0.0.1:8090）替换为代理地址（/api）
-    config.url = config.url?.replace('http://127.0.0.1:8090', '/api')
+    // config.url = config.url?.replace('http://127.0.0.1:8090', '/api')
 
     // Do something before request is sent
     console.log("请求拦截器：" + config);
@@ -27,6 +33,8 @@ axios.interceptors.response.use(
         ElMessage.warning(res.data.message)
       } else if (res.data.code === 402) {
         ElMessage.warning(res.data.message)
+        // 清空currentUser
+        clearCurrentUserIfNeeded()
       } else if (res.data.code === 403) {
         ElMessage.error(res.data.message)
       } else if (res.data.code === 404) {

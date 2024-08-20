@@ -2,7 +2,9 @@
   <div id="app">
     <HomeHeaderComponent/>
     <NavBarComponent/>
-    <router-view/>
+    <transition name="el-zoom-in-bottom">
+      <router-view/>
+    </transition>
     <HomeFooterComponent/>
   </div>
 </template>
@@ -25,7 +27,7 @@ import { HealthControllerService } from "@/api";
   height: 100vh; /* 设置 #app 的高度为视口的高度 */
   display: flex; /* 使用 Flexbox 布局 */
   flex-direction: column; /* 设置 Flex items 沿着垂直方向排列 */
-  padding-top: .75em;
+  padding-top: 0.5em;
   max-width: 1200px;
   min-width: 920px;
   margin: 0 auto;

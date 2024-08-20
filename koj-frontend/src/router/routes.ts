@@ -6,6 +6,7 @@ import ContestsView from "@/views/ContestsView.vue";
 import UserLoginView from "@/views/UserLoginView.vue";
 import UserRegisterView from "@/views/UserRegisterView.vue";
 import HealthView from "@/views/HealthView.vue";
+import NotFoundView from "@/views/NotFoundView.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -67,6 +68,23 @@ export const routes: Array<RouteRecordRaw> = [
     path: '/health',
     name: 'health',
     component: HealthView,
+    meta: {
+      showOnNav: false
+    }
+  },
+  {
+    // 404 page
+    path: '/404',
+    name: '404',
+    component: NotFoundView,
+    meta: {
+      showOnNav: false
+    }
+  },
+  {
+    // redirect to 404 page
+    path: '/:pathMatch(.*)*',
+    redirect: '/404',
     meta: {
       showOnNav: false
     }
