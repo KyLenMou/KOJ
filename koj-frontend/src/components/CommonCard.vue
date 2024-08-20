@@ -7,8 +7,8 @@
         </div>
       </template>
       <slot name="content"/>
-      <template v-if="p.foot.length" #footer>
-        {{ p.foot }}
+      <template #footer>
+        <slot name="footer"/>
       </template>
     </el-card>
   </div>
@@ -17,18 +17,22 @@
 <script setup lang="ts">
 interface CommonCardProps {
   head: string;
-  foot: string;
 }
 
 const p = withDefaults(defineProps<CommonCardProps>(),{
   head: () => "",
-  foot: () => "",
 })
 </script>
 
 <style scoped>
 #commonCard {
 
+}
+
+:deep(.el-card__footer) {
+  text-align: right;
+  padding: 5px;
+  background-color: #f5f5f5;
 }
 
 :deep(.el-card__body) {

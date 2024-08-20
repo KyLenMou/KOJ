@@ -8,11 +8,17 @@ import 'element-plus/theme-chalk/dark/css-vars.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import App from './App.vue'
 import router from './router'
+import {install} from '@icon-park/vue-next/es/all';
+import '@icon-park/vue-next/styles/index.css';
 
+
+const app = createApp(App)
+
+// icon
+install(app, 'i');
 
 // pinia
 const pinia = createPinia()
-const app = createApp(App)
 pinia.use(piniaPluginPersistedstate)
 app.use(pinia)
 

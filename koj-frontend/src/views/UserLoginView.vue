@@ -26,6 +26,20 @@
           </el-form-item>
         </el-form>
       </template>
+      <template #footer>
+        <el-tooltip
+          content="Login with QQ"
+          placement="top"
+        >
+          <tencent-qq class="third-party-icon" theme="outline" size="24" fill="#333" style="margin-right: 10px"/>
+        </el-tooltip>
+        <el-tooltip
+          content="Login with Github"
+          placement="top"
+        >
+          <github-one class="third-party-icon" theme="outline" size="24" fill="#333" />
+        </el-tooltip>
+      </template>
     </common-card>
   </div>
 </template>
@@ -35,6 +49,7 @@ import { PassportControllerService, type UserLoginDTO } from "@/api";
 import { User, Lock } from "@element-plus/icons-vue";
 import { useCurrentUserStore } from "@/stores/currentUser";
 import { ElMessage } from "element-plus";
+import { TencentQq, GithubOne } from '@icon-park/vue-next';
 
 const router = useRouter();
 const {getCurrentUser, setCurrentUser} = useCurrentUserStore();
@@ -81,4 +96,7 @@ const formData = reactive<UserLoginDTO>({
   font-size: 1.1em;
 }
 
+.third-party-icon {
+  cursor: pointer;
+}
 </style>
