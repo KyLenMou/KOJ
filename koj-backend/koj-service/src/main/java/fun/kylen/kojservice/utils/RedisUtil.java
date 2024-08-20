@@ -115,4 +115,18 @@ public class RedisUtil {
         }
     }
 
+    /**
+     * 删除缓存
+     * @param key
+     * @return
+     */
+    public boolean del(String key) {
+        try {
+            return r.delete(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

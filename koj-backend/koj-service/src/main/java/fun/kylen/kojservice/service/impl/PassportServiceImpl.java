@@ -57,7 +57,7 @@ public class PassportServiceImpl implements PassportService {
             throw new BusinessException(ResultEnum.FAIL, "密码长度应在5-32位之间");
         }
         // 用户名要求
-        if (username.length() > 32) {
+        if (username.length() < 5 ||username.length() > 32) {
             throw new BusinessException(ResultEnum.FAIL, "用户名不能多于32个字符");
         }
         // 邮箱验证码是否正确
@@ -178,10 +178,14 @@ public class PassportServiceImpl implements PassportService {
         if (count > 0) {
             throw new BusinessException(ResultEnum.FAIL, "该邮箱已被注册！");
         }
-        // 五分钟内是否已经发送过
+        // 一分钟内是否已经发送过
         String emailRegisterKey = RedisKeyConstant.EMAIL_REGISTER + email;
         if (redisUtil.hasKey(emailRegisterKey)) {
-            throw new BusinessException(ResultEnum.FAIL, "发送验证码频率过快，请" + redisUtil.getExpireTime(emailRegisterKey) + "秒后再次发送！");
+            Long expireTime = redisUtil.getExpireTime(emailRegisterKey);
+            long remainTime = 300 - expireTime;
+            if (remainTime < 60) {
+                throw new BusinessException(ResultEnum.FAIL, "发送验证码频率过快，请" + (60 - remainTime) + "秒后再次发送！");
+            }
         }
         // 生成六位验证码
         String code = RandomUtil.randomNumbers(6);
