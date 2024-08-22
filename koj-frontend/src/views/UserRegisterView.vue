@@ -63,6 +63,7 @@ import { ElMessage, type FormInstance, type FormRules } from "element-plus";
 import type UserRegisterView from "@/views/UserRegisterView.vue";
 import { useCurrentUserStore } from "@/stores/currentUser";
 import { storeToRefs } from "pinia";
+import { GithubOne, TencentQq } from "@icon-park/vue-next";
 
 const router = useRouter()
 
@@ -132,6 +133,7 @@ const doGetEmailCaptcha = async () => {
   captchaCountdown()
 }
 
+// 邮箱验证码倒计时
 const captchaCountdown = () => {
   countdown.value = 60
   const timer = setInterval(() => {

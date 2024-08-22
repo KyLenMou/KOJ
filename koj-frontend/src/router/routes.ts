@@ -7,6 +7,7 @@ import UserLoginView from "@/views/UserLoginView.vue";
 import UserRegisterView from "@/views/UserRegisterView.vue";
 import HealthView from "@/views/HealthView.vue";
 import NotFoundView from "@/views/NotFoundView.vue";
+import OAuthGithubView from "@/views/OAuthGithubView.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -85,6 +86,14 @@ export const routes: Array<RouteRecordRaw> = [
     // redirect to 404 page
     path: '/:pathMatch(.*)*',
     redirect: '/404',
+    meta: {
+      showOnNav: false
+    }
+  },
+  {
+    path: '/oauth/github',
+    name: 'oauth-github',
+    component: OAuthGithubView,
     meta: {
       showOnNav: false
     }

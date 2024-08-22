@@ -9,15 +9,9 @@ const clearCurrentUserIfNeeded = () => {
 
 axios.interceptors.request.use(
   function (config) {
-    // 把url前缀（http://127.0.0.1:8090）替换为代理地址（/api）
-    // config.url = config.url?.replace('http://127.0.0.1:8090', '/api')
-
-    // Do something before request is sent
-    console.log("请求拦截器：" + config);
     return config;
   },
   function (error) {
-    // Do something with request error
     return Promise.reject(error);
   }
 );
@@ -47,6 +41,7 @@ axios.interceptors.response.use(
     return res;
   },
   function (error) {
+    ElMessage.error(error.message)
     return Promise.reject(error);
   }
 );

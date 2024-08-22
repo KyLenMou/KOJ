@@ -7,8 +7,8 @@
         </div>
       </template>
       <slot name="content"/>
-      <template #footer>
-        <slot name="footer"/>
+      <template v-if="$slots.foot" #footer>
+        <slot name="foot"/>
       </template>
     </el-card>
   </div>
