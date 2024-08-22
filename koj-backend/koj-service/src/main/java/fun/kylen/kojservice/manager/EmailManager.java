@@ -14,7 +14,6 @@ import java.nio.charset.StandardCharsets;
  * @Description:
  */
 @Component
-// @ConfigurationProperties(prefix = "spring.mail")
 public class EmailManager {
     @Value("${spring.mail.host}")
     private String host;

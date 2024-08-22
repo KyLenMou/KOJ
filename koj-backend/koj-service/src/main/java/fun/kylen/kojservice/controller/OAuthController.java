@@ -21,7 +21,7 @@ public class OAuthController {
     private OAuthService oAuthService;
 
     @GetMapping("/github")
-    public R<UserInfoVO> redirectByGithub(@RequestParam("code") String code) {
-        return R.ok(oAuthService.getUserGithubInfo(code));
+    public R<UserInfoVO> handleGithubPassport(@RequestParam("code") String code) {
+        return R.ok(oAuthService.handleGithubPassport(code));
     }
 }

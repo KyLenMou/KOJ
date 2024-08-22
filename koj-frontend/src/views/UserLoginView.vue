@@ -26,7 +26,7 @@
           </el-form-item>
         </el-form>
       </template>
-      <template #footer>
+      <template #foot>
         <el-tooltip
           content="Login with QQ"
           placement="top"
@@ -34,10 +34,10 @@
           <tencent-qq class="third-party-icon" theme="outline" size="24" fill="#333" style="margin-right: 10px"/>
         </el-tooltip>
         <el-tooltip
-          content="Login with Github"
+          content="Login with Github. First time login will auto register."
           placement="top"
         >
-          <github-one class="third-party-icon" theme="outline" size="24" fill="#333" />
+          <github-one class="third-party-icon" theme="outline" size="24" fill="#333" @click="goToGithubLogin" />
         </el-tooltip>
       </template>
     </common-card>
@@ -61,7 +61,14 @@ onMounted(() => {
   }
 })
 
+// 登录表单数据
+const formData = reactive<UserLoginDTO>({
+  username: '',
+  password: '',
+  remember: true
+})
 
+// 登录操作
 const doLogin = async () => {
   await PassportControllerService.userLoginUsingPost(formData);
   await setCurrentUser()
@@ -69,11 +76,12 @@ const doLogin = async () => {
   await router.push("/home")
 }
 
-const formData = reactive<UserLoginDTO>({
-  username: '',
-  password: '',
-  remember: true
-})
+// 跳转到Github登录 todo 后端配置，获取client_id和重定向地址
+const goToGithubLogin = () => {
+  window.location.href = "https://github.com/login/oauth/authorize?" +
+    "client_id=Ov23liqBU5jlmfAjUoQx" + "&" +
+    "redirect_uri=http://127.0.0.1:5173/oauth/github";
+}
 
 </script>
 

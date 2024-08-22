@@ -8,5 +8,5 @@ import fun.kylen.kojservice.model.vo.UserInfoVO;
  * @Description:
  */
 public interface OAuthService {
-    UserInfoVO getUserGithubInfo(String code);
+    UserInfoVO handleGithubPassport(String code);
 }

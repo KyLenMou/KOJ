@@ -1,14 +1,15 @@
 package fun.kylen.kojservice.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
-import fun.kylen.kojservice.model.domain.UserInfo;
+import fun.kylen.kojservice.common.BusinessException;
+import fun.kylen.kojservice.common.ResultEnum;
 import fun.kylen.kojservice.model.vo.UserInfoVO;
 import fun.kylen.kojservice.service.OAuthService;
 import fun.kylen.kojservice.service.PassportService;
-import fun.kylen.kojservice.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -33,17 +34,30 @@ public class OAuthServiceImpl implements OAuthService {
     private final static String github_url = "https://github.com/login/oauth/access_token";
 
     @Override
-    public UserInfoVO getUserGithubInfo(String code) {
+    public UserInfoVO handleGithubPassport(String code) {
         Map<String,Object> paramMap = new HashMap<>();
         paramMap.put("client_id",clientId);
         paramMap.put("client_secret",secret);
         paramMap.put("code",code);
-        try (HttpResponse result = HttpRequest.post(github_url).form(paramMap).execute()) {
-            JSONObject jsonObject = new JSONObject(result.body());
-            String githubUsername = jsonObject.getStr("login");
-            Object id = jsonObject.get("id");
-            String githubUserId = id.toString();
-            return passportService.userPassportByGithub(githubUsername,githubUserId);
+        // 使用code获取access_token
+        try (HttpResponse result = HttpRequest.post(github_url)
+                .form(paramMap)
+                .execute()) {
+            String body = result.body();
+            String accessToken = StrUtil.subBetween(body, "access_token=", "&scope");
+            String tokenType = StrUtil.subAfter(body, "token_type=", true);
+            // 使用access_token获取用户信息
+            try (HttpResponse response = HttpUtil.createGet("https://api.github.com/user")
+                    .header("Authorization", tokenType + " " + accessToken)
+                    .execute()) {
+                JSONObject jsonObject = new JSONObject(response.body());
+                String githubUsername = jsonObject.getStr("login");
+                String githubUserId = jsonObject.getStr("id");
+                String avatarUrl = jsonObject.getStr("avatar_url");
+                return passportService.handleGithubPassport(githubUsername,githubUserId,avatarUrl);
+            }
+        } catch (Exception e) {
+            throw new BusinessException(ResultEnum.FAIL, "Github请求失败，请稍后重试");
         }
     }
 }

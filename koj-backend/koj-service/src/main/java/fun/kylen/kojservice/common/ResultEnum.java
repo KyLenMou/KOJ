@@ -14,7 +14,7 @@ public enum ResultEnum {
 
     SUCCESS(0,"成功"),
 
-    FAIL(-1,"未知错误"),
+    FAIL(-1,"请求错误"),
 
     PARAMS_ERROR(400,"请求参数错误"),
 

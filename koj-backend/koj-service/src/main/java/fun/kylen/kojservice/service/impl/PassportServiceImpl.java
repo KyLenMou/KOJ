@@ -98,19 +98,28 @@ public class PassportServiceImpl implements PassportService {
         return userInfoVO;
     }
 
+    /**
+     * 首次登陆自动注册
+     * @param githubUsername
+     * @param githubUserId
+     * @param avatarUrl
+     * @return
+     */
     @Override
-    public UserInfoVO userPassportByGithub(String githubUsername, String githubUserId) {
+    public UserInfoVO handleGithubPassport(String githubUsername, String githubUserId, String avatarUrl) {
+        // 根据githubId查询用户
         UserInfo userInfo = userInfoService.lambdaQuery().eq(UserInfo::getGithubId, githubUserId).one();
         if (userInfo == null) {
             // 未注册过，新增一个用户
             UserInfo user = new UserInfo();
             user.setGithubUsername(githubUsername);
             user.setGithubId(githubUserId);
+            user.setAvatar(avatarUrl);
             // 用户名默认为github用户名，但是检查是否重复
             String username = githubUsername;
             Long count = userInfoService.lambdaQuery().eq(UserInfo::getUsername, username).count();
             while (count > 0) {
-                username = githubUsername + "_" + RandomUtil.randomString(5);
+                username = githubUsername + "_" + RandomUtil.randomString(2);
                 log.warn("github用户{}的用户名出现重复，新的用户名为{}", githubUsername, username);
                 count = userInfoService.lambdaQuery().eq(UserInfo::getUsername, username).count();
             }
@@ -118,7 +127,7 @@ public class PassportServiceImpl implements PassportService {
             // 添加到数据库
             boolean save = userInfoService.save(user);
             if (!save) {
-                throw new BusinessException(ResultEnum.FAIL, "github注册失败");
+                throw new BusinessException(ResultEnum.FAIL, "Github注册失败");
             }
             // 登录
             UserInfoVO userInfoVO = new UserInfoVO();
@@ -126,14 +135,14 @@ public class PassportServiceImpl implements PassportService {
             StpUtil.login(user.getId());
             StpUtil.getSession().set(StpConstant.CURRENT_USER, userInfoVO);
             return userInfoVO;
-        } else {
-            // 注册过
-            UserInfoVO userInfoVO = new UserInfoVO();
-            BeanUtil.copyProperties(userInfo, userInfoVO);
-            StpUtil.login(userInfo.getId());
-            StpUtil.getSession().set(StpConstant.CURRENT_USER, userInfoVO);
-            return userInfoVO;
         }
+
+        // 注册过
+        UserInfoVO userInfoVO = new UserInfoVO();
+        BeanUtil.copyProperties(userInfo, userInfoVO);
+        StpUtil.login(userInfo.getId());
+        StpUtil.getSession().set(StpConstant.CURRENT_USER, userInfoVO);
+        return userInfoVO;
     }
 
     @Override
