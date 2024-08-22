@@ -10,9 +10,14 @@ import App from './App.vue'
 import router from './router'
 import {install} from '@icon-park/vue-next/es/all';
 import '@icon-park/vue-next/styles/index.css';
+import 'vue-loaders/dist/vue-loaders.css';
+import VueLoaders from 'vue-loaders';
 
 
 const app = createApp(App)
+
+// vue-loaders
+app.use(VueLoaders)
 
 // icon
 install(app, 'i');

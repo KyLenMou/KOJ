@@ -17,9 +17,11 @@
     "@icon-park/vue-next": "^1.4.2",
     "axios": "^1.7.3",
     "element-plus": "^2.7.8",
+    "loaders.css": "^0.1.2",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
     "vue": "^3.4.29",
+    "vue-loaders": "^4.1.4",
     "vue-router": "^4.3.3"
   },
   "devDependencies": {

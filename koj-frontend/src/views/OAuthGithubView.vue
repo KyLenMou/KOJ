@@ -1,6 +1,8 @@
 <template>
   <div id="oAuthGithubView">
-    正在使用github登录
+    <el-image style="width: 189px" :src="getImg()"/>
+    <vue-loaders-line-scale color="#333333" scale="1.3" style="margin: auto 0"/>
+    <github theme="outline" size="200" fill="#333"/>
   </div>
 </template>
 
@@ -8,6 +10,11 @@
 import { ElMessage } from "element-plus";
 import { OAuthControllerService } from "@/api";
 import { useCurrentUserStore } from "@/stores/currentUser";
+import { Github } from "@icon-park/vue-next"
+
+function getImg() {
+  return new URL(`../assets/logo-no-text.png`, import.meta.url).href;
+}
 
 const router = useRouter()
 const {setCurrentUser} = useCurrentUserStore()
@@ -15,7 +22,6 @@ const {setCurrentUser} = useCurrentUserStore()
 onMounted(async () => {
   const code: string | null = new URLSearchParams(window.location.search).get('code')
   if (!code) {
-    ElMessage.error('Login With Github Fail')
     return
   }
   await OAuthControllerService.redirectByGithubUsingGet(code)
@@ -29,6 +35,13 @@ onMounted(async () => {
 
 <style scoped>
 #oAuthGithubView {
-
+  display: flex;
+  justify-content: space-around;
+  margin: auto auto;
+  width: 60%;
 }
+
+loading {
+}
+
 </style>
