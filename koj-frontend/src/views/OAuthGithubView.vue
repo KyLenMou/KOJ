@@ -22,9 +22,15 @@ const {setCurrentUser} = useCurrentUserStore()
 onMounted(async () => {
   const code: string | null = new URLSearchParams(window.location.search).get('code')
   if (!code) {
+    await router.push('/')
     return
   }
-  await OAuthControllerService.redirectByGithubUsingGet(code)
+  try {
+    await OAuthControllerService.redirectByGithubUsingGet(code)
+  } catch (e) {
+    await router.push('/login')
+    return
+  }
   // github登录成功，获取当前用户信息
   await setCurrentUser()
   ElMessage.success('Login With Github Success')
