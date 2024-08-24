@@ -1,13 +1,22 @@
 <template>
   <div id="codeView">
-    在线编写并调试代码
+    <el-row :gutter="30">
+      <el-col :span="4">
+
+      </el-col>
+      <el-col :span="20">
+        <CommonCard head="code">
+          <template #content>
+            <CodeEditor/>
+          </template>
+        </CommonCard>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script setup lang="ts">
-import UserCard from "@/components/UserCard.vue";
-import CommonCard from "@/components/CommonCard.vue";
-import { ref } from "vue";
+
 </script>
 
 <style scoped>

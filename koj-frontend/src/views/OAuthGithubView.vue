@@ -26,7 +26,7 @@ onMounted(async () => {
     return
   }
   try {
-    await OAuthControllerService.redirectByGithubUsingGet(code)
+    await OAuthControllerService.handleGithubPassportUsingGet(code)
   } catch (e) {
     await router.push('/login')
     return

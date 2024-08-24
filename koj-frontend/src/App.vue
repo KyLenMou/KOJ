@@ -2,9 +2,11 @@
   <div id="app">
     <HomeHeaderComponent/>
     <NavBarComponent/>
-    <transition name="el-zoom-in-bottom">
-      <router-view/>
-    </transition>
+    <router-view v-slot="{ Component }">
+      <transition name="fade" mode="out-in">
+        <component :is="Component" />
+      </transition>
+    </router-view>
     <HomeFooterComponent/>
   </div>
 </template>
@@ -13,7 +15,6 @@
 import NavBarComponent from "@/components/NavBarComponent.vue";
 import HomeHeaderComponent from "@/components/HomeHeaderComponent.vue";
 import HomeFooterComponent from "@/components/HomeFooterComponent.vue";
-import { HealthControllerService } from "@/api";
 
 </script>
 
@@ -31,6 +32,19 @@ import { HealthControllerService } from "@/api";
   max-width: 1200px;
   min-width: 920px;
   margin: 0 auto;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transform: scaleY(1);
+  transition: transform 250ms cubic-bezier(0.23, 1, 0.32, 1), opacity 250ms cubic-bezier(0.23, 1, 0.32, 1);
+  transform-origin: center bottom;
+}
+.fade-enter-from, .fade-leave-to {
+  transform: scaleY(0.5);
+  opacity: 0;
+}
+.fade-enter-to, .fade-leave-from {
+  opacity: 1;
 }
 
 .header-font {

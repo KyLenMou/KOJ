@@ -19,4 +19,4 @@ export type { UserRegisterDTO } from './models/UserRegisterDTO';
 export { HealthControllerService } from './services/HealthControllerService';
 export { OAuthControllerService } from './services/OAuthControllerService';
 export { PassportControllerService } from './services/PassportControllerService';
-export { UserInfoControllerService } from './services/UserInfoControllerService';
+export { UserHomeControllerService } from './services/UserHomeControllerService';

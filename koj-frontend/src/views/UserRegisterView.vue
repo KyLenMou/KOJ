@@ -18,18 +18,16 @@
           <el-form-item label="Email" prop="email">
             <el-input v-model="formData.email">
               <template #append>
-                <el-space v-if="countdown === 0 ">
-                  <el-icon style="font-size: 1.2em;">
+                <el-space v-if="countdown <= 0 ">
+                  <el-icon v-if="countdown !== -1" style="font-size: 1.2em;">
                     <Message/>
                   </el-icon>
-                  <el-button @click="doGetEmailCaptcha" tabindex="-1">
+                  <el-button @click="doGetEmailCaptcha" tabindex="-1" :loading="countdown === -1">
                     Send Captcha
                   </el-button>
                 </el-space>
                 <el-space v-else>
-                  <el-icon>
-                    <Loading/>
-                  </el-icon>
+                  Wait for
                   {{ countdown + 's' }}
                 </el-space>
               </template>
@@ -124,11 +122,18 @@ const rules = reactive<FormRules<typeof formData>>({
 
 // 获取邮箱验证码
 const doGetEmailCaptcha = async () => {
+  countdown.value = -1
   if (!formData.email) {
     ElMessage.error('Please input your email')
+    countdown.value = 0
     return
   }
-  await PassportControllerService.getRegisterCodeUsingGet(formData.email)
+  try {
+    await PassportControllerService.getRegisterCodeUsingGet(formData.email)
+  } catch (e) {
+    countdown.value = 0
+    return
+  }
   ElMessage.success('Captcha sent, please check your email')
   captchaCountdown()
 }

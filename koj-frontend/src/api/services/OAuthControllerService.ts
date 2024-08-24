@@ -8,12 +8,12 @@ import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 export class OAuthControllerService {
     /**
-     * redirectByGithub
+     * handleGithubPassport
      * @param code code
      * @returns R_UserInfoVO_ OK
      * @throws ApiError
      */
-    public static redirectByGithubUsingGet(
+    public static handleGithubPassportUsingGet(
         code: string,
     ): CancelablePromise<R_UserInfoVO_> {
         return __request(OpenAPI, {

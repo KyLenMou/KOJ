@@ -12,7 +12,7 @@ import {install} from '@icon-park/vue-next/es/all';
 import '@icon-park/vue-next/styles/index.css';
 import 'vue-loaders/dist/vue-loaders.css';
 import VueLoaders from 'vue-loaders';
-
+import * as monaco from 'monaco-editor';
 
 const app = createApp(App)
 

@@ -3,27 +3,10 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { R_UserHomeInfoVO_ } from '../models/R_UserHomeInfoVO_';
-import type { R_UserInfoVO_ } from '../models/R_UserInfoVO_';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-export class UserInfoControllerService {
-    /**
-     * getCurrentUserInfo
-     * @returns R_UserInfoVO_ OK
-     * @throws ApiError
-     */
-    public static getCurrentUserInfoUsingGet(): CancelablePromise<R_UserInfoVO_> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/user/current-user',
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
+export class UserHomeControllerService {
     /**
      * getUserHomeInfo
      * @param userId userId

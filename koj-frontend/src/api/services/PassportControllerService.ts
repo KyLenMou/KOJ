@@ -11,6 +11,22 @@ import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 export class PassportControllerService {
     /**
+     * getCurrentUserInfo
+     * @returns R_UserInfoVO_ OK
+     * @throws ApiError
+     */
+    public static getCurrentUserInfoUsingGet(): CancelablePromise<R_UserInfoVO_> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/passport/current-user',
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+    /**
      * getRegisterCode
      * @param email email
      * @returns R_Void_ OK

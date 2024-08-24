@@ -2,7 +2,6 @@
   <div id="homeView">
     <el-row :gutter="20" style="margin-top: 50px">
       <el-col :span="18">
-
       </el-col>
       <!--首页右侧区域-->
       <el-col :span="6">
