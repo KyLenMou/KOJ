@@ -10,6 +10,7 @@
 
     <modules>
         <module>koj-service</module>
+        <module>koj-entity</module>
     </modules>
     <packaging>pom</packaging>
 

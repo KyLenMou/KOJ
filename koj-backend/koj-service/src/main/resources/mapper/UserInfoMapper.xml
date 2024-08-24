@@ -2,45 +2,43 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="fun.kylen.kojservice.mapper.UserInfoMapper">
+<mapper namespace="fun.kylen.koj.mapper.UserInfoMapper">
 
-    <resultMap id="BaseResultMap" type="fun.kylen.kojservice.model.domain.UserInfo">
+    <resultMap id="BaseResultMap" type="fun.kylen.koj.domain.UserInfo">
             <id property="id" column="id" jdbcType="VARCHAR"/>
             <result property="username" column="username" jdbcType="VARCHAR"/>
-            <result property="userPassword" column="userPassword" jdbcType="VARCHAR"/>
+            <result property="userPassword" column="user_password" jdbcType="VARCHAR"/>
             <result property="email" column="email" jdbcType="VARCHAR"/>
-            <result property="qq" column="qq" jdbcType="VARCHAR"/>
-            <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
-            <result property="school" column="school" jdbcType="VARCHAR"/>
-            <result property="course" column="course" jdbcType="VARCHAR"/>
-            <result property="studentNumber" column="studentNumber" jdbcType="VARCHAR"/>
-            <result property="realname" column="realname" jdbcType="VARCHAR"/>
-            <result property="gender" column="gender" jdbcType="VARCHAR"/>
-            <result property="githubUsername" column="githubUsername" jdbcType="VARCHAR"/>
-            <result property="githubId" column="githubId" jdbcType="VARCHAR"/>
-            <result property="blogUrl" column="blogUrl" jdbcType="VARCHAR"/>
-            <result property="cfUsername" column="cfUsername" jdbcType="VARCHAR"/>
-            <result property="leetcodeUsername" column="leetcodeUsername" jdbcType="VARCHAR"/>
-            <result property="nowcoderId" column="nowcoderId" jdbcType="VARCHAR"/>
             <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+            <result property="qq" column="qq" jdbcType="VARCHAR"/>
+            <result property="githubUsername" column="github_username" jdbcType="VARCHAR"/>
+            <result property="githubId" column="github_id" jdbcType="VARCHAR"/>
+            <result property="rating" column="rating" jdbcType="INTEGER"/>
+            <result property="gender" column="gender" jdbcType="VARCHAR"/>
+            <result property="school" column="school" jdbcType="VARCHAR"/>
+            <result property="realname" column="realname" jdbcType="VARCHAR"/>
+            <result property="blogUrl" column="blog_url" jdbcType="VARCHAR"/>
+            <result property="cfUsername" column="cf_username" jdbcType="VARCHAR"/>
+            <result property="leetcodeUsername" column="leetcode_username" jdbcType="VARCHAR"/>
+            <result property="nowcoderId" column="nowcoder_id" jdbcType="VARCHAR"/>
             <result property="signature" column="signature" jdbcType="VARCHAR"/>
-            <result property="titleName" column="titleName" jdbcType="VARCHAR"/>
-            <result property="titleColor" column="titleColor" jdbcType="VARCHAR"/>
-            <result property="userStatus" column="userStatus" jdbcType="INTEGER"/>
-            <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
-            <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+            <result property="titleName" column="title_name" jdbcType="VARCHAR"/>
+            <result property="titleColor" column="title_color" jdbcType="VARCHAR"/>
+            <result property="state" column="state" jdbcType="TINYINT"/>
+            <result property="userRole" column="user_role" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
             <result property="deleted" column="deleted" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,username,userPassword,
-        email,qq,nickname,
-        school,course,studentNumber,
-        realname,gender,githubUsername,
-        githubId,blogUrl,cfUsername,
-        leetcodeUsername,nowcoderId,avatar,
-        signature,titleName,titleColor,
-        userStatus,createTime,updateTime,
-        deleted
+        id,username,user_password,
+        email,avatar,qq,
+        github_username,github_id,rating,
+        gender,school,realname,
+        blog_url,cf_username,leetcode_username,
+        nowcoder_id,signature,title_name,
+        title_color,state,user_role,
+        create_time,update_time,deleted
     </sql>
 </mapper>
