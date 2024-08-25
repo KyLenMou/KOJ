@@ -80,6 +80,7 @@ const reset = () => {
   overflow: hidden;
   list-style: none;
   padding-left: 0;
+  user-select: none;
 }
 
 .rightLava {
@@ -119,11 +120,16 @@ a {
   display: block;
   margin: auto 8px;
   padding: 0 5px;
+  transition: text-shadow 100ms ease-in-out,transform 100ms ease-in-out;
 }
 
 a:first-child {
   margin: auto 8px auto 0;
 }
 
+a:active {
+  text-shadow: white 2px 2px;
+  transform: translateX(-1px) translateY(-1px);
+}
 
 </style>
