@@ -8,8 +8,8 @@
           :key="index"
           @mouseover="move($event)"
           @mouseout="reset"
-          @click="moveTo($event)">
-        <a>{{ item }}</a>
+          @click="moveTo(index, $event)">
+        <a>{{ item.replace(/^admin-/, '') }}</a>
       </li>
     </ul>
   </div>
@@ -17,8 +17,6 @@
 
 <script setup lang="ts">
 import { defineProps, ref, toRaw, withDefaults } from "vue";
-import { storeToRefs } from "pinia";
-import { useCurrentUserStore } from "@/stores/currentUser";
 
 interface Props {
   menuList: string[];
@@ -26,24 +24,33 @@ interface Props {
 }
 
 const p = withDefaults(defineProps<Props>(), {
-  menuList: () => [],
+  menuList: () => [] ,
   selectedIndex: () => 0,
 });
 
+const router = useRouter();
+
+// 动画参数
 const left = ref(0);
 const width = ref(0);
 const leftOffset = ref(0);
 const widthOffset = ref(0);
 
-onMounted(() => {
+onMounted(async () => {
+  // 渲染好a之后再框元素，防止宽度不正确
+  await nextTick()
+  // 获取当前选中的菜单元素
   const menuElements = document.querySelectorAll('li:not(.rightLava) a');
   if (menuElements) {
-    const menuElement = menuElements[p.selectedIndex];
-    left.value = menuElement.clientLeft;
-    width.value = menuElement.clientWidth;
+    const menuElement = menuElements[p.selectedIndex] as HTMLElement;
+    left.value = menuElement.offsetLeft;
+    width.value = menuElement.offsetWidth;
+    console.log(left.value, width.value);
   }
 });
 
+
+// lava移动效果
 const move = (event:MouseEvent) => {
   const liElement = (event.target as HTMLElement).closest('a');
   if (!liElement) return;
@@ -53,9 +60,11 @@ const move = (event:MouseEvent) => {
   width.value -= widthOffset.value;
 };
 
-const moveTo = (event:MouseEvent) => {
+// lava移动到指定位置并路由跳转
+const moveTo = async (index:number, event:MouseEvent) => {
   const liElement = (event.target as HTMLElement).closest('a');
   if (!liElement) return;
+  await router.push({ name: p.menuList[index] });
   leftOffset.value = left.value - liElement.offsetLeft;
   widthOffset.value = width.value - liElement.offsetWidth;
   left.value -= leftOffset.value;
@@ -64,10 +73,12 @@ const moveTo = (event:MouseEvent) => {
   width.value -= widthOffset.value;
 };
 
+// lava重置效果
 const reset = () => {
   left.value += leftOffset.value;
   width.value += widthOffset.value;
 };
+
 </script>
 
 <style scoped>

@@ -49,6 +49,11 @@ watch(currentUser, () => {
 
 // menu匹配当前路由
 router.afterEach((to, from, failure) => {
+  // 如果以admin开头，就是admin
+  if (to.name?.toString().startsWith('admin')) {
+    activeIndex.value = 'admin';
+    return;
+  }
   activeIndex.value = to.name as string;
 });
 
