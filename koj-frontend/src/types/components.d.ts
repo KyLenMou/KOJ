@@ -29,9 +29,11 @@ declare module 'vue' {
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     HomeFooterComponent: typeof import('./../components/HomeFooterComponent.vue')['default']
     HomeHeaderComponent: typeof import('./../components/HomeHeaderComponent.vue')['default']
+    MenuComponent: typeof import('./../components/MenuComponent.vue')['default']
     NavBarComponent: typeof import('./../components/NavBarComponent.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SubNavBarComponent: typeof import('./../components/SubNavBarComponent.vue')['default']
     UserCard: typeof import('./../components/UserCard.vue')['default']
   }
 }

@@ -1,0 +1,129 @@
+<template>
+  <div id="menuComponentView">
+    <ul class="subNavBar">
+      <li class="rightLava" :style="{ left: left + 'px', width: width + 'px' }">
+        <div class="leftLava"/>
+      </li>
+      <li v-for="(item,index) in p.menuList"
+          :key="index"
+          @mouseover="move($event)"
+          @mouseout="reset"
+          @click="moveTo($event)">
+        <a>{{ item }}</a>
+      </li>
+    </ul>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { defineProps, ref, toRaw, withDefaults } from "vue";
+import { storeToRefs } from "pinia";
+import { useCurrentUserStore } from "@/stores/currentUser";
+
+interface Props {
+  menuList: string[];
+  selectedIndex: number;
+}
+
+const p = withDefaults(defineProps<Props>(), {
+  menuList: () => [],
+  selectedIndex: () => 0,
+});
+
+const left = ref(0);
+const width = ref(0);
+const leftOffset = ref(0);
+const widthOffset = ref(0);
+
+onMounted(() => {
+  const menuElements = document.querySelectorAll('li:not(.rightLava) a');
+  if (menuElements) {
+    const menuElement = menuElements[p.selectedIndex];
+    left.value = menuElement.clientLeft;
+    width.value = menuElement.clientWidth;
+  }
+});
+
+const move = (event:MouseEvent) => {
+  const liElement = (event.target as HTMLElement).closest('a');
+  if (!liElement) return;
+  leftOffset.value = left.value - liElement.offsetLeft;
+  widthOffset.value = width.value - liElement.offsetWidth;
+  left.value -= leftOffset.value;
+  width.value -= widthOffset.value;
+};
+
+const moveTo = (event:MouseEvent) => {
+  const liElement = (event.target as HTMLElement).closest('a');
+  if (!liElement) return;
+  leftOffset.value = left.value - liElement.offsetLeft;
+  widthOffset.value = width.value - liElement.offsetWidth;
+  left.value -= leftOffset.value;
+  width.value -= widthOffset.value;
+  left.value -= leftOffset.value;
+  width.value -= widthOffset.value;
+};
+
+const reset = () => {
+  left.value += leftOffset.value;
+  width.value += widthOffset.value;
+};
+</script>
+
+<style scoped>
+#menuComponentView {
+
+}
+
+.subNavBar {
+  position: relative;
+  overflow: hidden;
+  list-style: none;
+  padding-left: 0;
+}
+
+.rightLava {
+  background: url("https://codeforces.org/s/54774/images/menu/lava-right.png") no-repeat top right;
+  height: 20px;
+  z-index: 1;
+  transition: left 0.3s ease-in-out, width 0.3s ease-in-out;
+  position: absolute;
+  width: 20px;
+}
+
+.leftLava {
+  background: url("https://codeforces.org/s/54774/images/menu/lava-left.png") no-repeat top left;
+  z-index: 1;
+  height: 20px;
+  margin-right: 10px;
+}
+
+a {
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-family: "Arial Narrow", sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #000;
+  outline: none;
+  text-align: center;
+  user-select: none;
+  line-height: 20px;
+  height: 20px;
+  z-index: 2;
+  letter-spacing: 0;
+  float: left;
+  display: block;
+  margin: auto 8px;
+  padding: 0 5px;
+}
+
+a:first-child {
+  margin: auto 8px auto 0;
+}
+
+
+</style>

@@ -1,5 +1,5 @@
 <template>
-  <div id="navBarComponentView">
+  <div id="subNavBarComponentView">
     <el-menu
       :default-active="activeIndex"
       class="el-menu-demo"
@@ -21,14 +21,31 @@
 import { ref } from "vue";
 import { Search } from "@element-plus/icons-vue";
 import { routes } from "@/router/routes";
+import { useCurrentUserStore } from "@/stores/currentUser";
+import { storeToRefs } from "pinia";
 
 const router = useRouter();
+const { currentUser } = storeToRefs(useCurrentUserStore());
 
-const navItems = routes.filter(r => {
-  return r.meta?.showOnNav !== false;
-}).map(r => {
-  return r.name as string;
-})
+const navItems = ref<string[]>([]);
+
+const updateNavItems = () => {
+  navItems.value = routes.filter(r => {
+    if (r.meta?.showOnNav === false) {
+      return false;
+    }
+    return !(r.name === 'admin' && currentUser.value.userRole !== 'root');
+  }).map(r => {
+    return r.name as string;
+  })
+}
+
+updateNavItems();
+
+// 监听改变
+watch(currentUser, () => {
+  updateNavItems();
+});
 
 // menu匹配当前路由
 router.afterEach((to, from, failure) => {
@@ -37,8 +54,8 @@ router.afterEach((to, from, failure) => {
 
 // 点击menu跳转
 const doMenuClick = (key: string) => {
-  router.push({
-    path: key,
+  router.replace({
+    path: `/${key}`,
   });
 };
 
@@ -47,7 +64,7 @@ const searchContent = ref<string>("");
 </script>
 
 <style scoped>
-#navBarComponentView {
+#subNavBarComponentView {
 
 }
 
@@ -77,6 +94,7 @@ const searchContent = ref<string>("");
   user-select: none;
   background-color: #fff !important;
 }
+
 :deep(.el-menu-item:hover) {
   background-color: #fff !important;
 }

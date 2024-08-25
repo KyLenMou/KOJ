@@ -8,6 +8,8 @@ import UserRegisterView from "@/views/UserRegisterView.vue";
 import HealthView from "@/views/HealthView.vue";
 import NotFoundView from "@/views/NotFoundView.vue";
 import OAuthGithubView from "@/views/OAuthGithubView.vue";
+import AdminVIew from "@/views/AdminVIew.vue";
+import UserHomeView from "@/views/UserHomeView.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -47,6 +49,22 @@ export const routes: Array<RouteRecordRaw> = [
     component: ContestsView,
     meta: {
       showOnNav: true
+    }
+  },
+  {
+    path: '/admin',
+    name: 'admin',
+    component: AdminVIew,
+    meta: {
+      showOnNav: true
+    }
+  },
+  {
+    path: '/user-home/:username',
+    name: 'user-home',
+    component: UserHomeView,
+    meta: {
+      showOnNav: false
     }
   },
   {

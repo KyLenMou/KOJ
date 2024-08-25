@@ -10,6 +10,7 @@ export type UserInfoVO = {
     signature?: string;
     titleColor?: string;
     titleName?: string;
+    userRole?: string;
     username?: string;
 };
 

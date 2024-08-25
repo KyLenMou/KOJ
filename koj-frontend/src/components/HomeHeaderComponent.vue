@@ -55,7 +55,7 @@ const goToLogin = () => {
 }
 
 const goToUserHome = () => {
-  router.push("/userHome");
+  router.push(`/user-home/${currentUser.value.username}`);
 }
 
 </script>

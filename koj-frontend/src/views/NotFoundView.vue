@@ -1,5 +1,5 @@
 <template>
-  <div id="notFoundView">
+  <div id="u">
     <h1>404 NotFound</h1>
   </div>
 </template>
@@ -11,7 +11,7 @@ import { ref } from "vue";
 </script>
 
 <style scoped>
-#notFoundView {
+#u {
 
 }
 </style>
