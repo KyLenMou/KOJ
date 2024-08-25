@@ -58,7 +58,7 @@
 import { Loading, Message } from "@element-plus/icons-vue";
 import { PassportControllerService, type UserRegisterDTO } from "@/api";
 import { ElMessage, type FormInstance, type FormRules } from "element-plus";
-import type UserRegisterView from "@/views/UserRegisterView.vue";
+import type UserRegisterView from "@/views/passport/UserRegisterView.vue";
 import { useCurrentUserStore } from "@/stores/currentUser";
 import { storeToRefs } from "pinia";
 import { GithubOne, TencentQq } from "@icon-park/vue-next";

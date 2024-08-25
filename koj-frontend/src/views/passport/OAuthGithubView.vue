@@ -1,6 +1,6 @@
 <template>
   <div id="oAuthGithubView">
-    <el-image style="width: 189px" :src="getImg()"/>
+    <el-image style="width: 189px" :src="logo"/>
     <vue-loaders-line-scale color="#333333" scale="1.3" style="margin: auto 0"/>
     <github theme="outline" size="200" fill="#333"/>
   </div>
@@ -11,10 +11,7 @@ import { ElMessage } from "element-plus";
 import { OAuthControllerService } from "@/api";
 import { useCurrentUserStore } from "@/stores/currentUser";
 import { Github } from "@icon-park/vue-next"
-
-function getImg() {
-  return new URL(`../assets/logo-no-text.png`, import.meta.url).href;
-}
+import logo from "@/assets/logo-no-text.png"
 
 const router = useRouter()
 const {setCurrentUser} = useCurrentUserStore()

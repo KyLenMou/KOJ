@@ -34,7 +34,7 @@ const updateNavItems = () => {
     if (r.meta?.showOnNav === false) {
       return false;
     }
-    return !(r.name === 'admin' && currentUser.value.userRole !== 'root');
+    return !(r.name === 'admin' && currentUser.value?.userRole !== 'admin' && currentUser.value?.userRole !== 'root');
   }).map(r => {
     return r.name as string;
   })
@@ -59,7 +59,8 @@ router.afterEach((to, from, failure) => {
 
 // 点击menu跳转
 const doMenuClick = (key: string) => {
-  router.replace({
+  console.log(key);
+  router.push({
     path: `/${key}`,
   });
 };

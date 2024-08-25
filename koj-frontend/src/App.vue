@@ -4,7 +4,7 @@
     <NavBarComponent/>
     <router-view v-slot="{ Component }">
       <transition name="fade" mode="out-in">
-        <component :is="Component" />
+        <component :is="Component"/>
       </transition>
     </router-view>
     <HomeFooterComponent/>
@@ -15,6 +15,7 @@
 import NavBarComponent from "@/components/NavBarComponent.vue";
 import HomeHeaderComponent from "@/components/HomeHeaderComponent.vue";
 import HomeFooterComponent from "@/components/HomeFooterComponent.vue";
+import { useCurrentUserStore } from "@/stores/currentUser";
 
 </script>
 
@@ -34,15 +35,26 @@ import HomeFooterComponent from "@/components/HomeFooterComponent.vue";
   margin: 0 auto;
 }
 
+.operationBox {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 7px;
+  margin-bottom: 20px;
+}
+
 .fade-enter-active, .fade-leave-active {
   transform: scaleY(1);
   transition: transform 250ms cubic-bezier(0.23, 1, 0.32, 1), opacity 250ms cubic-bezier(0.23, 1, 0.32, 1);
   transform-origin: center bottom;
 }
+
 .fade-enter-from, .fade-leave-to {
   transform: scaleY(0.5);
   opacity: 0;
 }
+
 .fade-enter-to, .fade-leave-from {
   opacity: 1;
 }

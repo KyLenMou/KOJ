@@ -3,15 +3,43 @@ import HomeView from "@/views/HomeView.vue";
 import CodeView from "@/views/CodeView.vue";
 import ProblemsetView from "@/views/ProblemsetView.vue";
 import ContestsView from "@/views/ContestsView.vue";
-import UserLoginView from "@/views/UserLoginView.vue";
-import UserRegisterView from "@/views/UserRegisterView.vue";
+import UserLoginView from "@/views/passport/UserLoginView.vue";
+import UserRegisterView from "@/views/passport/UserRegisterView.vue";
 import HealthView from "@/views/HealthView.vue";
 import NotFoundView from "@/views/NotFoundView.vue";
-import OAuthGithubView from "@/views/OAuthGithubView.vue";
-import AdminVIew from "@/views/AdminVIew.vue";
+import OAuthGithubView from "@/views/passport/OAuthGithubView.vue";
+import AdminVIew from "@/views/admin/AdminVIew.vue";
 import UserHomeView from "@/views/UserHomeView.vue";
+import ProblemsetAdminView from "@/views/admin/ProblemsetAdminView.vue";
+import ProblemAdminView from "@/views/admin/ProblemAdminView.vue";
 
 export const routes: Array<RouteRecordRaw> = [
+  /**
+   * Admin routes
+   */
+  {
+    path: '/admin',
+    name: 'admin',
+    component: AdminVIew,
+    meta: {
+      showOnNav: true
+    },
+    children: [
+      {
+        path: 'problemset',
+        name: 'admin-problemset',
+        component: ProblemsetAdminView,
+      },
+      {
+        path: 'problem',
+        name: 'admin-problem',
+        component: ProblemAdminView,
+      },
+    ]
+  },
+  /**
+   * Normal routes
+   */
   {
     path: '/',
     redirect: '/home',
@@ -47,14 +75,6 @@ export const routes: Array<RouteRecordRaw> = [
     path: '/contests',
     name: 'contests',
     component: ContestsView,
-    meta: {
-      showOnNav: true
-    }
-  },
-  {
-    path: '/admin',
-    name: 'admin',
-    component: AdminVIew,
     meta: {
       showOnNav: true
     }
@@ -115,5 +135,5 @@ export const routes: Array<RouteRecordRaw> = [
     meta: {
       showOnNav: false
     }
-  }
+  },
 ];

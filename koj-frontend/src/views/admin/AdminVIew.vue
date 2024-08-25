@@ -7,7 +7,7 @@
 
 <script setup lang="ts">
 import { routes } from "@/router/routes";
-
+const router = useRouter();
 const updateMenuItems = () => {
   menuList.value = routes[0].children
     ? routes[0].children.map(r => r.name as string)
@@ -15,6 +15,7 @@ const updateMenuItems = () => {
 }
 onMounted(() => {
   updateMenuItems();
+  router.push({ name: menuList.value[0] });
 })
 
 const menuList = ref(['loading_menu']);
