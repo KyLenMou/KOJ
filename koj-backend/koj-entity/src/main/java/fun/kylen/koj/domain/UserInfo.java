@@ -1,17 +1,17 @@
 package fun.kylen.koj.domain;
 
-import com.baomidou.mybatisplus.annotation.*;
-
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * 
  * @TableName user_info
  */
 @TableName(value ="user_info")
-@Data
 public class UserInfo implements Serializable {
     /**
      * 
@@ -110,9 +110,9 @@ public class UserInfo implements Serializable {
     private String titleColor;
 
     /**
-     * 0可用，1不可用
+     * 是否被封禁
      */
-    private Integer state;
+    private Integer isBanned;
 
     /**
      * 用户角色 root超级管理员、admin普通管理员、default_user普通用户
@@ -132,11 +132,346 @@ public class UserInfo implements Serializable {
     /**
      * 0未删除，1已删除
      */
-    @TableLogic
     private Integer deleted;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+    /**
+     * 
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * 
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    /**
+     * 用户名
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * 用户名
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    /**
+     * 密码
+     */
+    public String getUserPassword() {
+        return userPassword;
+    }
+
+    /**
+     * 密码
+     */
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
+    }
+
+    /**
+     * 邮箱
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * 邮箱
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     * 头像地址
+     */
+    public String getAvatar() {
+        return avatar;
+    }
+
+    /**
+     * 头像地址
+     */
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    /**
+     * qq号码
+     */
+    public String getQq() {
+        return qq;
+    }
+
+    /**
+     * qq号码
+     */
+    public void setQq(String qq) {
+        this.qq = qq;
+    }
+
+    /**
+     * github用户名
+     */
+    public String getGithubUsername() {
+        return githubUsername;
+    }
+
+    /**
+     * github用户名
+     */
+    public void setGithubUsername(String githubUsername) {
+        this.githubUsername = githubUsername;
+    }
+
+    /**
+     * githubId
+     */
+    public String getGithubId() {
+        return githubId;
+    }
+
+    /**
+     * githubId
+     */
+    public void setGithubId(String githubId) {
+        this.githubId = githubId;
+    }
+
+    /**
+     * oj分数
+     */
+    public Integer getRating() {
+        return rating;
+    }
+
+    /**
+     * oj分数
+     */
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
+
+    /**
+     * 性别
+     */
+    public String getGender() {
+        return gender;
+    }
+
+    /**
+     * 性别
+     */
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    /**
+     * 学校
+     */
+    public String getSchool() {
+        return school;
+    }
+
+    /**
+     * 学校
+     */
+    public void setSchool(String school) {
+        this.school = school;
+    }
+
+    /**
+     * 真实姓名
+     */
+    public String getRealname() {
+        return realname;
+    }
+
+    /**
+     * 真实姓名
+     */
+    public void setRealname(String realname) {
+        this.realname = realname;
+    }
+
+    /**
+     * 博客地址
+     */
+    public String getBlogUrl() {
+        return blogUrl;
+    }
+
+    /**
+     * 博客地址
+     */
+    public void setBlogUrl(String blogUrl) {
+        this.blogUrl = blogUrl;
+    }
+
+    /**
+     * cf的username
+     */
+    public String getCfUsername() {
+        return cfUsername;
+    }
+
+    /**
+     * cf的username
+     */
+    public void setCfUsername(String cfUsername) {
+        this.cfUsername = cfUsername;
+    }
+
+    /**
+     * leetcode的username
+     */
+    public String getLeetcodeUsername() {
+        return leetcodeUsername;
+    }
+
+    /**
+     * leetcode的username
+     */
+    public void setLeetcodeUsername(String leetcodeUsername) {
+        this.leetcodeUsername = leetcodeUsername;
+    }
+
+    /**
+     * 牛客id
+     */
+    public String getNowcoderId() {
+        return nowcoderId;
+    }
+
+    /**
+     * 牛客id
+     */
+    public void setNowcoderId(String nowcoderId) {
+        this.nowcoderId = nowcoderId;
+    }
+
+    /**
+     * 个性签名
+     */
+    public String getSignature() {
+        return signature;
+    }
+
+    /**
+     * 个性签名
+     */
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
+
+    /**
+     * 头衔、称号
+     */
+    public String getTitleName() {
+        return titleName;
+    }
+
+    /**
+     * 头衔、称号
+     */
+    public void setTitleName(String titleName) {
+        this.titleName = titleName;
+    }
+
+    /**
+     * 头衔、称号的颜色
+     */
+    public String getTitleColor() {
+        return titleColor;
+    }
+
+    /**
+     * 头衔、称号的颜色
+     */
+    public void setTitleColor(String titleColor) {
+        this.titleColor = titleColor;
+    }
+
+    /**
+     * 是否被封禁
+     */
+    public Integer getIsBanned() {
+        return isBanned;
+    }
+
+    /**
+     * 是否被封禁
+     */
+    public void setIsBanned(Integer isBanned) {
+        this.isBanned = isBanned;
+    }
+
+    /**
+     * 用户角色 root超级管理员、admin普通管理员、default_user普通用户
+     */
+    public String getUserRole() {
+        return userRole;
+    }
+
+    /**
+     * 用户角色 root超级管理员、admin普通管理员、default_user普通用户
+     */
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
+    }
+
+    /**
+     * 创建时间
+     */
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    /**
+     * 创建时间
+     */
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    /**
+     * 修改时间
+     */
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    /**
+     * 修改时间
+     */
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    /**
+     * 0未删除，1已删除
+     */
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    /**
+     * 0未删除，1已删除
+     */
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
 
     @Override
     public boolean equals(Object that) {
@@ -169,7 +504,7 @@ public class UserInfo implements Serializable {
             && (this.getSignature() == null ? other.getSignature() == null : this.getSignature().equals(other.getSignature()))
             && (this.getTitleName() == null ? other.getTitleName() == null : this.getTitleName().equals(other.getTitleName()))
             && (this.getTitleColor() == null ? other.getTitleColor() == null : this.getTitleColor().equals(other.getTitleColor()))
-            && (this.getState() == null ? other.getState() == null : this.getState().equals(other.getState()))
+            && (this.getIsBanned() == null ? other.getIsBanned() == null : this.getIsBanned().equals(other.getIsBanned()))
             && (this.getUserRole() == null ? other.getUserRole() == null : this.getUserRole().equals(other.getUserRole()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
             && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
@@ -199,7 +534,7 @@ public class UserInfo implements Serializable {
         result = prime * result + ((getSignature() == null) ? 0 : getSignature().hashCode());
         result = prime * result + ((getTitleName() == null) ? 0 : getTitleName().hashCode());
         result = prime * result + ((getTitleColor() == null) ? 0 : getTitleColor().hashCode());
-        result = prime * result + ((getState() == null) ? 0 : getState().hashCode());
+        result = prime * result + ((getIsBanned() == null) ? 0 : getIsBanned().hashCode());
         result = prime * result + ((getUserRole() == null) ? 0 : getUserRole().hashCode());
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
@@ -232,7 +567,7 @@ public class UserInfo implements Serializable {
         sb.append(", signature=").append(signature);
         sb.append(", titleName=").append(titleName);
         sb.append(", titleColor=").append(titleColor);
-        sb.append(", state=").append(state);
+        sb.append(", isBanned=").append(isBanned);
         sb.append(", userRole=").append(userRole);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);

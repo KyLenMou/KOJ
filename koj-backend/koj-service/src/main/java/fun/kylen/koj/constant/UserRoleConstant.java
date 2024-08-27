@@ -10,5 +10,6 @@ import lombok.Getter;
  */
 public class UserRoleConstant {
     public final static String ROOT = "root";
+    public final static String ADMIN = "admin";
     public final static String DEFAULT_USER = "default_user";
 }
