@@ -7,7 +7,7 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import App from './App.vue'
-import router from './router'
+import router, { setupRouterGuard } from './router'
 import route from '@/router'
 import {install} from '@icon-park/vue-next/es/all';
 import '@icon-park/vue-next/styles/index.css';
@@ -29,23 +29,8 @@ const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 app.use(pinia)
 
-
 // 路由守卫
-const { currentUser } = storeToRefs(useCurrentUserStore());
-router.beforeEach((to, from, next) => {
-  // 当前用户权限
-  const userRole = currentUser.value.userRole;
-  // 下一个路由需要的权限（path是否以/admin开头）
-  const needAccess = to.path.startsWith("/admin") ? "admin" : "user";
-  // 无管理员权限，但访问需管理员权限页面
-  if (needAccess === 'admin' && userRole !== "admin" && userRole !== "root") {
-    // 弹出提示，禁止访问，保留在当前页面
-    ElMessage.error('无权限访问');
-    next(false);
-    return;
-  }
-  next();
-})
+setupRouterGuard()
 
 // element
 app.use(ElementPlus)

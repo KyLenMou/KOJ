@@ -11,4 +11,18 @@ const router = createRouter({
   routes,
 })
 
+export function setupRouterGuard() {
+  const { getCurrentUser } = useCurrentUserStore();
+  router.beforeEach((to, from, next) => {
+    const userRole = getCurrentUser().userRole;
+    const needAccess = to.path.startsWith("/admin") ? "admin" : "user";
+    if (needAccess === 'admin' && userRole !== "admin" && userRole !== "root") {
+      ElMessage.error('无权限访问');
+      next(false);
+      return;
+    }
+    next();
+  });
+}
+
 export default router
