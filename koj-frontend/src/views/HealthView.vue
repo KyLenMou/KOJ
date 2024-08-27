@@ -19,10 +19,8 @@ const BETime = ref('')
 
 const getStatus = async () => {
   const res = await HealthControllerService.getHealthUsingGet();
-  if (res.code === 0) {
-    isHealth.value = true
-    BETime.value = res.data as string
-  }
+  isHealth.value = true
+  BETime.value = res.data as string
 }
 
 onMounted(() => {

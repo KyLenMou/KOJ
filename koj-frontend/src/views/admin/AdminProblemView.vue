@@ -1,5 +1,10 @@
 <template>
   <div id="problemsetAdminView">
+    <div class="operationBox">
+      <el-form>
+
+      </el-form>
+    </div>
   </div>
 </template>
 

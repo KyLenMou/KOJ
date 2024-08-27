@@ -1,10 +1,9 @@
 <template>
   <div id="commonTable">
     <div class="tableContainer">
-      <span style="margin-left: 5px; color: #000">{{ p.tableHead }}</span>
+      <span style="margin-left: 5px; color: #000;line-height: 25px">{{ p.tableHead }}</span>
       <el-table
         :data="tableData"
-        style="width: 100%"
         stripe border
         :cell-style="{
           borderColor:'#e1e1e1',
@@ -17,9 +16,7 @@
           padding: '5px',
         }"
       >
-        <el-table-column prop="date" label="Date" width="180" />
-        <el-table-column prop="name" label="Name" width="180" />
-        <el-table-column prop="address" label="Address" />
+        <slot name="tableContent"></slot>
       </el-table>
     </div>
   </div>
@@ -28,35 +25,14 @@
 <script setup lang="ts">
 import { defineProps, withDefaults } from "vue";
 
-const tableData = [
-  {
-    date: '2016-05-03',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-02',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-04',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-01',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-]
-
 interface Props {
   tableHead: string;
+  tableData: any[];
 }
 
 const p = withDefaults(defineProps<Props>(), {
-  tableHead: 'Table Head',
+  tableHead: () => 'Table',
+  tableData: () => [],
 });
 
 </script>

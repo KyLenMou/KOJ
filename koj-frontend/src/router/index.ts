@@ -10,7 +10,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
 })
-
+// todo /admin/tag刷新后回到了/admin/problemset
 export function setupRouterGuard() {
   const { getCurrentUser } = useCurrentUserStore();
   router.beforeEach((to, from, next) => {

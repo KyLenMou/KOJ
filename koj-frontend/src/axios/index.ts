@@ -7,6 +7,8 @@ const clearCurrentUserIfNeeded = () => {
   clearCurrentUser()
 }
 
+const router = useRouter()
+
 axios.interceptors.request.use(
   function (config) {
     return config;
@@ -29,6 +31,10 @@ axios.interceptors.response.use(
         ElMessage.warning(res.data.message)
         // 清空currentUser
         clearCurrentUserIfNeeded()
+        // 如果当前在admin页面，跳转到首页
+        if (router.currentRoute?.value.path.startsWith("/admin")) {
+          router.push('/')
+        }
       } else if (res.data.code === 403) {
         ElMessage.error(res.data.message)
       } else if (res.data.code === 404) {

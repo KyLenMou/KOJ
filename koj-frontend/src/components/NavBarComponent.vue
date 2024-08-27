@@ -31,7 +31,7 @@ const navItems = ref<string[]>([]);
 
 const updateNavItems = () => {
   navItems.value = routes.filter(r => {
-    if (r.meta?.showOnNav === false) {
+    if (r.meta?.isVisible === false) {
       return false;
     }
     return !(r.name === 'admin' && currentUser.value?.userRole !== 'admin' && currentUser.value?.userRole !== 'root');

@@ -10,11 +10,12 @@ import { routes } from "@/router/routes";
 const router = useRouter();
 const updateMenuItems = () => {
   menuList.value = routes[0].children
-    ? routes[0].children.map(r => r.name as string)
+    ? routes[0].children?.filter(r => r.meta?.isVisible).map(r => r.name as string)
     : [] as string[];
 }
 onMounted(() => {
   updateMenuItems();
+  // 默认跳转到第一个
   router.push({ name: menuList.value[0] });
 })
 

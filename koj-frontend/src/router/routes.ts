@@ -10,8 +10,9 @@ import NotFoundView from "@/views/NotFoundView.vue";
 import OAuthGithubView from "@/views/passport/OAuthGithubView.vue";
 import AdminVIew from "@/views/admin/AdminVIew.vue";
 import UserHomeView from "@/views/UserHomeView.vue";
-import ProblemsetAdminView from "@/views/admin/ProblemsetAdminView.vue";
-import ProblemAdminView from "@/views/admin/ProblemAdminView.vue";
+import ProblemsetAdminView from "@/views/admin/AdminProblemsetView.vue";
+import ProblemAdminView from "@/views/admin/AdminProblemView.vue";
+import TagAdminView from "@/views/admin/AdminTagView.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   /**
@@ -22,18 +23,32 @@ export const routes: Array<RouteRecordRaw> = [
     name: 'admin',
     component: AdminVIew,
     meta: {
-      showOnNav: true
+      isVisible: true
     },
     children: [
       {
         path: 'problemset',
         name: 'admin-problemset',
         component: ProblemsetAdminView,
+        meta: {
+          isVisible: true
+        },
       },
       {
         path: 'problem',
         name: 'admin-problem',
         component: ProblemAdminView,
+        meta: {
+          isVisible: false
+        },
+      },
+      {
+        path: 'tag',
+        name: 'admin-tag',
+        component: TagAdminView,
+        meta: {
+          isVisible: true
+        },
       },
     ]
   },
@@ -44,7 +59,7 @@ export const routes: Array<RouteRecordRaw> = [
     path: '/',
     redirect: '/home',
     meta: {
-      showOnNav: false
+      isVisible: false
     }
   },
   {
@@ -52,7 +67,7 @@ export const routes: Array<RouteRecordRaw> = [
     name: 'home',
     component: HomeView,
     meta: {
-      showOnNav: true
+      isVisible: true
     }
   },
   {
@@ -60,7 +75,7 @@ export const routes: Array<RouteRecordRaw> = [
     name: 'code',
     component: CodeView,
     meta: {
-      showOnNav: true
+      isVisible: true
     }
   },
   {
@@ -68,7 +83,7 @@ export const routes: Array<RouteRecordRaw> = [
     name: 'problemset',
     component: ProblemsetView,
     meta: {
-      showOnNav: true
+      isVisible: true
     }
   },
   {
@@ -76,7 +91,7 @@ export const routes: Array<RouteRecordRaw> = [
     name: 'contests',
     component: ContestsView,
     meta: {
-      showOnNav: true
+      isVisible: true
     }
   },
   {
@@ -84,7 +99,7 @@ export const routes: Array<RouteRecordRaw> = [
     name: 'user-home',
     component: UserHomeView,
     meta: {
-      showOnNav: false
+      isVisible: false
     }
   },
   {
@@ -92,7 +107,7 @@ export const routes: Array<RouteRecordRaw> = [
     name: 'login',
     component: UserLoginView,
     meta: {
-      showOnNav: false
+      isVisible: false
     }
   },
   {
@@ -100,7 +115,7 @@ export const routes: Array<RouteRecordRaw> = [
     name: 'register',
     component: UserRegisterView,
     meta: {
-      showOnNav: false
+      isVisible: false
     }
   },
   {
@@ -108,7 +123,7 @@ export const routes: Array<RouteRecordRaw> = [
     name: 'health',
     component: HealthView,
     meta: {
-      showOnNav: false
+      isVisible: false
     }
   },
   {
@@ -117,7 +132,7 @@ export const routes: Array<RouteRecordRaw> = [
     name: '404',
     component: NotFoundView,
     meta: {
-      showOnNav: false
+      isVisible: false
     }
   },
   {
@@ -125,7 +140,7 @@ export const routes: Array<RouteRecordRaw> = [
     path: '/:pathMatch(.*)*',
     redirect: '/404',
     meta: {
-      showOnNav: false
+      isVisible: false
     }
   },
   {
@@ -133,7 +148,7 @@ export const routes: Array<RouteRecordRaw> = [
     name: 'oauth-github',
     component: OAuthGithubView,
     meta: {
-      showOnNav: false
+      isVisible: false
     }
   },
 ];
