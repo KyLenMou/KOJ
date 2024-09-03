@@ -15,6 +15,8 @@ import 'vue-loaders/dist/vue-loaders.css';
 import VueLoaders from 'vue-loaders';
 import * as monaco from 'monaco-editor';
 import { useCurrentUserStore } from "@/stores/currentUser";
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
 
 const app = createApp(App)
 
@@ -28,6 +30,9 @@ install(app, 'i');
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 app.use(pinia)
+
+// mavonEditor
+app.use(mavonEditor)
 
 // 路由守卫
 setupRouterGuard()

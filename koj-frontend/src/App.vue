@@ -34,14 +34,35 @@ import { useCurrentUserStore } from "@/stores/currentUser";
   min-width: 920px;
   margin: 0 auto;
 }
-
-.operationBox {
+.el-select {
+  min-width: 100px;
+}
+.space-between {
   display: flex;
+  justify-content: space-between;
   align-items: center;
+}
+.space-around {
+  display: flex;
+  justify-content: space-around;
+}
+.title-header {
+  line-height: 1.5em;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #3b5998;
+}
+.commonBox {
   border: 1px solid #ccc;
   padding: 10px;
   border-radius: 7px;
   margin-bottom: 20px;
+}
+.common-margin {
+  margin: 10px;
+}
+.common-margin-bottom {
+  margin-bottom: 10px;
 }
 
 .fade-enter-active, .fade-leave-active {
@@ -75,5 +96,27 @@ import { useCurrentUserStore } from "@/stores/currentUser";
 
 .black-first-letter::first-letter {
   color: #000000;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 12px;
+  -webkit-box-shadow: inset 0 0 6px rgb(0 0 0 / 10%);
+}
+
+::-webkit-scrollbar-thumb {
+  display: block;
+  min-height: 12px;
+  min-width: 6px;
+  border-radius: 8px;
+  background-color: #bbb;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  display: block;
+  min-height: 12px;
+  min-width: 6px;
+  border-radius: 6px;
+  background-color: rgb(159, 159, 159);
 }
 </style>

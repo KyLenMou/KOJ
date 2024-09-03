@@ -1,6 +1,6 @@
 <template>
   <div id="tagAdminView">
-    <div class="operationBox">
+    <div class="commonBox">
       <el-button type="primary" @click="newTagDialogVisible = true">New Tag</el-button>
 <!--      <el-button type="success" >New Tag</el-button>-->
 <!--      <el-button type="danger" >New Tag</el-button>-->
@@ -39,7 +39,7 @@ import { AdminTagControllerService, type Tag } from "@/api";
 import { ElMessage } from "element-plus";
 import { formatTimeColumn, getColumnNames } from "@/util";
 
-const tagList = ref<Tag[]>([])
+const tagList = ref<Tag[] | any>([])
 const newTagDialogVisible = ref(false)
 const newTagName = ref<string>('')
 const tagColumns = ref<string[]>([])
@@ -61,8 +61,8 @@ const doAddTag = async () => {
 }
 
 const doListTag = async () => {
-  const res = await AdminTagControllerService.listTagByPageUsingPost({current:1,pageSize:10})
-  tagList.value = res.data.records
+  const res = await AdminTagControllerService.listAllTagUsingGet()
+  tagList.value = res.data
   if (tagList.value) {
     tagColumns.value = getColumnNames(tagList.value[0])
   }

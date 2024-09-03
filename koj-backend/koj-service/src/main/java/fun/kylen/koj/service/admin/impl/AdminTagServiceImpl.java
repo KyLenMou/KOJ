@@ -11,6 +11,9 @@ import fun.kylen.koj.service.admin.AdminTagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
 * @author KyLen
 * @description 针对表【tag】的数据库操作Service实现
@@ -51,6 +54,11 @@ public class AdminTagServiceImpl extends ServiceImpl<TagMapper, Tag>
     @Override
     public Long addTag(Tag tag) {
         return adminTagManager.addTag(tag);
+    }
+
+    @Override
+    public List<Tag> listAllTag() {
+        return adminTagManager.listAllTag();
     }
 }
 

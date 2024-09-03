@@ -5,8 +5,7 @@
 import type { Problem } from './Problem';
 import type { ProblemCase } from './ProblemCase';
 import type { Tag } from './Tag';
-export type ProblemAddDTO = {
-    isFileUpload?: boolean;
+export type ProblemDTO = {
     problem?: Problem;
     tags?: Array<Tag>;
     testCases?: Array<ProblemCase>;

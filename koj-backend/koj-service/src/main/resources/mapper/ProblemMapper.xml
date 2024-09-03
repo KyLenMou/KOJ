@@ -36,8 +36,6 @@
             <result property="isGroup" column="is_group" jdbcType="TINYINT"/>
             <result property="groupId" column="group_id" jdbcType="BIGINT"/>
             <result property="isPublic" column="is_public" jdbcType="INTEGER"/>
-            <result property="inFileName" column="in_file_name" jdbcType="VARCHAR"/>
-            <result property="outFileName" column="out_file_name" jdbcType="VARCHAR"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
@@ -53,7 +51,6 @@
         spj_code,spj_language,is_remove_end_blank,
         open_case_result,is_upload_case,case_version,
         modified_user_id,is_group,group_id,
-        is_public,in_file_name,out_file_name,
-        create_time,update_time
+        is_public,create_time,update_time
     </sql>
 </mapper>

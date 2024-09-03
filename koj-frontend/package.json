@@ -18,6 +18,7 @@
     "axios": "^1.7.3",
     "element-plus": "^2.7.8",
     "loaders.css": "^0.1.2",
+    "mavon-editor": "^3.0.1",
     "monaco-editor": "^0.50.0",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",

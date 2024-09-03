@@ -12,6 +12,16 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  css: {
+    preprocessorOptions: {
+      scss: {
+        // 自动导入定制化样式文件进行样式覆盖
+        additionalData: `
+            @use "@/styles/element/index.scss" as *;
+          `,
+      }
+    }
+  },
   plugins: [
     vue(),
     vueJsx(),
@@ -25,7 +35,8 @@ export default defineConfig({
     Components({
       // 导入存放的位置
       dts: 'src/types/components.d.ts',
-      resolvers: [ElementPlusResolver()],
+      resolvers: [ElementPlusResolver({ importStyle: 'sass' })],
+
     }),
   ],
   resolve: {
@@ -34,7 +45,8 @@ export default defineConfig({
     }
   },
   server:{
-    // host: '0.0.0.0',
+    // host: '127.0.0.1',
+    host: '0.0.0.0',
     proxy: {
       '/api': {
         target: 'http://127.0.0.1:8090',
@@ -42,5 +54,5 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/api/, '')
       }
     }
-  }
+  },
 })

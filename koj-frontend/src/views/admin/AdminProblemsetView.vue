@@ -1,6 +1,6 @@
 <template>
   <div id="problemsetAdminView">
-    <div class="operationBox">
+    <div class="commonBox">
       <el-button type="primary" @click="goToAddProblem">Add Problem</el-button>
     </div>
     <common-table/>

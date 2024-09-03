@@ -1,9 +1,8 @@
 package fun.kylen.koj.controller.admin;
 
 import fun.kylen.koj.common.R;
-import fun.kylen.koj.model.dto.ProblemAddDTO;
+import fun.kylen.koj.model.dto.ProblemDTO;
 import fun.kylen.koj.service.admin.AdminProblemService;
-import fun.kylen.koj.service.oj.ProblemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,8 +22,8 @@ public class AdminProblemController {
     @Autowired
     private AdminProblemService adminProblemService;
     @PostMapping
-    public R<Void> addProblem(@Validated @RequestBody ProblemAddDTO problemAddDTO) {
-        adminProblemService.addProblem(problemAddDTO);
+    public R<Void> saveProblem(@Validated @RequestBody ProblemDTO problemDTO) {
+        adminProblemService.saveProblem(problemDTO);
         return R.ok();
     }
 }

@@ -10,6 +10,8 @@ import fun.kylen.koj.service.admin.AdminTagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @Author: KyLen
  * @Date: 2024/8/25 21:37
@@ -45,6 +47,10 @@ public class AdminTagController {
     @PostMapping("/list")
     public R<Page<Tag>> listTagByPage(@RequestBody PageDTO pageDTO) {
         return R.ok(adminTagService.listTagByPage(pageDTO));
+    }
+    @GetMapping("/list")
+    public R<List<Tag>> listAllTag() {
+        return R.ok(adminTagService.listAllTag());
     }
 
 

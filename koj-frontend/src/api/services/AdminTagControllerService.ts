@@ -4,6 +4,7 @@
 /* eslint-disable */
 import type { PageDTO } from '../models/PageDTO';
 import type { R_boolean_ } from '../models/R_boolean_';
+import type { R_List_Tag_ } from '../models/R_List_Tag_';
 import type { R_long_ } from '../models/R_long_';
 import type { R_Page_Tag_ } from '../models/R_Page_Tag_';
 import type { R_Tag_ } from '../models/R_Tag_';
@@ -94,6 +95,22 @@ export class AdminTagControllerService {
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
+            },
+        });
+    }
+    /**
+     * listAllTag
+     * @returns R_List_Tag_ OK
+     * @throws ApiError
+     */
+    public static listAllTagUsingGet(): CancelablePromise<R_List_Tag_> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/admin/tag/list',
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
             },
         });
     }

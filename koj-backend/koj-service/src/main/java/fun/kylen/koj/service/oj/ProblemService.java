@@ -1,11 +1,9 @@
 package fun.kylen.koj.service.oj;
 
-import fun.kylen.koj.domain.Problem;
-import com.baomidou.mybatisplus.extension.service.IService;
-import fun.kylen.koj.model.dto.ProblemAddDTO;
+import fun.kylen.koj.model.dto.ProblemDTO;
 
 public interface ProblemService {
 
-    void addProblem(ProblemAddDTO problemAddDTO);
+    void addProblem(ProblemDTO problemDTO);
 
 }

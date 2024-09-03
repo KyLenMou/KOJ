@@ -47,7 +47,7 @@ axios.interceptors.response.use(
     return res;
   },
   function (error) {
-    ElMessage.error(error.message)
+    ElMessage.error("服务器错误，请联系管理员")
     return Promise.reject(error);
   }
 );

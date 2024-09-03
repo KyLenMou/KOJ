@@ -25,7 +25,7 @@ public class Problem implements Serializable {
     private Long id;
 
     /**
-     * 问题的自定义ID 例如（HOJ-1000）
+     * 问题的自定义ID
      */
     @NotEmpty(message = "问题的自定义ID不能为空")
     private String problemId;
@@ -74,11 +74,13 @@ public class Problem implements Serializable {
     /**
      * 输入描述
      */
+    @NotEmpty(message = "输入描述不能为空")
     private String input;
 
     /**
      * 输出描述
      */
+    @NotEmpty(message = "输出描述不能为空")
     private String output;
 
     /**
@@ -99,16 +101,18 @@ public class Problem implements Serializable {
     /**
      * 是否为vj判题
      */
-    private Integer isRemote;
+    private Boolean isRemote;
 
     /**
      * 题目难度对标codeforces
      */
+    @NotNull(message = "题目难度不能为空")
     private Integer difficulty;
 
     /**
      * 默认为1公开，2为私有，3为比赛题目
      */
+    @NotNull(message = "题目是否公开不能为空")
     private Integer auth;
 
     /**
@@ -124,11 +128,13 @@ public class Problem implements Serializable {
     /**
      * 该题目对应的相关提交代码，用户是否可用分享
      */
-    private Integer codeShare;
+    @NotNull(message = "是否允许分享代码不能为空")
+    private Boolean codeShare;
 
     /**
      * 题目评测模式：default、spj、interactive
      */
+    @NotEmpty(message = "评测模式不能为空")
     private String judgeMode;
 
     /**
@@ -144,17 +150,20 @@ public class Problem implements Serializable {
     /**
      * 是否默认去除用户代码的文末空格
      */
-    private Integer isRemoveEndBlank;
+    @NotNull(message = "是否去除文末空格不能为空")
+    private Boolean isRemoveEndBlank;
 
     /**
      * 是否默认开启该题目的测试样例结果查看
      */
-    private Integer openCaseResult;
+    @NotNull(message = "是否开启测试样例结果查看不能为空")
+    private Boolean openCaseResult;
 
     /**
      * 题目测试数据是否是上传文件的
      */
-    private Integer isUploadCase;
+    @NotNull(message = "是否上传测试数据不能为空")
+    private Boolean isUploadCase;
 
     /**
      * 题目测试数据的版本号
@@ -169,7 +178,8 @@ public class Problem implements Serializable {
     /**
      * 是否是团队题目
      */
-    private Integer isGroup;
+    @NotNull(message = "是否是团队题目不能为空")
+    private Boolean isGroup;
 
     /**
      * 团队题目的团队id
@@ -179,17 +189,8 @@ public class Problem implements Serializable {
     /**
      * 公开题目为1，团队题目为0，审批中为2，申请拒绝为-1
      */
+    @NotNull(message = "是公开题目还是团队题目不能为空")
     private Integer isPublic;
-
-    /**
-     * 题目指定的file io输入文件的名称
-     */
-    private String inFileName;
-
-    /**
-     * 题目指定的file io输出文件的名称
-     */
-    private String outFileName;
 
     /**
      * 创建时间
@@ -247,8 +248,6 @@ public class Problem implements Serializable {
             && (this.getIsGroup() == null ? other.getIsGroup() == null : this.getIsGroup().equals(other.getIsGroup()))
             && (this.getGroupId() == null ? other.getGroupId() == null : this.getGroupId().equals(other.getGroupId()))
             && (this.getIsPublic() == null ? other.getIsPublic() == null : this.getIsPublic().equals(other.getIsPublic()))
-            && (this.getInFileName() == null ? other.getInFileName() == null : this.getInFileName().equals(other.getInFileName()))
-            && (this.getOutFileName() == null ? other.getOutFileName() == null : this.getOutFileName().equals(other.getOutFileName()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
             && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()));
     }
@@ -288,8 +287,6 @@ public class Problem implements Serializable {
         result = prime * result + ((getIsGroup() == null) ? 0 : getIsGroup().hashCode());
         result = prime * result + ((getGroupId() == null) ? 0 : getGroupId().hashCode());
         result = prime * result + ((getIsPublic() == null) ? 0 : getIsPublic().hashCode());
-        result = prime * result + ((getInFileName() == null) ? 0 : getInFileName().hashCode());
-        result = prime * result + ((getOutFileName() == null) ? 0 : getOutFileName().hashCode());
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
         return result;
@@ -332,8 +329,6 @@ public class Problem implements Serializable {
         sb.append(", isGroup=").append(isGroup);
         sb.append(", groupId=").append(groupId);
         sb.append(", isPublic=").append(isPublic);
-        sb.append(", inFileName=").append(inFileName);
-        sb.append(", outFileName=").append(outFileName);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);

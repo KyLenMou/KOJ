@@ -12,6 +12,7 @@ import fun.kylen.koj.model.vo.TagVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -64,5 +65,9 @@ public class AdminTagManager {
         } else {
             throw new BusinessException(ResultEnum.FAIL, "标签名字不能为空");
         }
+    }
+
+    public List<Tag> listAllTag() {
+        return tagEntityService.list();
     }
 }

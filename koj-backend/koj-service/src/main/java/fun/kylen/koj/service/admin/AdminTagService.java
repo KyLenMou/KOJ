@@ -6,6 +6,8 @@ import fun.kylen.koj.domain.Tag;
 import fun.kylen.koj.model.dto.PageDTO;
 import fun.kylen.koj.model.vo.TagVO;
 
+import java.util.List;
+
 /**
 * @author KyLen
 * @description 针对表【tag】的数据库操作Service
@@ -24,4 +26,7 @@ public interface AdminTagService extends IService<Tag> {
     Boolean deleteTag(Long id);
 
     Long addTag(Tag tag);
+
+    List<Tag> listAllTag();
+
 }

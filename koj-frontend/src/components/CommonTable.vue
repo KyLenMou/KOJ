@@ -26,8 +26,8 @@
 import { defineProps, withDefaults } from "vue";
 
 interface Props {
-  tableHead: string;
-  tableData: any[];
+  tableHead?: string;
+  tableData?: any[];
 }
 
 const p = withDefaults(defineProps<Props>(), {
