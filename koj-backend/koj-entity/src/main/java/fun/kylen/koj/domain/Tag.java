@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -25,6 +26,7 @@ public class Tag implements Serializable {
     /**
      * 标签名字
      */
+    @NotEmpty(message = "标签名字不能为空")
     private String tagName;
 
     /**
