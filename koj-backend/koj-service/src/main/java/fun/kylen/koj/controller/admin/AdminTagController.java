@@ -8,8 +8,10 @@ import fun.kylen.koj.domain.Tag;
 import fun.kylen.koj.model.dto.PageDTO;
 import fun.kylen.koj.service.admin.AdminTagService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -20,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin/tag")
 @SaCheckRole(value = {"root", "admin"}, mode = SaMode.OR)
+@Validated
 public class AdminTagController {
     @Autowired
     private AdminTagService adminTagService;
@@ -35,7 +38,7 @@ public class AdminTagController {
     }
 
     @PutMapping
-    public R<Boolean> updateTag(@RequestBody Tag tag) {
+    public R<Boolean> updateTag(@RequestBody @Validated Tag tag) {
         return R.ok(adminTagService.updateTag(tag));
     }
 

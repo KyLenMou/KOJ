@@ -46,6 +46,11 @@ public class AdminTagManager {
     }
 
     public Boolean updateTag(Tag tag) {
+        String tagName = tag.getTagName();
+        Long count = tagEntityService.lambdaQuery().eq(Tag::getTagName, tagName).count();
+        if (count > 0) {
+            throw new BusinessException(ResultEnum.FAIL, "标签名字已存在");
+        }
         return tagEntityService.updateById(tag);
     }
 
