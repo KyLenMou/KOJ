@@ -75,6 +75,10 @@ const handleCurrentChange = async (val: number) => {
 onMounted(async () => {
   await getProblemList();
 });
+
+const goToProblem = (problemId: number) => {
+  router.push(`/problem/${problemId}`);
+};
 </script>
 
 <style scoped>

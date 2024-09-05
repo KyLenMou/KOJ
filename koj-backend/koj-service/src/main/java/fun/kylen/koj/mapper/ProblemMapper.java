@@ -3,6 +3,7 @@ package fun.kylen.koj.mapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import fun.kylen.koj.domain.Problem;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import fun.kylen.koj.model.vo.ProblemInfoVO;
 import fun.kylen.koj.model.vo.ProblemVO;
 import fun.kylen.koj.model.vo.ProblemsetVO;
 
@@ -17,6 +18,8 @@ public interface ProblemMapper extends BaseMapper<Problem> {
     Page<ProblemsetVO> listProblemsetVOByPage(Page<ProblemsetVO> page);
 
     Page<ProblemVO> listProblemVOByPage(Page<ProblemVO> page);
+
+    ProblemInfoVO getProblemDetail(String problemId);
 
 }
 

@@ -13,6 +13,7 @@ import UserHomeView from "@/views/UserHomeView.vue";
 import ProblemsetAdminView from "@/views/admin/AdminProblemsetView.vue";
 import ProblemAdminView from "@/views/admin/AdminProblemView.vue";
 import TagAdminView from "@/views/admin/AdminTagView.vue";
+import ProblemView from "@/views/oj/ProblemView.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   /**
@@ -151,4 +152,12 @@ export const routes: Array<RouteRecordRaw> = [
       isVisible: false
     }
   },
+  {
+    path: '/problem/:problemId',
+    name: 'problem-detail',
+    component: ProblemView,
+    meta: {
+      isVisible: false
+    }
+  }
 ];
