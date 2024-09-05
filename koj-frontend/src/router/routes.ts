@@ -1,7 +1,7 @@
 import type { RouteRecordRaw } from "vue-router";
 import HomeView from "@/views/HomeView.vue";
 import CodeView from "@/views/CodeView.vue";
-import ProblemsetView from "@/views/ProblemsetView.vue";
+import ProblemsetView from "@/views/oj/ProblemsetView.vue";
 import ContestsView from "@/views/ContestsView.vue";
 import UserLoginView from "@/views/passport/UserLoginView.vue";
 import UserRegisterView from "@/views/passport/UserRegisterView.vue";

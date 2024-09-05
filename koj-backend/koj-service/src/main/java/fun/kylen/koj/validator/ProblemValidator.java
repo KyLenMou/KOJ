@@ -26,8 +26,9 @@ public class ProblemValidator {
         Problem problem = problemDTO.getProblem();
         List<ProblemCase> testCases = problemDTO.getTestCases();
         String uploadTestcaseDir = problemDTO.getUploadTestcaseDir();
+        // todo spj和interactive判断
         if (problem.getIsUploadCase()) {
-            commonValidator.validateNotNull(uploadTestcaseDir, "测试用例");
+            commonValidator.validateNotEmpty(uploadTestcaseDir, "测试用例");
         } else {
             commonValidator.validateNotEmpty(testCases, "测试用例");
             testCases.forEach(t -> {

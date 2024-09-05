@@ -1,6 +1,7 @@
 package fun.kylen.koj.manager.admin;
 
 import cn.dev33.satoken.stp.StpUtil;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import fun.kylen.koj.common.BusinessException;
 import fun.kylen.koj.common.ResultEnum;
 import fun.kylen.koj.constant.StpConstant;
@@ -8,7 +9,9 @@ import fun.kylen.koj.dao.ProblemCaseEntityService;
 import fun.kylen.koj.dao.ProblemEntityService;
 import fun.kylen.koj.dao.ProblemTagEntityService;
 import fun.kylen.koj.domain.*;
+import fun.kylen.koj.model.dto.PageDTO;
 import fun.kylen.koj.model.dto.ProblemDTO;
+import fun.kylen.koj.model.vo.ProblemVO;
 import fun.kylen.koj.model.vo.UserInfoVO;
 import fun.kylen.koj.validator.ProblemValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,5 +73,9 @@ public class AdminProblemManager {
         }).collect(Collectors.toList());
         // 保存
         problemTagEntityService.saveBatch(problemTagList);
+    }
+
+    public Page<ProblemVO> listProblemVOByPage(PageDTO pageDTO) {
+        return problemEntityService.listProblemVOByPage(new Page<>(pageDTO.getCurrent(), pageDTO.getPageSize()));
     }
 }

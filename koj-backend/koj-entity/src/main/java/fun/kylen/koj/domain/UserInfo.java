@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -128,11 +130,6 @@ public class UserInfo implements Serializable {
      * 修改时间
      */
     private Date updateTime;
-
-    /**
-     * 0未删除，1已删除
-     */
-    private Integer deleted;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
@@ -459,20 +456,6 @@ public class UserInfo implements Serializable {
         this.updateTime = updateTime;
     }
 
-    /**
-     * 0未删除，1已删除
-     */
-    public Integer getDeleted() {
-        return deleted;
-    }
-
-    /**
-     * 0未删除，1已删除
-     */
-    public void setDeleted(Integer deleted) {
-        this.deleted = deleted;
-    }
-
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -507,8 +490,7 @@ public class UserInfo implements Serializable {
             && (this.getIsBanned() == null ? other.getIsBanned() == null : this.getIsBanned().equals(other.getIsBanned()))
             && (this.getUserRole() == null ? other.getUserRole() == null : this.getUserRole().equals(other.getUserRole()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
-            && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
-            && (this.getDeleted() == null ? other.getDeleted() == null : this.getDeleted().equals(other.getDeleted()));
+            && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()));
     }
 
     @Override
@@ -538,7 +520,6 @@ public class UserInfo implements Serializable {
         result = prime * result + ((getUserRole() == null) ? 0 : getUserRole().hashCode());
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
-        result = prime * result + ((getDeleted() == null) ? 0 : getDeleted().hashCode());
         return result;
     }
 
@@ -571,7 +552,6 @@ public class UserInfo implements Serializable {
         sb.append(", userRole=").append(userRole);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
-        sb.append(", deleted=").append(deleted);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

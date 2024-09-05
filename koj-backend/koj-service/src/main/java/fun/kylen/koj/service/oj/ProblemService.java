@@ -1,9 +1,10 @@
 package fun.kylen.koj.service.oj;
 
-import fun.kylen.koj.model.dto.ProblemDTO;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import fun.kylen.koj.model.dto.PageDTO;
+import fun.kylen.koj.model.vo.ProblemsetVO;
 
 public interface ProblemService {
 
-    void addProblem(ProblemDTO problemDTO);
-
+    Page<ProblemsetVO> listProblemsetVOByPage(PageDTO pageDTO);
 }

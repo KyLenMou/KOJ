@@ -28,7 +28,6 @@
             <result property="userRole" column="user_role" jdbcType="VARCHAR"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
-            <result property="deleted" column="deleted" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -39,6 +38,6 @@
         blog_url,cf_username,leetcode_username,
         nowcoder_id,signature,title_name,
         title_color,is_banned,user_role,
-        create_time,update_time,deleted
+        create_time,update_time
     </sql>
 </mapper>

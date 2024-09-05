@@ -15,6 +15,7 @@
           color: '#000',
           padding: '5px',
         }"
+        v-loading="p.isLoading"
       >
         <slot name="tableContent"></slot>
       </el-table>
@@ -28,11 +29,13 @@ import { defineProps, withDefaults } from "vue";
 interface Props {
   tableHead?: string;
   tableData?: any[];
+  isLoading?: boolean
 }
 
 const p = withDefaults(defineProps<Props>(), {
   tableHead: () => 'Table',
   tableData: () => [],
+  isLoading: () => false
 });
 
 </script>

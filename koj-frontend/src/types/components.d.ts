@@ -27,6 +27,7 @@ declare module 'vue' {
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElOption: typeof import('element-plus/es')['ElOption']
+    ElPagination: typeof import('element-plus/es')['ElPagination']
     ElPopconfirm: typeof import('element-plus/es')['ElPopconfirm']
     ElPopover: typeof import('element-plus/es')['ElPopover']
     ElRow: typeof import('element-plus/es')['ElRow']
@@ -40,15 +41,11 @@ declare module 'vue' {
     HomeFooterComponent: typeof import('./../components/HomeFooterComponent.vue')['default']
     HomeHeaderComponent: typeof import('./../components/HomeHeaderComponent.vue')['default']
     MdEditor: typeof import('./../components/MdEditor.vue')['default']
-    MdEditorComponent: typeof import('../components/MdEditor.vue')['default']
     MdPreview: typeof import('./../components/MdPreview.vue')['default']
-    MdPreviewComponent: typeof import('../components/MdPreview.vue')['default']
     MenuComponent: typeof import('./../components/MenuComponent.vue')['default']
     NavBarComponent: typeof import('./../components/NavBarComponent.vue')['default']
-    OperationBox: typeof import('./../components/OperationBox.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    SubNavBarComponent: typeof import('./../components/SubNavBarComponent.vue')['default']
     UserCard: typeof import('./../components/UserCard.vue')['default']
   }
   export interface ComponentCustomProperties {
