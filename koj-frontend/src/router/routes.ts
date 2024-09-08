@@ -13,11 +13,14 @@ import UserHomeView from "@/views/UserHomeView.vue";
 import ProblemsetAdminView from "@/views/admin/AdminProblemsetView.vue";
 import ProblemAdminView from "@/views/admin/AdminProblemView.vue";
 import TagAdminView from "@/views/admin/AdminTagView.vue";
-import ProblemView from "@/views/oj/ProblemView.vue";
+import ProblemView from "@/views/oj/problem/ProblemView.vue";
+import ProblemDetailView from "@/views/oj/problem/ProblemDetailView.vue";
+import ProblemSubmitView from "@/views/oj/problem/ProblemSubmitView.vue";
+import ProblemSubmissionView from "@/views/oj/problem/ProblemSubmissionView.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   /**
-   * Admin routes
+   * Admin routes 0
    */
   {
     path: '/admin',
@@ -32,7 +35,8 @@ export const routes: Array<RouteRecordRaw> = [
         name: 'admin-problemset',
         component: ProblemsetAdminView,
         meta: {
-          isVisible: true
+          isVisible: true,
+          menuName: 'Problemset',
         },
       },
       {
@@ -40,7 +44,8 @@ export const routes: Array<RouteRecordRaw> = [
         name: 'admin-problem',
         component: ProblemAdminView,
         meta: {
-          isVisible: false
+          isVisible: false,
+          menuName: 'Problem',
         },
       },
       {
@@ -48,8 +53,50 @@ export const routes: Array<RouteRecordRaw> = [
         name: 'admin-tag',
         component: TagAdminView,
         meta: {
-          isVisible: true
+          isVisible: true,
+          menuName: 'Tag',
         },
+      },
+    ]
+  },
+  /**
+   * Problem routes 1
+   */
+  {
+    path: '/problem/:problemId',
+    name: 'problem',
+    component: ProblemView,
+    meta: {
+      isVisible: false
+    },
+    children: [
+      {
+        path: '',
+        name: 'problem-detail',
+        component: ProblemDetailView,
+        meta: {
+          isVisible: true,
+          menuName: 'Problem',
+        }
+      },
+      {
+        path: 'submit',
+        name: 'problem-submit',
+        component: ProblemSubmitView,
+        meta: {
+          isVisible: true,
+          menuName: 'Submit',
+        }
+        // todo add more children
+      },
+      {
+        path: 'submission',
+        name: 'problem-submission',
+        component: ProblemSubmissionView,
+        meta: {
+          isVisible: true,
+          menuName: 'Submission',
+        }
       },
     ]
   },
@@ -128,7 +175,14 @@ export const routes: Array<RouteRecordRaw> = [
     }
   },
   {
-    // 404 page
+    path: '/oauth/github',
+    name: 'oauth-github',
+    component: OAuthGithubView,
+    meta: {
+      isVisible: false
+    }
+  },
+  {
     path: '/404',
     name: '404',
     component: NotFoundView,
@@ -144,20 +198,4 @@ export const routes: Array<RouteRecordRaw> = [
       isVisible: false
     }
   },
-  {
-    path: '/oauth/github',
-    name: 'oauth-github',
-    component: OAuthGithubView,
-    meta: {
-      isVisible: false
-    }
-  },
-  {
-    path: '/problem/:problemId',
-    name: 'problem-detail',
-    component: ProblemView,
-    meta: {
-      isVisible: false
-    }
-  }
 ];

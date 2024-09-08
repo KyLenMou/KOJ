@@ -36,7 +36,7 @@ const p = withDefaults(defineProps<CommonCardProps>(),{
 }
 
 :deep(.el-card__body) {
-  padding: 0;
+  padding: 10px;
 }
 
 :deep(.el-card) {

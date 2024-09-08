@@ -1,16 +1,21 @@
 <template>
-  <div id="adminView">
-    <menu-component :selected-index="selectedIndex" :menu-list="menuList" />
-    <router-view />
+  <div id="problemView">
+    <div v-if="!isFullScreen">
+      <menu-component :menu-list="menuList" :selected-index="selectedIndex"/>
+      <router-view/>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 import { routes } from "@/router/routes";
 import type { RouteRecordRaw } from "vue-router";
+const isFullScreen = ref(false);
 const router = useRouter();
+
 const updateMenuItems = () => {
-  menuList.value = routes[0].children?.filter(r => r.meta?.isVisible) as RouteRecordRaw[];
+  menuList.value = routes[1].children?.filter(r => r.meta?.isVisible) as RouteRecordRaw[];
 }
 onMounted(() => {
   updateMenuItems();
@@ -24,7 +29,7 @@ const selectedIndex = ref(0);
 </script>
 
 <style scoped>
-#adminView {
-
+#problemView {
 }
+
 </style>

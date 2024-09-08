@@ -1,7 +1,7 @@
 <template>
   <div id="mdPreview">
     <mavon-editor
-      style="max-height: 500px"
+      style="min-height: 0;"
       :default-open="'preview'"
       v-model="localValue"
       :language="language"
@@ -10,7 +10,7 @@
       :toolbars-flag="false"
       :ishljs="true"
       box-shadow-style="0 0 0 0 rgba(0,0,0,0)"
-      font-size="10px"
+      preview-background="transparent"
     />
   </div>
 </template>
@@ -43,5 +43,8 @@ watch(() => localValue.value, (newVal) => {
 <style scoped>
 #mdPreview {
 
+}
+:deep(.v-note-wrapper .v-note-panel .v-note-show .v-show-content, .v-note-wrapper .v-note-panel .v-note-show .v-show-content-html) {
+  padding: 10px;
 }
 </style>

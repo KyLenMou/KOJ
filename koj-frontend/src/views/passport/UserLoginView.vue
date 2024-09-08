@@ -20,6 +20,8 @@
             </el-checkbox>
           </el-form-item>
           <el-form-item label=" ">
+
+            <!--todo 限制点击，防止疯狂点-->
             <el-button @click="doLogin" type="primary">Login</el-button>
             <el-button type="primary" link style="margin-left: auto">Forgot your password?
             </el-button>

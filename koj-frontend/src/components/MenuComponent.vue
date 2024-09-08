@@ -9,7 +9,7 @@
           @mouseover="move($event)"
           @mouseout="reset"
           @click="moveTo(index, $event)">
-        <a>{{ item.replace(/^admin-/, '') }}</a>
+        <a>{{ item.meta?.menuName }}</a>
       </li>
     </ul>
   </div>
@@ -17,9 +17,10 @@
 
 <script setup lang="ts">
 import { defineProps, ref, toRaw, withDefaults } from "vue";
+import type { RouteRecordRaw } from "vue-router";
 
 interface Props {
-  menuList: string[];
+  menuList: RouteRecordRaw[];
   selectedIndex: number;
 }
 
@@ -27,6 +28,7 @@ const p = withDefaults(defineProps<Props>(), {
   menuList: () => [] ,
   selectedIndex: () => 0,
 });
+
 
 const router = useRouter();
 
@@ -45,7 +47,6 @@ onMounted(async () => {
     const menuElement = menuElements[p.selectedIndex] as HTMLElement;
     left.value = menuElement.offsetLeft;
     width.value = menuElement.offsetWidth;
-    console.log(left.value, width.value);
   }
 });
 
@@ -64,7 +65,7 @@ const move = (event:MouseEvent) => {
 const moveTo = async (index:number, event:MouseEvent) => {
   const liElement = (event.target as HTMLElement).closest('a');
   if (!liElement) return;
-  await router.push({ name: p.menuList[index] });
+  await router.push({ name: p.menuList[index].name });
   leftOffset.value = left.value - liElement.offsetLeft;
   widthOffset.value = width.value - liElement.offsetWidth;
   left.value -= leftOffset.value;

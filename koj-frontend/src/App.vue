@@ -29,11 +29,25 @@ import { useCurrentUserStore } from "@/stores/currentUser";
   height: 100vh; /* 设置 #app 的高度为视口的高度 */
   display: flex; /* 使用 Flexbox 布局 */
   flex-direction: column; /* 设置 Flex items 沿着垂直方向排列 */
-  padding-top: 0.5em;
   max-width: 1200px;
   min-width: 920px;
   margin: 0 auto;
 }
+
+h1 {
+  font-weight: normal;
+  margin: 10px;
+}
+
+h2 {
+  font-weight: normal;
+  margin: 10px;
+}
+
+h3 {
+  margin: 5px;
+}
+
 .el-select {
   min-width: 100px;
 }
