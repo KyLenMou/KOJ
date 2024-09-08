@@ -1,6 +1,6 @@
 <template>
   <div id="problemView">
-    <div v-if="!isFullScreen">
+    <div>
       <el-row :gutter="20">
         <el-col :span="18" style="display: flex; flex-direction: column">
           <div style="text-align: center">
@@ -41,16 +41,24 @@
         </el-col>
       </el-row>
     </div>
-    <div v-else class="full-screen">
-<!--     todo 全屏dialog-->
-      <div style="height: 65px; border-bottom: 1px solid #999999;" class="space-between">
-        <el-image
-          style="height: 100%;margin-left: 10px"
-          :src="getImg()"/>
-        <el-button type="success" @click="isFullScreen = false" style="margin-right: 20px">Exit Full Screen</el-button>
-      </div>
-      <el-row style="height: calc(100vh - 70px);">
-        <el-col :span="12" style="height: calc(100vh - 70px);overflow:auto;padding: 10px;">
+    <el-dialog
+      v-model="isFullScreen"
+      style="width: 100vw; height: 100vh;padding: 0"
+      :show-close="false"
+      align-center
+    >
+      <template #header="{close, titleId}">
+        <div style="height: 65px; border-bottom: 1px solid #999999;" class="space-between">
+          <el-image
+            :id="titleId"
+            style="height: 100%;margin-left: 10px"
+            :src="getImg()"/>
+          <el-button type="success" @click="close" style="margin-right: 20px">Exit Full Screen</el-button>
+        </div>
+      </template>
+      <el-row>
+        <!--65+1px，要算上border-->
+        <el-col :span="12" style="height: calc(100vh - 66px);overflow: auto;padding: 10px;">
           <div style="text-align: center">
             <h2>{{ problem.problemId }}. {{ problem.title }}</h2>
             <div>TimeLimit: {{ problem.timeLimit }} ms</div>
@@ -72,7 +80,7 @@
           <code-editor/>
         </el-col>
       </el-row>
-    </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -84,7 +92,7 @@ const isFullScreen = ref(false);
 const route = useRoute();
 
 function getImg() {
-  return new URL(`../../assets/logo.png`, import.meta.url).href;
+  return new URL(`../../../assets/logo.png`, import.meta.url).href;
 }
 
 const problem = ref<ProblemInfoVO | any>({
@@ -120,7 +128,9 @@ onMounted(async () => {
 <style scoped>
 #problemView {
 }
-
+:deep(.el-dialog__header) {
+  padding-bottom: 0;
+}
 .full-screen {
   position: absolute;
   background-color: white;
