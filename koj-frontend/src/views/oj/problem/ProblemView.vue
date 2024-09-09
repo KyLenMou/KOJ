@@ -1,5 +1,5 @@
 <template>
-  <div id="problemView">
+  <div id="problemSubmitView">
     <div v-if="!isFullScreen">
       <menu-component :menu-list="menuList" :selected-index="selectedIndex"/>
       <router-view/>
@@ -29,7 +29,7 @@ const selectedIndex = ref(0);
 </script>
 
 <style scoped>
-#problemView {
+#problemSubmitView {
 }
 
 </style>

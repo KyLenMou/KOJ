@@ -34,6 +34,12 @@ import { useCurrentUserStore } from "@/stores/currentUser";
   margin: 0 auto;
 }
 
+.common-font {
+  font-family: verdana, arial, sans-serif;
+  font-size: 1.1em;
+  font-weight: bolder;
+}
+
 h1 {
   font-weight: normal;
   margin: 10px;

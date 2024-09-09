@@ -1,5 +1,5 @@
 <template>
-  <div id="problemView">
+  <div id="problemSubmitView">
     <div v-if="!isFullScreen">
       <el-row :gutter="20">
         <el-col :span="18" style="display: flex; flex-direction: column">
@@ -121,7 +121,7 @@ const str = ref("#123\n- 123\n - 321")
 </script>
 
 <style scoped>
-#problemView {
+#problemSubmitView {
 }
 
 .full-screen {

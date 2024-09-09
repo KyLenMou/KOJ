@@ -2,7 +2,7 @@
   <div
     id="code-editor"
     ref="codeEditorRef"
-    style="height: 100%"
+    style="min-height: 400px;height: 100%;width: 100%"
   />
 </template>
 
@@ -17,6 +17,7 @@ interface Props {
   value: string;
   language?: string;
   handleChange: (v: string) => void;
+  onlyShow?: boolean;
 }
 
 /**
@@ -28,6 +29,7 @@ const props = withDefaults(defineProps<Props>(), {
   handleChange: (v: string) => {
     console.log(toRaw(v));
   },
+  onlyShow: false,
 });
 
 const codeEditorRef = ref();
@@ -57,11 +59,10 @@ onMounted(() => {
     automaticLayout: true,
     colorDecorators: true,
     minimap: {
-      enabled: true,
+      enabled: !props.onlyShow,
     },
     readOnly: false,
     theme: "vs",
-    lineNumbers: "off",
     roundedSelection: false,
     scrollBeyondLastLine: false,
   });

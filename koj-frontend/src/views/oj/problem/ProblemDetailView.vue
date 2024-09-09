@@ -1,5 +1,5 @@
 <template>
-  <div id="problemView">
+  <div id="problemSubmitView">
     <div>
       <el-row :gutter="20">
         <el-col :span="18" style="display: flex; flex-direction: column">
@@ -30,7 +30,7 @@
               <el-tag>*{{ problem.difficulty }}</el-tag>
             </template>
           </common-card>
-          <common-card head="Last Submissions">
+          <common-card head="My Submissions">
             <template #content>
               <el-tag v-for="tag in problem.tags" :key="tag.id" type="info" style="margin-right: 5px">{{ tag.tagName
                                                                                                       }}
@@ -76,6 +76,7 @@
           <h3>Note</h3>
           <md-preview :model-value="problem.noteText"/>
         </el-col>
+        <!--todo 加上分界线-->
         <el-col :span="12">
           <code-editor/>
         </el-col>
@@ -126,7 +127,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-#problemView {
+#problemSubmitView {
 }
 :deep(.el-dialog__header) {
   padding-bottom: 0;
