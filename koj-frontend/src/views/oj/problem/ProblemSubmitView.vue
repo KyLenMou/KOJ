@@ -111,7 +111,7 @@ onMounted(async () => {
   const problemId = route.params.problemId as string;
   const res = await ProblemControllerService.getProblemDetailUsingGet(problemId);
   problem.value = res.data;
-  submission.value.problemId = problemId;
+  submission.value.problemId = problem.value.id;
   submission.value.problemDisplayId = problem.value.problemId;
 });
 

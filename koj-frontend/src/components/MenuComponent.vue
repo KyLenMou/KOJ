@@ -50,6 +50,19 @@ onMounted(async () => {
   }
 });
 
+// menu匹配当前路由
+router.afterEach((to, from, failure) => {
+  const index = p.menuList.findIndex(item => item.name === to.name);
+  if (index !== -1) {
+    const menuElements = document.querySelectorAll('li:not(.rightLava) a');
+    if (menuElements) {
+      const menuElement = menuElements[index] as HTMLElement;
+      left.value = menuElement.offsetLeft;
+      width.value = menuElement.offsetWidth;
+    }
+  }
+
+});
 
 // lava移动效果
 const move = (event:MouseEvent) => {
