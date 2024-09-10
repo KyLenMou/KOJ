@@ -1,15 +1,13 @@
 package fun.kylen.koj.controller.oj;
 
-import cn.dev33.satoken.annotation.SaCheckLogin;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import fun.kylen.koj.common.R;
-import fun.kylen.koj.domain.Submission;
-import fun.kylen.koj.model.dto.SubmissionDTO;
+import fun.kylen.koj.model.vo.SubmissionListVO;
 import fun.kylen.koj.service.oj.SubmissionService;
-import fun.kylen.koj.service.oj.SubmitService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -20,12 +18,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/submission")
 public class SubmissionController {
-    // @Autowired
-    // private SubmissionService submissionService;
-    //
-    // @PostMapping
-    // public R<Page<Submission>> listSubmissionByPage(SubmissionDTO submissionDTO) {
-    //     return R.ok(submissionService.listSubmissionByPage(submissionDTO));
-    // }
-
+    @Autowired
+    private SubmissionService submissionService;
+    @GetMapping
+    public R<Page<SubmissionListVO>> listSubmissionByPage(@RequestParam(value = "current",required = true) Long current,
+                                                          @RequestParam(value = "size",required = true) Long size,
+                                                          @RequestParam(value = "problemId",required = false) Long problemId,
+                                                          @RequestParam(value = "problemDisplayId",required = false) String problemDisplayId,
+                                                          @RequestParam(value = "userId",required = false) String userId,
+                                                          @RequestParam(value = "username",required = false) String username,
+                                                          @RequestParam(value = "language",required = false) String language) {
+        return R.ok(submissionService.listSubmissionByPage(current, size, problemId, problemDisplayId, userId, username, language));
+    }
 }

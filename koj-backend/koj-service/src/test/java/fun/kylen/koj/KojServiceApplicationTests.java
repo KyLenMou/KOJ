@@ -1,23 +1,32 @@
 package fun.kylen.koj;
 
+import fun.kylen.koj.constant.MqConstant;
 import fun.kylen.koj.utils.RedisUtil;
 import org.junit.jupiter.api.Test;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.concurrent.CompletableFuture;
 
 @SpringBootTest
 class KojServiceApplicationTests {
     @Autowired
     private RedisUtil redisUtil;
 
-    @Test
-    void contextLoads() throws InterruptedException {
-        // redisUtil.set("f","f2",21300);
-        String f = redisUtil.getStr("fffff");
-        System.out.println(f);
-        // Thread.sleep(3000);
-        // String f1 = redisUtil.getString("f");
-        // System.out.println(f1);
-    }
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
+    @Test
+    void mqTest() throws InterruptedException {
+        String[] strings = {"=","==","===","====","====="};
+        CompletableFuture.runAsync(() -> {
+            for (int i = 1; ; i = (i + 1) % 5) {
+                rabbitTemplate.convertAndSend(MqConstant.KOJ_EXCHANGE,MqConstant.JUDGE_ROUTE_KEY, "message1: " + strings[i]);
+            }
+        });
+        while (true) {
+
+        }
+    }
 }

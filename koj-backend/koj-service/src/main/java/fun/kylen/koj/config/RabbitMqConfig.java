@@ -1,0 +1,49 @@
+package fun.kylen.koj.config;
+
+import fun.kylen.koj.constant.MqConstant;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * @Author: KyLen
+ * @Date: 2024/9/10 17:13
+ * @Description:
+ */
+@Configuration
+public class RabbitMqConfig {
+    @Bean(MqConstant.KOJ_EXCHANGE)
+    public TopicExchange kojExchange() {
+        return new TopicExchange(MqConstant.KOJ_EXCHANGE,true,false);
+    }
+
+    @Bean(MqConstant.JUDGE_QUEUE)
+    public Queue kojJudgeQueue() {
+        Map<String, Object> args = new HashMap<>();
+        args.put("x-max-priority", 2);
+        // 比赛2 > 普通1
+        return new Queue(MqConstant.JUDGE_QUEUE,true,false,false, args);
+    }
+    @Bean(MqConstant.TEST_QUEUE)
+    public Queue kojTestQueue() {
+        return new Queue(MqConstant.TEST_QUEUE,true,false,false);
+    }
+
+    @Bean(MqConstant.JUDGE_BINDING)
+    public Binding kojJudgeBinding(@Qualifier(MqConstant.JUDGE_QUEUE) Queue kojJudgeQueue,
+                                @Qualifier(MqConstant.KOJ_EXCHANGE) TopicExchange kojExchange) {
+        return BindingBuilder.bind(kojJudgeQueue).to(kojExchange).with(MqConstant.JUDGE_ROUTE_KEY);
+    }
+    @Bean(MqConstant.TEST_BINDING)
+    public Binding kojTestBinding(@Qualifier(MqConstant.TEST_QUEUE) Queue kojTestQueue,
+                                @Qualifier(MqConstant.KOJ_EXCHANGE) TopicExchange kojExchange) {
+        return BindingBuilder.bind(kojTestQueue).to(kojExchange).with(MqConstant.TEST_ROUTE_KEY);
+    }
+}
