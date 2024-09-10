@@ -4,7 +4,7 @@ spring:
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
       url: jdbc:mysql://localhost:3306/koj
-      username: xxx
+      username: root
       password: 1234
       initialSize: 5
       maxActive: 20
@@ -33,7 +33,7 @@ spring:
         # 白名单，不填则允许所有访问
         allow: ""
         url-pattern: /druid/*
-        login-username: xxx
+        login-username: root
         login-password: 1234
       # 开启监控
       filter:

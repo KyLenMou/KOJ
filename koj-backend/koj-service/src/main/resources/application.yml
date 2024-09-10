@@ -12,7 +12,7 @@ spring:
     # Redis数据库索引（默认为0）
     database: 1
     # Redis服务器地址
-    host: xxx
+    host: 172.25.34.148
     # Redis服务器连接端口
     port: 6379
     # Redis服务器连接密码（默认为空）
@@ -29,11 +29,38 @@ spring:
         max-idle: 10
         # 连接池中的最小空闲连接
         min-idle: 0
-
+  rabbitmq:
+    host: xxx
+    username: root
+    password: 1234
+    # 能者多劳，防止能者空闲等待
+    listener:
+      simple:
+        prefetch: 1
+  # 邮箱配置
+  mail:
+    host: smtp.qq.com
+    #服务协议
+    protocol: smtp
+    # 编码集
+    default-encoding: UTF-8
+    #发送邮件的账户
+    username: kkkylen@qq.com
+    #授权码
+    password: xxx
+    test-connection: true
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
 # mybatis plus配置
 mybatis-plus:
   configuration:
-    map-underscore-to-camel-case: false
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     db-config:
       logic-delete-field: deleted # 全局逻辑删除字段名
@@ -44,10 +71,10 @@ mybatis-plus:
 sa-token:
   # token 名称（同时也是 cookie 名称）
   token-name: koj
-  # token 有效期（单位：秒） 默认30天，-1 代表永久有效
-  timeout: 300
+  # token 有效期（单位：秒） 默认30天（2592000），-1 代表永久有效
+  timeout: 2592000
   # token 最低活跃频率（单位：秒），如果 token 超过此时间没有访问系统就会被冻结，默认-1 代表不限制，永不冻结
-  active-timeout: -1
+  active-timeout: 2592000
   # 是否允许同一账号多地同时登录 （为 true 时允许一起登录, 为 false 时新登录挤掉旧登录）
   is-concurrent: true
   # 在多人登录同一账号时，是否共用一个 token （为 true 时所有登录共用一个 token, 为 false 时每次登录新建一个 token）
@@ -63,11 +90,16 @@ knife4j:
   openapi:
     title: Knife4j文档
     description: Knife4j接口文档
-    email: xxx
+    email: kkkylen@qq.com
     concat: KyLen
     version: v1.0
     group:
       default:
         api-rule: package
         api-rule-resources:
-          - fun.kylen.kojservice.controller
+          - fun.kylen.koj.controller
+
+# oauth2配置
+oauth2:
+  github-client-id: xxx
+  github-secret: xxx
