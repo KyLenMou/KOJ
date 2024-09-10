@@ -1,5 +1,5 @@
 <template>
-  <div id="problemSubmitView">
+  <div id="problemSubmissionView">
     <el-row :gutter="20">
       <el-col :span="18" style="display: flex; flex-direction: column">
         <div style="width: 75%; margin: 0 auto">
@@ -141,7 +141,7 @@ const doSubmitCode = async () => {
 </script>
 
 <style scoped>
-#problemSubmitView {
+#problemSubmissionView {
 }
 
 </style>

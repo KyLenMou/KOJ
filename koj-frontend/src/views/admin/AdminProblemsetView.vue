@@ -5,7 +5,7 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage"
+        :current-page="current"
         :page-sizes="[10, 30, 50]"
         :page-size="pageSize"
         layout="total, sizes, prev, pager, next, jumper"
@@ -19,7 +19,7 @@
         <el-table-column prop="difficulty" label="Difficulty" min-width="75"></el-table-column>
         <el-table-column prop="tags" label="Tags" width="200">
           <template #default="{ row }">
-            <span v-for="tag in row.tags" :key="tag.id">{{ tag.tagName }} </span>
+            <el-tag v-for="tag in row.tags" :key="tag.id" type="info" style="margin-right: 10px">{{ tag.tagName }} </el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="createTime" label="Create Time" :formatter="formatTimeColumn"/>
@@ -44,7 +44,7 @@ import { formatTimeColumn } from "@/util";
 
 const router = useRouter();
 const problemList = ref([]);
-const currentPage = ref(1);
+const current = ref(1);
 const pageSize = ref(10);
 const total = ref(0);
 const isLoading = ref(false);
@@ -55,8 +55,8 @@ const goToAddProblem = () => {
 const getProblemList = async () => {
   isLoading.value = true;
   try {
-    const res = await AdminProblemControllerService.listProblemByPageUsingPost({
-      current: currentPage.value,
+    const res = await AdminProblemControllerService.listProblemVoByPageUsingPost({
+      current: current.value,
       pageSize: pageSize.value
     });
     problemList.value = res.data.records;
@@ -72,7 +72,7 @@ const handleSizeChange = async (val: number) => {
 };
 
 const handleCurrentChange = async (val: number) => {
-  currentPage.value = val;
+  current.value = val;
   await getProblemList();
 };
 

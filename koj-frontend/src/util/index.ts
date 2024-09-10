@@ -8,7 +8,7 @@ export const getColumnNames = (obj: object): string[] =>{
 }
 
 export const formatTimeColumn = (row: any, column: any, cellValue: any, index: number) => {
-    if (column.property === 'createTime' || column.property === 'updateTime') {
+    if (column.property === 'createTime' || column.property === 'updateTime' || column.property === 'submitTime') {
         return new Date(cellValue).toLocaleString();
     } else {
         return row[column.property];

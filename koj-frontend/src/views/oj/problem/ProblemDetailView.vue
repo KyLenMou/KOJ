@@ -1,5 +1,5 @@
 <template>
-  <div id="problemSubmitView">
+  <div id="problemSubmissionView">
     <div>
       <el-row :gutter="20">
         <el-col :span="18" style="display: flex; flex-direction: column">
@@ -127,7 +127,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-#problemSubmitView {
+#problemSubmissionView {
 }
 :deep(.el-dialog__header) {
   padding-bottom: 0;
