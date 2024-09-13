@@ -1,0 +1,56 @@
+server:
+  port: 8091
+
+# springboot项目配置
+spring:
+  application:
+    name: koj-judge-service
+  profiles:
+    active: druid
+  rabbitmq:
+    host: xxx
+    username: root
+    password: 1234
+    listener:
+      simple:
+        # 能者多劳，防止能者空闲等待
+        prefetch: 1
+        # 失败立即重试
+        retry:
+          enabled: true
+          max-attempts: 3
+          initial-interval: 1000
+          multiplier: 1.2
+          max-interval: 10000
+        # 自动确认，适配重试机制
+        acknowledge-mode: auto
+        concurrency: 2
+    # 重连
+    connection-timeout: 5s
+
+# mybatis plus配置
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      logic-delete-field: deleted # 全局逻辑删除字段名
+      logic-delete-value: 1 # 逻辑已删除值
+      logic-not-delete-value: 0 # 逻辑未删除值
+
+
+# knife4j接口文档配置
+knife4j:
+  enable: true
+  openapi:
+    title: Knife4j文档
+    description: Knife4j接口文档
+    email: kkkylen@qq.com
+    concat: KyLen
+    version: v1.0
+    group:
+      default:
+        api-rule: package
+        api-rule-resources:
+          - fun.kylen.koj.controller
