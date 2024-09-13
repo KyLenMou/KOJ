@@ -1,4 +1,4 @@
-package fun.kylen.koj.manager.oj;
+package fun.kylen.koj.mq;
 
 import fun.kylen.koj.constant.MqConstant;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * @Description:
  */
 @Component
-public class JudgeManager {
+public class JudgeMessageDispatcher {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
@@ -19,7 +19,10 @@ public class JudgeManager {
         // 普通提交
         // todo 提交状态更新（提交中->判题中）
         if (true) {
-             rabbitTemplate.convertAndSend(MqConstant.KOJ_EXCHANGE, MqConstant.JUDGE_ROUTE_KEY, id);
+            rabbitTemplate.convertAndSend(MqConstant.KOJ_EXCHANGE, MqConstant.JUDGE_ROUTE_KEY, id, message -> {
+                message.getMessageProperties().setPriority(2);
+                return message;
+            });
         } else {
             // 比赛提交
         }

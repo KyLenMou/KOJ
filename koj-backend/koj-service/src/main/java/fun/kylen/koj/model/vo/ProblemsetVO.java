@@ -20,7 +20,7 @@ import java.util.List;
 public class ProblemsetVO implements Serializable {
     private Long id;
 
-    private String problemId;
+    private String problemDisplayId;
 
     private String title;
 

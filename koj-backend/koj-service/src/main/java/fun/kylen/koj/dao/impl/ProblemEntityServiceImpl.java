@@ -34,8 +34,8 @@ public class ProblemEntityServiceImpl extends ServiceImpl<ProblemMapper, Problem
     }
 
     @Override
-    public ProblemInfoVO getProblemDetail(String problemId) {
-        return problemMapper.getProblemDetail(problemId);
+    public ProblemInfoVO getProblemDetail(String problemDisplayId) {
+        return problemMapper.getProblemDetail(problemDisplayId);
     }
 }
 

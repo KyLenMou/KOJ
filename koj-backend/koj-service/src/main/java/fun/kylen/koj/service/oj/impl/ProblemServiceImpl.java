@@ -19,8 +19,8 @@ public class ProblemServiceImpl implements ProblemService{
     }
 
     @Override
-    public ProblemInfoVO getProblemDetail(String problemId) {
-        return problemManager.getProblemDetail(problemId);
+    public ProblemInfoVO getProblemDetail(String problemDisplayId) {
+        return problemManager.getProblemDetail(problemDisplayId);
     }
 }
 

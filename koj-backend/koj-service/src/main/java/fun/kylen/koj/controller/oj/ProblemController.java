@@ -29,7 +29,7 @@ public class ProblemController {
     }
 
     @GetMapping
-    public R<ProblemInfoVO> getProblemDetail(@RequestParam("problemId") String problemId) {
-        return R.ok(problemService.getProblemDetail(problemId));
+    public R<ProblemInfoVO> getProblemDetail(@RequestParam("problemDisplayId") String problemDisplayId) {
+        return R.ok(problemService.getProblemDetail(problemDisplayId));
     }
 }

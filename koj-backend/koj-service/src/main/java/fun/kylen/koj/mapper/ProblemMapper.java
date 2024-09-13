@@ -19,7 +19,7 @@ public interface ProblemMapper extends BaseMapper<Problem> {
 
     Page<ProblemVO> listProblemVOByPage(Page<ProblemVO> page);
 
-    ProblemInfoVO getProblemDetail(String problemId);
+    ProblemInfoVO getProblemDetail(String problemDisplayId);
 
 }
 

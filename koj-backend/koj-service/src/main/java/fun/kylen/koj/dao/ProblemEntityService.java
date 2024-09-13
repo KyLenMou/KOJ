@@ -18,5 +18,5 @@ public interface ProblemEntityService extends IService<Problem> {
 
     Page<ProblemVO> listProblemVOByPage(Page<ProblemVO> page);
 
-    ProblemInfoVO getProblemDetail(String problemId);
+    ProblemInfoVO getProblemDetail(String problemDisplayId);
 }

@@ -6,7 +6,7 @@
 
     <resultMap id="BaseResultMap" type="fun.kylen.koj.domain.Problem">
             <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="problemId" column="problem_id" jdbcType="VARCHAR"/>
+            <result property="problemDisplayId" column="problem_display_id" jdbcType="VARCHAR"/>
             <result property="title" column="title" jdbcType="VARCHAR"/>
             <result property="authorUserId" column="author_user_id" jdbcType="VARCHAR"/>
             <result property="problemType" column="problem_type" jdbcType="VARCHAR"/>
@@ -41,7 +41,7 @@
     </resultMap>
     <resultMap id="problemInfoVO" type="fun.kylen.koj.model.vo.ProblemInfoVO">
         <id property="id" column="id" jdbcType="BIGINT"/>
-        <result property="problemId" column="problem_id" jdbcType="VARCHAR"/>
+        <result property="problemDisplayId" column="problem_display_id" jdbcType="VARCHAR"/>
         <result property="title" column="title" jdbcType="VARCHAR"/>
         <result property="authorUserId" column="author_user_id" jdbcType="VARCHAR"/>
         <result property="problemType" column="problem_type" jdbcType="VARCHAR"/>
@@ -77,7 +77,7 @@
     </resultMap>
     <resultMap id="problemset" type="fun.kylen.koj.model.vo.ProblemsetVO">
         <result property="id" column="id" jdbcType="BIGINT"/>
-        <result property="problemId" column="problem_id" jdbcType="VARCHAR"/>
+        <result property="problemDisplayId" column="problem_display_id" jdbcType="VARCHAR"/>
         <result property="title" column="title" jdbcType="VARCHAR"/>
         <result property="problemType" column="problem_type" jdbcType="VARCHAR"/>
         <result property="problemSource" column="problem_source" jdbcType="VARCHAR"/>
@@ -87,7 +87,7 @@
     </resultMap>
     <resultMap id="problemVO" type="fun.kylen.koj.model.vo.ProblemVO">
         <id property="id" column="id" jdbcType="BIGINT"/>
-        <result property="problemId" column="problem_id" jdbcType="VARCHAR"/>
+        <result property="problemDisplayId" column="problem_display_id" jdbcType="VARCHAR"/>
         <result property="title" column="title" jdbcType="VARCHAR"/>
         <result property="authorUserId" column="author_user_id" jdbcType="VARCHAR"/>
         <result property="problemType" column="problem_type" jdbcType="VARCHAR"/>
@@ -122,7 +122,7 @@
         <collection property="tags" ofType="fun.kylen.koj.model.vo.TagVO" select="getProblemTag" column="id"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id,problem_id,title,
+        id,problem_display_id,title,
         author_user_id,problem_type,time_limit,
         memory_limit,stack_limit,description_text,
         input,output,examples,
@@ -137,7 +137,7 @@
     </sql>
     <select id="listProblemVOByPage" resultMap="problemVO">
         select
-            id,problem_id,title,
+            id,problem_display_id,title,
             author_user_id,problem_type,problem_source,is_remote,
             difficulty,auth,judge_mode,
             modified_user_id,is_group,group_id,
@@ -148,7 +148,7 @@
     <select id="listProblemsetVOByPage" resultMap="problemset">
         select
             p.id,
-            p.problem_id,p.title,
+            p.problem_display_id,p.title,
             p.problem_type,p.problem_source,p.is_remote,
             p.difficulty
         from problem p
@@ -159,13 +159,13 @@
     <select id="getProblemDetail" resultMap="problemInfoVO">
         select
             p.id,
-            p.problem_id,p.title,
+            p.problem_display_id,p.title,
             p.time_limit, p.memory_limit, p.stack_limit,
             p.description_text, p.input, p.output, p.examples, p.note_text,
             p.problem_source, p.is_remote, p.difficulty, p.io_score, p.judge_mode,
             p.problem_type, p.auth, p.is_group
         from problem p
-        where p.problem_id = #{problemId}
+        where p.problem_display_id = #{problemDisplayId}
     </select>
 
     <select id="getProblemTag" resultType="fun.kylen.koj.model.vo.TagVO">

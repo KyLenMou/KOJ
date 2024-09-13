@@ -7,10 +7,6 @@ import lombok.EqualsAndHashCode;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * 
- * @TableName problem
- */
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class ProblemInfoVO extends Problem implements Serializable{

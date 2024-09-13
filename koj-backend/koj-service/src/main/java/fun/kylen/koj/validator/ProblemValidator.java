@@ -41,10 +41,10 @@ public class ProblemValidator {
     }
 
     public void validate(Problem problem) {
-        String problemId = problem.getProblemId();
+        String problemId = problem.getProblemDisplayId();
         // 长度为1到32
         commonValidator.validateContent(problemId, "题目的展示ID", 1, 32);
-        commonValidator.validateNull(problemEntityService.lambdaQuery().eq(Problem::getProblemId, problemId).one(), "题目的展示ID");
+        commonValidator.validateNull(problemEntityService.lambdaQuery().eq(Problem::getProblemDisplayId, problemId).one(), "题目的展示ID");
         String title = problem.getTitle();
         // 长度为1到256
         commonValidator.validateContent(title, "题目标题", 1, 256);

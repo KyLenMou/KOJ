@@ -9,5 +9,5 @@ public interface ProblemService {
 
     Page<ProblemsetVO> listProblemsetVOByPage(PageDTO pageDTO);
 
-    ProblemInfoVO getProblemDetail(String problemId);
+    ProblemInfoVO getProblemDetail(String problemDisplayId);
 }

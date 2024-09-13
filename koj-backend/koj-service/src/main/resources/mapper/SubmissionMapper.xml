@@ -5,27 +5,27 @@
 <mapper namespace="fun.kylen.koj.mapper.SubmissionMapper">
 
     <resultMap id="BaseResultMap" type="fun.kylen.koj.domain.Submission">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="problemId" column="problem_id" jdbcType="BIGINT"/>
-            <result property="problemDisplayId" column="problem_display_id" jdbcType="VARCHAR"/>
-            <result property="userId" column="user_id" jdbcType="VARCHAR"/>
-            <result property="username" column="username" jdbcType="VARCHAR"/>
-            <result property="submitTime" column="submit_time" jdbcType="TIMESTAMP"/>
-            <result property="language" column="language" jdbcType="VARCHAR"/>
-            <result property="code" column="code" jdbcType="VARCHAR"/>
-            <result property="verdict" column="verdict" jdbcType="INTEGER"/>
-            <result property="errorMessage" column="error_message" jdbcType="VARCHAR"/>
-            <result property="time" column="time" jdbcType="INTEGER"/>
-            <result property="memory" column="memory" jdbcType="INTEGER"/>
-            <result property="oiScore" column="oi_score" jdbcType="INTEGER"/>
-            <result property="length" column="length" jdbcType="INTEGER"/>
-            <result property="groupId" column="group_id" jdbcType="BIGINT"/>
-            <result property="contestId" column="contest_id" jdbcType="BIGINT"/>
-            <result property="ip" column="ip" jdbcType="VARCHAR"/>
-            <result property="version" column="version" jdbcType="INTEGER"/>
-            <result property="isManual" column="is_manual" jdbcType="TINYINT"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="problemId" column="problem_id" jdbcType="BIGINT"/>
+        <result property="problemDisplayId" column="problem_display_id" jdbcType="VARCHAR"/>
+        <result property="userId" column="user_id" jdbcType="VARCHAR"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="submitTime" column="submit_time" jdbcType="TIMESTAMP"/>
+        <result property="language" column="language" jdbcType="VARCHAR"/>
+        <result property="code" column="code" jdbcType="VARCHAR"/>
+        <result property="verdict" column="verdict" jdbcType="INTEGER"/>
+        <result property="errorMessage" column="error_message" jdbcType="VARCHAR"/>
+        <result property="time" column="time" jdbcType="INTEGER"/>
+        <result property="memory" column="memory" jdbcType="INTEGER"/>
+        <result property="oiScore" column="oi_score" jdbcType="INTEGER"/>
+        <result property="length" column="length" jdbcType="INTEGER"/>
+        <result property="groupId" column="group_id" jdbcType="BIGINT"/>
+        <result property="contestId" column="contest_id" jdbcType="BIGINT"/>
+        <result property="ip" column="ip" jdbcType="VARCHAR"/>
+        <result property="version" column="version" jdbcType="INTEGER"/>
+        <result property="isManual" column="is_manual" jdbcType="TINYINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -58,24 +58,23 @@
     </resultMap>
 
     <select id="listSubmissionByPage" resultMap="submissionList">
-        select s.id,s.problem_id,s.problem_display_id,s.
-        user_id,s.username,s.submit_time,s.language,s.verdict,s.error_message,s.time,s.memory,s.oi_score,s.length,s.is_manual
+        select s.id,s.problem_id,s.problem_display_id,s.user_id,s.username,s.submit_time,s.language,s.verdict,s.error_message,s.time,s.memory,s.oi_score,s.length,s.is_manual
         from submission s
         <where>
             <if test="problemId != '' and problemId != null">
                 s.problem_id = #{problemId}
             </if>
             <if test="problemDisplayId != '' and problemDisplayId != null">
-               and s.problem_display_id = #{problemDisplayId}
+                and s.problem_display_id = #{problemDisplayId}
             </if>
             <if test="userId != '' and userId != null">
-               and s.user_id = #{userId}
+                and s.user_id = #{userId}
             </if>
             <if test="username != '' and username != null">
-               and s.username = #{username}
+                and s.username = #{username}
             </if>
             <if test="language != '' and language != null">
-               and s.language = #{language}
+                and s.language = #{language}
             </if>
         </where>
     </select>
@@ -85,7 +84,7 @@
         from problem
         <where>
             <if test="problemDisplayId != '' and problemDisplayId != null">
-                problem_id = #{problem_display_id}
+                problem_display_id = #{problemDisplayId}
             </if>
         </where>
     </select>
