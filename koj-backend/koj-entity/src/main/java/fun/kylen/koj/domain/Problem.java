@@ -28,7 +28,7 @@ public class Problem implements Serializable {
      * 问题的自定义ID
      */
     @NotEmpty(message = "问题的自定义ID不能为空")
-    private String problemId;
+    private String problemDisplayId;
 
     /**
      * 题目
@@ -218,7 +218,7 @@ public class Problem implements Serializable {
         }
         Problem other = (Problem) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getProblemId() == null ? other.getProblemId() == null : this.getProblemId().equals(other.getProblemId()))
+            && (this.getProblemDisplayId() == null ? other.getProblemDisplayId() == null : this.getProblemDisplayId().equals(other.getProblemDisplayId()))
             && (this.getTitle() == null ? other.getTitle() == null : this.getTitle().equals(other.getTitle()))
             && (this.getAuthorUserId() == null ? other.getAuthorUserId() == null : this.getAuthorUserId().equals(other.getAuthorUserId()))
             && (this.getProblemType() == null ? other.getProblemType() == null : this.getProblemType().equals(other.getProblemType()))
@@ -257,7 +257,7 @@ public class Problem implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getProblemId() == null) ? 0 : getProblemId().hashCode());
+        result = prime * result + ((getProblemDisplayId() == null) ? 0 : getProblemDisplayId().hashCode());
         result = prime * result + ((getTitle() == null) ? 0 : getTitle().hashCode());
         result = prime * result + ((getAuthorUserId() == null) ? 0 : getAuthorUserId().hashCode());
         result = prime * result + ((getProblemType() == null) ? 0 : getProblemType().hashCode());
@@ -299,7 +299,7 @@ public class Problem implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", problemId=").append(problemId);
+        sb.append(", problemId=").append(problemDisplayId);
         sb.append(", title=").append(title);
         sb.append(", authorUserId=").append(authorUserId);
         sb.append(", problemType=").append(problemType);
