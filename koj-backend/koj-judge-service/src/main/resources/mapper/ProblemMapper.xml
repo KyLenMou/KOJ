@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fun.kylen.koj.mapper.ProblemMapper">
+
+    <resultMap id="BaseResultMap" type="fun.kylen.koj.domain.Problem">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="problemDisplayId" column="problem_display_id" jdbcType="VARCHAR"/>
+            <result property="title" column="title" jdbcType="VARCHAR"/>
+            <result property="authorUserId" column="author_user_id" jdbcType="VARCHAR"/>
+            <result property="problemType" column="problem_type" jdbcType="VARCHAR"/>
+            <result property="timeLimit" column="time_limit" jdbcType="INTEGER"/>
+            <result property="memoryLimit" column="memory_limit" jdbcType="INTEGER"/>
+            <result property="stackLimit" column="stack_limit" jdbcType="INTEGER"/>
+            <result property="descriptionText" column="description_text" jdbcType="VARCHAR"/>
+            <result property="input" column="input" jdbcType="VARCHAR"/>
+            <result property="output" column="output" jdbcType="VARCHAR"/>
+            <result property="examples" column="examples" jdbcType="VARCHAR"/>
+            <result property="noteText" column="note_text" jdbcType="VARCHAR"/>
+            <result property="problemSource" column="problem_source" jdbcType="VARCHAR"/>
+            <result property="isRemote" column="is_remote" jdbcType="TINYINT"/>
+            <result property="difficulty" column="difficulty" jdbcType="INTEGER"/>
+            <result property="auth" column="auth" jdbcType="INTEGER"/>
+            <result property="ioScore" column="io_score" jdbcType="INTEGER"/>
+            <result property="cfScore" column="cf_score" jdbcType="INTEGER"/>
+            <result property="codeShare" column="code_share" jdbcType="TINYINT"/>
+            <result property="judgeMode" column="judge_mode" jdbcType="VARCHAR"/>
+            <result property="spjCode" column="spj_code" jdbcType="VARCHAR"/>
+            <result property="spjLanguage" column="spj_language" jdbcType="VARCHAR"/>
+            <result property="isRemoveEndBlank" column="is_remove_end_blank" jdbcType="TINYINT"/>
+            <result property="openCaseResult" column="open_case_result" jdbcType="TINYINT"/>
+            <result property="isUploadCase" column="is_upload_case" jdbcType="TINYINT"/>
+            <result property="caseVersion" column="case_version" jdbcType="VARCHAR"/>
+            <result property="modifiedUserId" column="modified_user_id" jdbcType="VARCHAR"/>
+            <result property="isGroup" column="is_group" jdbcType="TINYINT"/>
+            <result property="groupId" column="group_id" jdbcType="BIGINT"/>
+            <result property="isPublic" column="is_public" jdbcType="INTEGER"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,problem_display_id,title,
+        author_user_id,problem_type,time_limit,
+        memory_limit,stack_limit,description_text,
+        input,output,examples,
+        note_text,problem_source,is_remote,
+        difficulty,auth,io_score,
+        cf_score,code_share,judge_mode,
+        spj_code,spj_language,is_remove_end_blank,
+        open_case_result,is_upload_case,case_version,
+        modified_user_id,is_group,group_id,
+        is_public,create_time,update_time
+
+    </sql>
+</mapper>
