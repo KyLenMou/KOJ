@@ -6,6 +6,7 @@ import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import fun.kylen.koj.common.BusinessException;
 import fun.kylen.koj.common.ResultEnum;
 import fun.kylen.koj.model.vo.UserInfoVO;
@@ -53,7 +54,7 @@ public class OAuthManager{
             try (HttpResponse response = HttpUtil.createGet("https://api.github.com/user")
                     .header("Authorization", tokenType + " " + accessToken)
                     .execute()) {
-                JSONObject jsonObject = new JSONObject(response.body());
+                JSONObject jsonObject = JSONUtil.parseObj(response.body());
                 String githubUsername = jsonObject.getStr("login");
                 String githubUserId = jsonObject.getStr("id");
                 String avatarUrl = jsonObject.getStr("avatar_url");
