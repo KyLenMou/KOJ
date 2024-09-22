@@ -1,8 +1,7 @@
-package fun.kylen.koj.judge;
+package fun.kylen.koj.sandbox;
 
 import cn.hutool.json.JSONArray;
 import fun.kylen.koj.model.LanguageCmdArgs;
-import fun.kylen.koj.sandbox.SandboxRunner;
 import fun.kylen.koj.utils.JudgeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,19 +18,14 @@ import java.util.Map;
 public class CodeCompiler {
     @Autowired
     private SandboxRunner sandboxRunner;
-    @Resource
-    private Map<String, LanguageCmdArgs> languageMap;
 
     /**
      * 返回编译完成的相关信息
-     * @param language
+     * @param languageCmdArgs
      * @param code
      * @return
      */
-    public String compile(String language, String code) {
-        LanguageCmdArgs languageCmdArgs = languageMap.get(language);
-
-        // todo 检查语言是否存在
+    public String compile(LanguageCmdArgs languageCmdArgs, String code) {
 
         JSONArray compileResult = sandboxRunner.compile(languageCmdArgs.getMaxCpuTime(),
                 languageCmdArgs.getMaxRealTime(),

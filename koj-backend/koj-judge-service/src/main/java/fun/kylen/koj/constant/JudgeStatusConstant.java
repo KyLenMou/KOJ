@@ -16,12 +16,13 @@ public class JudgeStatusConstant {
 
     /**
      * 提交状态
-     * 0 正在排队评测
-     * -1 提交失败
+     * 0 提交中
+     * -1 正在排队
+     * -2 提交失败
      */
-    public final static int IN_QUEUE = 0;
-    public final static int SUBMIT_FAIL = -1;
-
+    public final static int SUBMITTING = 0;
+    public final static int IN_QUEUE = -1;
+    public final static int SUBMIT_FAIL = -2;
 
     /**
      * 编译状态
