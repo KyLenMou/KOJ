@@ -53,11 +53,9 @@ public class JudgeServiceImpl implements JudgeService {
         if (problem == null) {
             throw new RuntimeException("不存在problemId为 " + problemId + " 的题目");
         }
-        // 拿到所有的输入输出测试用例
+        // 拿到测试用例
         List<ProblemCase> problemCaseList = problemCaseEntityService.lambdaQuery().eq(ProblemCase::getProblemId,
                                                                                       problemId).list();
-        List<String> inputList = problemCaseList.stream().map(ProblemCase::getInput).collect(Collectors.toList());
-        List<String> outputList = problemCaseList.stream().map(ProblemCase::getOutput).collect(Collectors.toList());
         // 拿到时空限制
         Integer timeLimit = problem.getTimeLimit();
         Integer memoryLimit = problem.getMemoryLimit();
@@ -73,10 +71,9 @@ public class JudgeServiceImpl implements JudgeService {
                            language,
                            code,
                            judgeMode,
-                           inputList,
-                           outputList,
                            timeLimit,
                            memoryLimit,
-                           stackLimit);
+                           stackLimit,
+                           problemCaseList);
     }
 }

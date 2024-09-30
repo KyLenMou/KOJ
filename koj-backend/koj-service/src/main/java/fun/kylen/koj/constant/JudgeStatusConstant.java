@@ -7,11 +7,6 @@ package fun.kylen.koj.constant;
  */
 public class JudgeStatusConstant {
     /**
-     * 0 未评测 仅用于在遇错止评下单个测试用例未评测的情况
-     */
-    public final static int NULL = 0;
-
-    /**
      * 提交状态
      * 1 正在排队
      * -1 提交失败

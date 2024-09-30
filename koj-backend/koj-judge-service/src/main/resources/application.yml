@@ -8,7 +8,7 @@ spring:
   profiles:
     active: druid
   rabbitmq:
-    host: xxx
+    host: 172.25.34.148
     username: root
     password: 1234
     listener:
@@ -54,3 +54,6 @@ knife4j:
         api-rule: package
         api-rule-resources:
           - fun.kylen.koj.controller
+# go-judge网关地址
+sandbox:
+  url: http://172.25.34.148:5050

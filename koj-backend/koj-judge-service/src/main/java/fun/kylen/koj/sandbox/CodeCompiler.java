@@ -42,6 +42,8 @@ public class CodeCompiler {
                 null
         );
 
+        // todo 编译错误，抛出异常，交给context处理
+
         return compileResult.getByPath("0.fileIds.main").toString();
     }
 

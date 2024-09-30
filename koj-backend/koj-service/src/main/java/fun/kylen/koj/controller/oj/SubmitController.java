@@ -6,6 +6,7 @@ import fun.kylen.koj.domain.Submission;
 import fun.kylen.koj.model.dto.SubmissionDTO;
 import fun.kylen.koj.service.oj.SubmitService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,12 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/submit")
 @SaCheckLogin
+@Validated
 public class SubmitController {
     @Autowired
     private SubmitService submitService;
 
     @PostMapping
-    public R<Void> submit(@RequestBody SubmissionDTO submission) {
+    public R<Void> submit(@Validated @RequestBody SubmissionDTO submission) {
         submitService.submit(submission);
         return R.ok();
     }

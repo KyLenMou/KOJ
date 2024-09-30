@@ -16,15 +16,19 @@ public class JudgeMessageDispatcher {
     private RabbitTemplate rabbitTemplate;
 
     public void dispatch(Long id) {
-        // 普通提交
         // todo 提交状态更新（提交中->判题中）
         if (true) {
+            // 普通提交
             rabbitTemplate.convertAndSend(MqConstant.KOJ_EXCHANGE, MqConstant.JUDGE_ROUTE_KEY, id, message -> {
-                message.getMessageProperties().setPriority(2);
+                message.getMessageProperties().setPriority(1);
                 return message;
             });
         } else {
             // 比赛提交
+            rabbitTemplate.convertAndSend(MqConstant.KOJ_EXCHANGE, MqConstant.JUDGE_ROUTE_KEY, id, message -> {
+                message.getMessageProperties().setPriority(2);
+                return message;
+            });
         }
     }
 }
