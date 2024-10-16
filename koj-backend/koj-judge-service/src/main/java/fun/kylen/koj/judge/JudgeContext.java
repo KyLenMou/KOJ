@@ -4,9 +4,9 @@ import fun.kylen.koj.constant.JudgeStatusConstant;
 import fun.kylen.koj.dao.ProblemCaseEntityService;
 import fun.kylen.koj.dao.ProblemEntityService;
 import fun.kylen.koj.dao.SubmissionEntityService;
-import fun.kylen.koj.domain.ProblemCase;
 import fun.kylen.koj.domain.Submission;
 import fun.kylen.koj.model.LanguageCmdArgs;
+import fun.kylen.koj.model.ProblemAndSubmissionCase;
 import fun.kylen.koj.sandbox.CodeCompiler;
 import fun.kylen.koj.sandbox.CodeDeleter;
 import fun.kylen.koj.sandbox.SandboxRunner;
@@ -50,7 +50,7 @@ public class JudgeContext {
      * @param timeLimit
      * @param memoryLimit
      * @param stackLimit
-     * @param problemCaseList
+     * @param problemAndSubmissionCases
      */
     public void judge(Long submitId,
                       String language,
@@ -59,7 +59,7 @@ public class JudgeContext {
                       Integer timeLimit,
                       Integer memoryLimit,
                       Integer stackLimit,
-                      List<ProblemCase> problemCaseList) {
+                      List<ProblemAndSubmissionCase> problemAndSubmissionCases) {
 
         // 准备编译代码，修改状态
         submissionEntityService.lambdaUpdate()
@@ -82,7 +82,7 @@ public class JudgeContext {
                                 memoryLimit,
                                 stackLimit,
                                 judgeMode,
-                                problemCaseList);
+                                problemAndSubmissionCases);
         } catch (Exception e) {
             // todo 编译错误处理
         } finally {

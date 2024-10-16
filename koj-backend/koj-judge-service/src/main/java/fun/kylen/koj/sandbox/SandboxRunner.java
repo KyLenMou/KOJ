@@ -136,13 +136,13 @@ public class SandboxRunner {
      * @param args
      * @param envs
      * @param input
-     * @param maxTime
-     * @param maxMemory
+     * @param maxTime 单位 ms
+     * @param maxMemory 单位 mb
      * @param maxOutputSize
      * @param maxStack
      * @param exeName
      * @param fileId
-     * @return
+     * @return 返回的时间单位为 ms，内存单位为 kb
      */
     public JSONArray run(String input,
                          List<String> args,
@@ -176,10 +176,10 @@ public class SandboxRunner {
 
         cmd.set("files", files);
 
-        // ms-->ns
+        // ms --> ns
         cmd.set("cpuLimit", maxTime * 1000 * 1000L);
         cmd.set("clockLimit", maxTime * 1000 * 1000L * 3);
-        // byte
+        // mb --> byte
         cmd.set("memoryLimit", (maxMemory + 100) * 1024 * 1024L);
         cmd.set("procLimit", maxProcessNumber);
         cmd.set("stackLimit", maxStack * 1024 * 1024L);
@@ -211,6 +211,9 @@ public class SandboxRunner {
         JSONObject testcaseRes = (JSONObject) result.get(0);
         testcaseRes.set("originalStatus", testcaseRes.getStr("status"));
         testcaseRes.set("status", RESULT_MAP_STATUS.get(testcaseRes.getStr("status")));
+        // 转化为ms和kb
+        testcaseRes.set("time", testcaseRes.getLong("time") / 1000000L);
+        testcaseRes.set("memory", testcaseRes.getLong("memory") / 1024L);
         return result;
 
     }
@@ -247,7 +250,7 @@ public class SandboxRunner {
     static {
         RESULT_MAP_STATUS.put("Time Limit Exceeded", JudgeStatusConstant.TIME_LIMIT_EXCEEDED);
         RESULT_MAP_STATUS.put("Memory Limit Exceeded", JudgeStatusConstant.MEMORY_LIMIT_EXCEEDED);
-        RESULT_MAP_STATUS.put("Output Limit Exceeded", JudgeStatusConstant.RUNTIME_ERROR);
+        RESULT_MAP_STATUS.put("Output Limit Exceeded", JudgeStatusConstant.OUTPUT_LIMIT_EXCEEDED);
         RESULT_MAP_STATUS.put("Accepted", JudgeStatusConstant.ACCEPTED);
         RESULT_MAP_STATUS.put("Nonzero Exit Status", JudgeStatusConstant.RUNTIME_ERROR);
         RESULT_MAP_STATUS.put("Internal Error", JudgeStatusConstant.SYSTEM_ERROR);

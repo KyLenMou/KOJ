@@ -7,9 +7,13 @@ import cn.hutool.json.JSONObject;
 import fun.kylen.koj.constant.JudgeStatusConstant;
 import fun.kylen.koj.dao.ProblemCaseEntityService;
 import fun.kylen.koj.dao.ProblemEntityService;
+import fun.kylen.koj.dao.SubmissionCaseEntityService;
 import fun.kylen.koj.dao.SubmissionEntityService;
-import fun.kylen.koj.domain.ProblemCase;
+import fun.kylen.koj.dao.impl.SubmissionCaseEntityServiceImpl;
+import fun.kylen.koj.domain.Submission;
+import fun.kylen.koj.domain.SubmissionCase;
 import fun.kylen.koj.model.LanguageCmdArgs;
+import fun.kylen.koj.model.ProblemAndSubmissionCase;
 import fun.kylen.koj.sandbox.SandboxRunner;
 import fun.kylen.koj.utils.JudgeUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +39,8 @@ public class JudgeStrategy {
     private SubmissionEntityService submissionEntityService;
     @Autowired
     private SandboxRunner sandboxRunner;
+    @Autowired
+    private SubmissionCaseEntityService submissionCaseEntityService;
 
     private final static Pattern EOL_PATTERN = Pattern.compile("[^\\S\\n]+(?=\\n)");
 
@@ -45,21 +51,27 @@ public class JudgeStrategy {
                       Integer memoryLimit,
                       Integer stackLimit,
                       String judgeMode,
-                      List<ProblemCase> problemCaseList) {
+                      List<ProblemAndSubmissionCase> problemAndSubmissionCases) {
         // 获取gojudge调用参数
         List<String> args = JudgeUtil.getArgs(languageCmdArgs.getRunCommand());
+        List<String> runEnvs = languageCmdArgs.getRunEnvs();
 
+        // 记录所有评测点时空最大值
+        long maxTime = 0L;
+        long maxMemory = 0L;
         // 遇错止评 todo 全部评测
-        for (ProblemCase problemCase : problemCaseList) {
-            String input = problemCase.getInput();
+        for (int i = 0; i < problemAndSubmissionCases.size(); i++) {
+            int index = i + 1;
+            ProblemAndSubmissionCase p = problemAndSubmissionCases.get(i);
+            String input = p.getInput();
             // 答案
-            String answer = problemCase.getOutput();
-            // 获取评测结果 todo 运行时间需要+200ms
-            Long time = timeLimit + 200L;
+            String answer = p.getOutput();
+            // 获取评测结果 ms mb
+            Long time = (long) timeLimit + 200;
             Long memory = (long) memoryLimit;
             JSONArray result = sandboxRunner.run(input,
                                                  args,
-                                                 languageCmdArgs.getRunEnvs(),
+                                                 runEnvs,
                                                  time,
                                                  memory,
                                                  stackLimit,
@@ -70,39 +82,97 @@ public class JudgeStrategy {
             // 获取result的评测状态，先判断是否出现error，再进行答案比对
             JSONObject resultJson = (JSONObject) result.get(0);
             Integer status = resultJson.getInt("status");
+            // ms
+            Integer actualTime = resultJson.getInt("time");
+            // kb
+            Integer actualMemory = resultJson.getInt("memory");
 
-            // 通过，继续下一个
-            if (status == JudgeStatusConstant.ACCEPTED) {
-                continue;
-            }
-            switch (status) {
-                case JudgeStatusConstant.TIME_LIMIT_EXCEEDED:
-                    // 处理超时的情况
-
-                    break;
-                case JudgeStatusConstant.MEMORY_LIMIT_EXCEEDED:
-                    // 处理内存超限的情况
-                    break;
-                case JudgeStatusConstant.STACK_LIMIT_EXCEEDED:
-                    // 处理栈溢出的情况
-                    break;
-                case JudgeStatusConstant.RUNTIME_ERROR:
-                    // 处理运行时错误的情况
-                    break;
-                case JudgeStatusConstant.OUTPUT_LIMIT_EXCEEDED:
-                    // 处理输出超限的情况
-                    break;
-                default:
-                    // 其他情况
-                    break;
-            }
-
-            // 用户输出
-            String output = (String) result.getByPath("0.files.stdout");
-            if (!check(answer, output)) {
+            maxTime = Math.max(maxTime, actualTime);
+            maxMemory = Math.max(maxMemory, actualMemory);
+            // 先设置评测点时空状态
+            submissionCaseEntityService.lambdaUpdate()
+                    .eq(SubmissionCase::getId, p.getSubmissionCaseId())
+                    .set(SubmissionCase::getTime, actualTime)
+                    .set(SubmissionCase::getMemory, actualMemory)
+                    .update();
+            // 如果出现了非WA错误
+            if (status != JudgeStatusConstant.ACCEPTED) {
+                // 设置当前评测点的错误状态
+                submissionCaseEntityService.lambdaUpdate()
+                        .eq(SubmissionCase::getId, p.getSubmissionCaseId())
+                        .set(SubmissionCase::getVerdict, status)
+                        .update();
+                // 设置提交错误状态
+                submissionEntityService.lambdaUpdate()
+                        .eq(Submission::getId, submitId)
+                        .set(Submission::getVerdict, status)
+                        .update();
+                // 遇错止评，结束
                 break;
             }
+            // 没有出现非WA错误，仍然判断时空是否超限
+            if (actualTime >= timeLimit) {
+                // 评测点
+                submissionCaseEntityService.lambdaUpdate()
+                        .eq(SubmissionCase::getId, p.getSubmissionCaseId())
+                        .set(SubmissionCase::getVerdict, JudgeStatusConstant.TIME_LIMIT_EXCEEDED)
+                        .update();
+                // 提交
+                submissionEntityService.lambdaUpdate()
+                        .eq(Submission::getId, submitId)
+                        .set(Submission::getVerdict, JudgeStatusConstant.TIME_LIMIT_EXCEEDED)
+                        .set(Submission::getTime, actualTime)
+                        .set(Submission::getMemory, actualMemory)
+                        .update();
+                break;
+            }
+            // kb mb
+            if (actualMemory >= memoryLimit * 1024L) {
+                // 评测点
+                submissionCaseEntityService.lambdaUpdate()
+                        .eq(SubmissionCase::getId, p.getSubmissionCaseId())
+                        .set(SubmissionCase::getVerdict, JudgeStatusConstant.MEMORY_LIMIT_EXCEEDED)
+                        .update();
+                // 提交
+                submissionEntityService.lambdaUpdate()
+                        .eq(Submission::getId, submitId)
+                        .set(Submission::getVerdict, JudgeStatusConstant.MEMORY_LIMIT_EXCEEDED)
+                        .set(Submission::getTime, actualTime)
+                        .set(Submission::getMemory, actualMemory)
+                        .update();
+                break;
+            }
+            // 获取用户输出
+            String output = (String) result.getByPath("0.files.stdout");
+            // 比对答案
+            if (!check(answer, output)) {
+                // 出现错误，设置该评测点为Wrong Answer
+                submissionCaseEntityService.lambdaUpdate()
+                        .eq(SubmissionCase::getId, p.getSubmissionCaseId())
+                        .set(SubmissionCase::getVerdict, JudgeStatusConstant.WRONG_ANSWER)
+                        .update();
+                // 设置提交错误状态 todo 是否是oi赛制 是否是pac
+                submissionEntityService.lambdaUpdate()
+                        .eq(Submission::getId, submitId)
+                        .set(Submission::getVerdict, JudgeStatusConstant.WRONG_ANSWER)
+                        .update();
+                // 遇错止评，结束
+                break;
+            }
+            // 该测试用例正确
+            submissionCaseEntityService.lambdaUpdate()
+                    .eq(SubmissionCase::getId, p.getSubmissionCaseId())
+                    .set(SubmissionCase::getVerdict, JudgeStatusConstant.ACCEPTED)
+                    .update();
         }
+
+        // 提交通过
+        submissionEntityService.lambdaUpdate()
+                .eq(Submission::getId, submitId)
+                .set(Submission::getVerdict, JudgeStatusConstant.ACCEPTED)
+                .set(Submission::getTime, maxTime)
+                .set(Submission::getMemory, maxMemory)
+                .update();
     }
 
     /**
