@@ -49,6 +49,11 @@ public class SubmissionListVO implements Serializable {
     private Integer verdict;
 
     /**
+     * 评测停止点
+     */
+    private Integer verdictIndex;
+
+    /**
      * 错误提醒（编译错误，或者vj提醒）
      */
     private String errorMessage;

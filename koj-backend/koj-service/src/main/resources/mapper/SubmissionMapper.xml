@@ -14,6 +14,7 @@
         <result property="language" column="language" jdbcType="VARCHAR"/>
         <result property="code" column="code" jdbcType="VARCHAR"/>
         <result property="verdict" column="verdict" jdbcType="INTEGER"/>
+        <result property="verdictIndex" column="verdict_index" jdbcType="INTEGER"/>
         <result property="errorMessage" column="error_message" jdbcType="VARCHAR"/>
         <result property="time" column="time" jdbcType="INTEGER"/>
         <result property="memory" column="memory" jdbcType="INTEGER"/>
@@ -31,7 +32,7 @@
     <sql id="Base_Column_List">
         id,problem_id,problem_display_id,
         user_id,username,submit_time,
-        language,code,verdict,
+        language,code,verdict,verdict_index
         error_message,time,memory,
         oi_score,length,group_id,
         contest_id,ip,version,
@@ -48,6 +49,7 @@
         <result property="submitTime" column="submit_time" jdbcType="TIMESTAMP"/>
         <result property="language" column="language" jdbcType="VARCHAR"/>
         <result property="verdict" column="verdict" jdbcType="INTEGER"/>
+        <result property="verdictIndex" column="verdict_index" jdbcType="INTEGER"/>
         <result property="errorMessage" column="error_message" jdbcType="VARCHAR"/>
         <result property="time" column="time" jdbcType="INTEGER"/>
         <result property="memory" column="memory" jdbcType="INTEGER"/>
@@ -77,6 +79,7 @@
                 and s.language = #{language}
             </if>
         </where>
+        order by s.submit_time desc
     </select>
 
     <select id="getTitleByProblemId" resultType="string">

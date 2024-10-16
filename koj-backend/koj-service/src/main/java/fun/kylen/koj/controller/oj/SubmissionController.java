@@ -2,7 +2,9 @@ package fun.kylen.koj.controller.oj;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import fun.kylen.koj.common.R;
+import fun.kylen.koj.model.vo.SubmissionDetailVO;
 import fun.kylen.koj.model.vo.SubmissionListVO;
+import fun.kylen.koj.model.vo.SubmissionVerdictVO;
 import fun.kylen.koj.service.oj.SubmissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,4 +32,15 @@ public class SubmissionController {
                                                           @RequestParam(value = "language",required = false) String language) {
         return R.ok(submissionService.listSubmissionByPage(current, size, problemId, problemDisplayId, userId, username, language));
     }
+
+    @GetMapping("/detail")
+    public R<SubmissionDetailVO> getSubmissionDetail(@RequestParam(value = "submissionId") Long submissionId) {
+        return R.ok(submissionService.getSubmissionDetail(submissionId));
+    }
+
+    @GetMapping("/status") // todo 列表
+    public R<SubmissionVerdictVO> getSubmissionVerdict(@RequestParam(value = "submissionId") Long submissionId) {
+        return R.ok(submissionService.getSubmissionVerdict(submissionId));
+    }
+
 }

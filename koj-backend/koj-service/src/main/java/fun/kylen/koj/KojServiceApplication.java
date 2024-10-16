@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 @SpringBootApplication
-@MapperScan("fun.kylen.koj.mapper")
 @EnableConfigurationProperties
+@MapperScan("fun.kylen.koj.mapper")
 public class KojServiceApplication {
 
     public static void main(String[] args) {

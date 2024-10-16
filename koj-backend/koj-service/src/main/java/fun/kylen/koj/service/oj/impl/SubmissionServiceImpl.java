@@ -5,7 +5,9 @@ import fun.kylen.koj.manager.oj.SubmissionManager;
 import fun.kylen.koj.manager.oj.SubmitManager;
 import fun.kylen.koj.model.dto.SubmissionDTO;
 import fun.kylen.koj.model.dto.SubmissionPageDTO;
+import fun.kylen.koj.model.vo.SubmissionDetailVO;
 import fun.kylen.koj.model.vo.SubmissionListVO;
+import fun.kylen.koj.model.vo.SubmissionVerdictVO;
 import fun.kylen.koj.service.oj.SubmissionService;
 import fun.kylen.koj.service.oj.SubmitService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,16 @@ public class SubmissionServiceImpl implements SubmissionService {
     @Override
     public Page<SubmissionListVO> listSubmissionByPage(Long current, Long size, Long problemId, String problemDisplayId, String userId, String username, String language) {
         return submissionManager.listSubmissionByPage(current, size, problemId, problemDisplayId, userId,username, language);
+    }
+
+    @Override
+    public SubmissionVerdictVO getSubmissionVerdict(Long submissionId) {
+        return submissionManager.getSubmissionVerdict(submissionId);
+    }
+
+    @Override
+    public SubmissionDetailVO getSubmissionDetail(Long submissionId) {
+        return submissionManager.getSubmissionDetail(submissionId);
     }
 }
 

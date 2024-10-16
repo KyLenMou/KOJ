@@ -91,7 +91,15 @@ public class SubmitManager {
         });
         // 将该用户对于该题目的提交的所有测试点添加到数据库
         submissionCaseEntityService.saveBatch(submissionCaseList);
-        // 发送判题任务到消息队列
-        // judgeMessageDispatcher.dispatch(submission.getId());
+        try {
+            // 发送判题任务到消息队列
+            judgeMessageDispatcher.dispatch(submissionId);
+        } catch (Exception e) {
+            // 发送到消息队列失败，用户需要重新对该提交进行判题 todo 新增重新判题接口，仅需把submitId发送到消息队列中即可
+            submissionEntityService.lambdaUpdate()
+                    .set(Submission::getVerdict, JudgeStatusConstant.SUBMIT_FAIL)
+                    .eq(Submission::getId, submissionId)
+                    .update();
+        }
     }
 }
