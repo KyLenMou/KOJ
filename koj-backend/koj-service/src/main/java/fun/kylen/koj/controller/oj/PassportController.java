@@ -1,6 +1,7 @@
 package fun.kylen.koj.controller.oj;
 
 import fun.kylen.koj.common.R;
+import fun.kylen.koj.manager.oj.OAuthManager;
 import fun.kylen.koj.model.dto.UserLoginDTO;
 import fun.kylen.koj.model.dto.UserRegisterDTO;
 import fun.kylen.koj.model.vo.UserInfoVO;
@@ -50,4 +51,13 @@ public class PassportController {
         return R.ok(passportService.getCurrentUserInfo());
     }
 
+    /**
+     * github oauth2 方式登录
+     * @param code
+     * @return
+     */
+    @GetMapping("/github")
+    public R<UserInfoVO> handleGithubPassport(@RequestParam("code") String code) {
+        return R.ok(passportService.handleGithubPassport(code));
+    }
 }

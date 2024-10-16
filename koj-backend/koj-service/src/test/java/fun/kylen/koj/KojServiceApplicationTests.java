@@ -22,7 +22,7 @@ class KojServiceApplicationTests {
         String[] strings = {"=","==","===","====","====="};
         CompletableFuture.runAsync(() -> {
             for (int i = 1; ; i = (i + 1) % 5) {
-                rabbitTemplate.convertAndSend(MqConstant.KOJ_EXCHANGE,MqConstant.JUDGE_ROUTE_KEY, "message1: " + strings[i]);
+                rabbitTemplate.convertAndSend(MqConstant.KOJ_EXCHANGE, MqConstant.JUDGE_ROUTE_KEY, "message1: " + strings[i]);
             }
         });
         while (true) {

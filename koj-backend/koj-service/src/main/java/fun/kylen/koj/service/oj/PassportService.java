@@ -8,7 +8,7 @@ public interface PassportService {
 
     UserInfoVO userRegister(UserRegisterDTO userRegisterDTO);
 
-    UserInfoVO handleGithubPassport(String githubUsername, String githubUserId, String avatarUrl);
+    UserInfoVO handleGithubPassport(String code);
 
     UserInfoVO userLogin(UserLoginDTO userLoginDTO);
 

@@ -1,5 +1,6 @@
 package fun.kylen.koj.service.oj.impl;
 
+import fun.kylen.koj.manager.oj.OAuthManager;
 import fun.kylen.koj.manager.oj.PassportManager;
 import fun.kylen.koj.model.dto.UserLoginDTO;
 import fun.kylen.koj.model.dto.UserRegisterDTO;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 public class PassportServiceImpl implements PassportService {
     @Autowired
     private PassportManager passportManager;
+    @Autowired
+    private OAuthManager oAuthManager;
 
     @Override
     public UserInfoVO userRegister(UserRegisterDTO userRegisterDTO) {
@@ -19,8 +22,8 @@ public class PassportServiceImpl implements PassportService {
     }
 
     @Override
-    public UserInfoVO handleGithubPassport(String githubUsername, String githubUserId, String avatarUrl) {
-        return passportManager.handleGithubPassport(githubUsername, githubUserId, avatarUrl);
+    public UserInfoVO handleGithubPassport(String code) {
+        return oAuthManager.handleGithubPassport(code);
     }
 
     @Override

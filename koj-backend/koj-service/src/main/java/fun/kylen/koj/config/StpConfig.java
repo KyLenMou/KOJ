@@ -2,10 +2,8 @@ package fun.kylen.koj.config;
 
 import cn.dev33.satoken.stp.StpInterface;
 import cn.dev33.satoken.stp.StpUtil;
-import cn.hutool.core.util.StrUtil;
 import fun.kylen.koj.constant.StpConstant;
 import fun.kylen.koj.model.vo.UserInfoVO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;

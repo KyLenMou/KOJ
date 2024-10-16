@@ -9,11 +9,19 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import fun.kylen.koj.common.BusinessException;
 import fun.kylen.koj.common.ResultEnum;
+import fun.kylen.koj.config.RestTemplateConfig;
 import fun.kylen.koj.model.vo.UserInfoVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +40,8 @@ public class OAuthManager{
     private String clientId;
     @Autowired
     private PassportManager passportManager;
+    @Autowired
+    private RestTemplate oAuthRestTemplate;
 
     private final static String github_url = "https://github.com/login/oauth/access_token";
 
@@ -44,22 +54,27 @@ public class OAuthManager{
         paramMap.put("client_secret",secret);
         paramMap.put("code",code);
         // 使用code获取access_token
-        try (HttpResponse result = HttpRequest.post(github_url)
-                .form(paramMap)
-                .execute()) {
-            String body = result.body();
+        try {
+            String body = oAuthRestTemplate.postForEntity(github_url, paramMap, String.class).getBody();
             String accessToken = StrUtil.subBetween(body, "access_token=", "&scope");
             String tokenType = StrUtil.subAfter(body, "token_type=", true);
             // 使用access_token获取用户信息
-            try (HttpResponse response = HttpUtil.createGet("https://api.github.com/user")
-                    .header("Authorization", tokenType + " " + accessToken)
-                    .execute()) {
-                JSONObject jsonObject = JSONUtil.parseObj(response.body());
-                String githubUsername = jsonObject.getStr("login");
-                String githubUserId = jsonObject.getStr("id");
-                String avatarUrl = jsonObject.getStr("avatar_url");
-                return passportManager.handleGithubPassport(githubUsername,githubUserId,avatarUrl);
-            }
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Authorization", tokenType + " " + accessToken);
+            body = oAuthRestTemplate.exchange(
+                    "https://api.github.com/user",
+                    HttpMethod.GET,
+                    new HttpEntity<>(headers),
+                    String.class
+            ).getBody();
+            JSONObject jsonObject = JSONUtil.parseObj(body);
+            String githubUsername = jsonObject.getStr("login");
+            String githubUserId = jsonObject.getStr("id");
+            String avatarUrl = jsonObject.getStr("avatar_url");
+            return passportManager.handleGithubPassport(githubUsername,githubUserId,avatarUrl);
+        } catch (ResourceAccessException e) {
+            log.error("Github请求超时:{}", e.getMessage());
+            throw new BusinessException(ResultEnum.FAIL, "服务器请求Github超时，请稍后重试");
         } catch (Exception e) {
             log.error("Github请求失败:{}", e.getMessage());
             throw new BusinessException(ResultEnum.FAIL, "Github请求失败，请稍后重试");
