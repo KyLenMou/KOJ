@@ -7,7 +7,7 @@ package fun.kylen.koj.constant;
  */
 public class JudgeStatusConstant {
     /**
-     * 0 未评测 仅用于在遇错止评下单个测试用例未评测的情况
+     * 0 未评测/正在运行 仅用于在遇错止评下单个测试用例未评测的情况/正在判题中
      */
     public final static int NULL = 0;
 
