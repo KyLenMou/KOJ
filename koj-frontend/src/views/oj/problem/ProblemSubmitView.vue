@@ -10,11 +10,11 @@
             label-width="100"
           >
             <el-form-item label="Problem:">
-              {{ problem.problemId }} - {{ problem.title }}
+              {{ problem.problemDisplayId }} - {{ problem.title }}
             </el-form-item>
             <el-form-item label="Language:">
               <el-select v-model="submission.language" style="width: 200px">
-                <el-option label="C++" value="cpp"></el-option>
+                <el-option label="C++ 17" value="C++ 17"></el-option>
                 <el-option label="Java" value="java"></el-option>
                 <el-option label="Python" value="python"></el-option>
               </el-select>
@@ -75,7 +75,7 @@ const {currentUser} = storeToRefs(useCurrentUserStore());
 
 const submission = ref<SubmissionDTO | any>({
   code: '',
-  language: 'cpp',
+  language: 'C++ 17',
   problemDisplayId: '',
   problemId: -1,
   userId: '',
@@ -93,7 +93,7 @@ const problem = ref<ProblemInfoVO | any>({
   memoryLimit: 128,
   noteText: '',
   output: '',
-  problemId: '',
+  problemDisplayId: '',
   problemSource: '',
   problemType: '',
   stackLimit: 128,
@@ -108,11 +108,12 @@ onMounted(async () => {
     return
   }
   submission.value.userId = currentUser.value.id;
-  const problemId = route.params.problemId as string;
-  const res = await ProblemControllerService.getProblemDetailUsingGet(problemId);
+  const problemDisplayId = route.params.problemDisplayId as string;
+  const res = await ProblemControllerService.getProblemDetailUsingGet(problemDisplayId);
   problem.value = res.data;
+  // todo 非管理端只是用problemDisplayId
   submission.value.problemId = problem.value.id;
-  submission.value.problemDisplayId = problem.value.problemId;
+  submission.value.problemDisplayId = problem.value.problemDisplayId;
 });
 
 const handleChange = (v: string) => {

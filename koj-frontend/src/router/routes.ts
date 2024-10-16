@@ -1,7 +1,7 @@
 import type { RouteRecordRaw } from "vue-router";
 import HomeView from "@/views/HomeView.vue";
 import CodeView from "@/views/CodeView.vue";
-import ProblemsetView from "@/views/oj/ProblemsetView.vue";
+import ProblemsetView from "@/views/oj/problem/ProblemsetView.vue";
 import ContestsView from "@/views/ContestsView.vue";
 import UserLoginView from "@/views/passport/UserLoginView.vue";
 import UserRegisterView from "@/views/passport/UserRegisterView.vue";
@@ -17,6 +17,7 @@ import ProblemView from "@/views/oj/problem/ProblemView.vue";
 import ProblemDetailView from "@/views/oj/problem/ProblemDetailView.vue";
 import ProblemSubmitView from "@/views/oj/problem/ProblemSubmitView.vue";
 import ProblemSubmissionView from "@/views/oj/problem/ProblemSubmissionView.vue";
+import QueueView from "@/views/oj/queue/QueueView.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   /**
@@ -63,7 +64,7 @@ export const routes: Array<RouteRecordRaw> = [
    * Problem routes 1
    */
   {
-    path: '/problem/:problemId',
+    path: '/problem/:problemDisplayId',
     name: 'problem',
     component: ProblemView,
     meta: {
@@ -130,6 +131,14 @@ export const routes: Array<RouteRecordRaw> = [
     path: '/problemset',
     name: 'problemset',
     component: ProblemsetView,
+    meta: {
+      isVisible: true
+    }
+  },
+  {
+    path: '/queue',
+    name: 'queue',
+    component: QueueView,
     meta: {
       isVisible: true
     }

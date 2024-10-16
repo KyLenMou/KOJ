@@ -27,7 +27,7 @@ export type Problem = {
     noteText?: string;
     openCaseResult?: boolean;
     output?: string;
-    problemId?: string;
+    problemDisplayId?: string;
     problemSource?: string;
     problemType?: string;
     spjCode?: string;

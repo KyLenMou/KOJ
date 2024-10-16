@@ -14,7 +14,7 @@
     <common-table table-head="Problemset" :table-data="problemList" style="width: 100%" :is-loading="isLoading">
       <template #tableContent>
         <el-table-column prop="id" label="ID" min-width="75"/>
-        <el-table-column prop="problemId" label="Problem ID" min-width="100"></el-table-column>
+        <el-table-column prop="problemDisplayId" label="Problem ID" min-width="100"></el-table-column>
         <el-table-column prop="title" label="Title" min-width="200"></el-table-column>
         <el-table-column prop="difficulty" label="Difficulty" min-width="75"></el-table-column>
         <el-table-column prop="tags" label="Tags" width="200">

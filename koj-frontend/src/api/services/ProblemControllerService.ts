@@ -11,18 +11,18 @@ import { request as __request } from '../core/request';
 export class ProblemControllerService {
     /**
      * getProblemDetail
-     * @param problemId problemId
+     * @param problemDisplayId problemDisplayId
      * @returns R_ProblemInfoVO_ OK
      * @throws ApiError
      */
     public static getProblemDetailUsingGet(
-        problemId: string,
+        problemDisplayId: string,
     ): CancelablePromise<R_ProblemInfoVO_> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/problem',
             query: {
-                'problemId': problemId,
+                'problemDisplayId': problemDisplayId,
             },
             errors: {
                 401: `Unauthorized`,

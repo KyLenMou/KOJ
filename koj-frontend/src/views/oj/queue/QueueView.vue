@@ -1,5 +1,5 @@
 <template>
-  <div id="problemSubmissionView">
+  <div id="queueView">
     <div class="commonBox space-between" style="display: flex">
       <el-pagination
         @size-change="handleSizeChange"
@@ -13,11 +13,11 @@
     <common-table
       :is-loading="isLoading"
       :table-data="submissionList"
-      table-head="Submission List"
-      >
+      table-head="Submission Queue"
+    >
       <template #tableContent>
         <el-table-column prop="id" label="#"/>
-        <el-table-column prop="submitTime" label="When" :formatter="formatTimeColumn"/>
+        <el-table-column prop="submitTime" label="When" :formatter="formatTimeColumn" width="120"/>
         <el-table-column prop="username" label="Who"/>
         <el-table-column prop="title" label="Problem"/>
         <el-table-column prop="language" label="Lang"/>
@@ -40,6 +40,7 @@
     </common-table>
   </div>
 </template>
+
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
@@ -71,10 +72,6 @@ const pageQuery = ref({
 const submissionList = ref<any>([]);
 
 onMounted(async () => {
-  pageQuery.value.problemDisplayId = route.params.problemDisplayId as string
-  if (pageQuery.value.problemDisplayId === '') {
-    ElMessage.error('Problem id is empty');
-  }
   await getSubmissionListPage();
 });
 
@@ -110,8 +107,7 @@ const handleCurrentChange = async (val: number) => {
 </script>
 
 <style scoped>
-#problemSubmissionView {
+#queueView {
+  margin-top: 20px;
 }
-
-
 </style>

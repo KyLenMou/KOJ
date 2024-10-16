@@ -5,9 +5,9 @@
 import type { TagVO } from './TagVO';
 export type ProblemsetVO = {
     difficulty?: number;
-    id?: number;
     isRemote?: boolean;
-    problemId?: string;
+    problemDisplayId?: string;
+    problemId?: number;
     problemSource?: string;
     problemType?: string;
     tags?: Array<TagVO>;

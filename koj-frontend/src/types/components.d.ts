@@ -52,6 +52,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     UserCard: typeof import('./../components/UserCard.vue')['default']
+    VerdictText: typeof import('./../components/VerdictText.vue')['default']
   }
   export interface ComponentCustomProperties {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']

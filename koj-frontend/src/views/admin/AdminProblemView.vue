@@ -14,8 +14,8 @@
       <el-row :gutter="20">
         <el-col :span="5">
           <div class="commonBox">
-            <el-form-item label="Problem Id" prop="problem.problemId">
-              <el-input v-model="problemForm.problem.problemId"></el-input>
+            <el-form-item label="Problem Id" prop="problem.problemDisplayId">
+              <el-input v-model="problemForm.problem.problemDisplayId"></el-input>
             </el-form-item>
             <el-form-item label="Title" prop="problem.title">
               <el-input v-model="problemForm.problem.title"></el-input>
@@ -207,7 +207,7 @@ const problemFormRef = ref<FormInstance>()
 
 const problemForm = ref<ProblemDTO | any>({
   problem: {
-    problemId: '',
+    problemDisplayId: '',
     problemSource: '',
     problemType: 'ACM',
     title: '',
@@ -272,7 +272,7 @@ const deleteTestCase = (index: number) => {
 
 // 题目表单规则
 const rules = reactive<FormRules<typeof problemForm>>({
-  'problem.problemId': [
+  'problem.problemDisplayId': [
     {required: true, message: 'Please input problem id', trigger: 'blur'},
     {min: 1, max: 32, message: 'Length should be 1 to 32', trigger: 'blur'}
   ],

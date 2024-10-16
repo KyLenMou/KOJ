@@ -2,9 +2,10 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type SubmissionDTO = {
-    code?: string;
-    language?: string;
-    problemId?: number;
+export type SubmissionVerdictVO = {
+    memory?: number;
+    time?: number;
+    verdict?: number;
+    verdictIndex?: number;
 };
 

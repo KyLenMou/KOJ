@@ -4,7 +4,7 @@
       <el-row :gutter="20">
         <el-col :span="18" style="display: flex; flex-direction: column">
           <div style="text-align: center">
-            <h2>{{ problem.problemId }}. {{ problem.title }}</h2>
+            <h2>{{ problem.problemDisplayId }}. {{ problem.title }}</h2>
             <div>TimeLimit: {{ problem.timeLimit }} ms</div>
             <div>MemoryLimit: {{ problem.memoryLimit }} MB</div>
             <div>StackLimit: {{ problem.stackLimit }} MB</div>
@@ -60,7 +60,7 @@
         <!--65+1px，要算上border-->
         <el-col :span="12" style="height: calc(100vh - 66px);overflow: auto;padding: 10px;">
           <div style="text-align: center">
-            <h2>{{ problem.problemId }}. {{ problem.title }}</h2>
+            <h2>{{ problem.problemDisplayId }}. {{ problem.title }}</h2>
             <div>TimeLimit: {{ problem.timeLimit }} ms</div>
             <div>MemoryLimit: {{ problem.memoryLimit }} MB</div>
             <div>StackLimit: {{ problem.stackLimit }} MB</div>
@@ -108,7 +108,7 @@ const problem = ref<ProblemInfoVO | any>({
   memoryLimit: 128,
   noteText: '',
   output: '',
-  problemId: '',
+  problemDisplayId: '',
   problemSource: '',
   problemType: '',
   stackLimit: 128,
@@ -118,8 +118,8 @@ const problem = ref<ProblemInfoVO | any>({
 })
 
 onMounted(async () => {
-  const problemId = route.params.problemId as string;
-  const res = await ProblemControllerService.getProblemDetailUsingGet(problemId);
+  const problemDisplayId = route.params.problemDisplayId as string;
+  const res = await ProblemControllerService.getProblemDetailUsingGet(problemDisplayId);
   problem.value = res.data;
 });
 

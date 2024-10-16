@@ -28,7 +28,7 @@ export type ProblemInfoVO = {
     noteText?: string;
     openCaseResult?: boolean;
     output?: string;
-    problemId?: string;
+    problemDisplayId?: string;
     problemSource?: string;
     problemType?: string;
     spjCode?: string;

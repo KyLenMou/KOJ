@@ -17,7 +17,7 @@
     </div>
     <common-table table-head="Problemset" :table-data="problemList" style="width: 100%" :is-loading="isLoading">
       <template #tableContent>
-        <el-table-column prop="problemId" label="#" min-width="100"></el-table-column>
+        <el-table-column prop="problemDisplayId" label="#" min-width="100"></el-table-column>
         <el-table-column prop="title" label="Name" min-width="200"></el-table-column>
         <el-table-column v-if="showTagsVisible" prop="tags" label="Tags" min-width="200">
           <template #default="{ row }">
@@ -27,7 +27,7 @@
         <el-table-column prop="difficulty" label="Difficulty" min-width="75"></el-table-column>
         <el-table-column label="Operation" width="200">
           <template #default="{ row }">
-            <el-button type="text" @click="goToProblem(row.problemId)">Detail</el-button>
+            <el-button type="text" @click="goToProblem(row.problemDisplayId)">Detail</el-button>
           </template>
         </el-table-column>
       </template>
@@ -76,8 +76,8 @@ onMounted(async () => {
   await getProblemList();
 });
 
-const goToProblem = (problemId: number) => {
-  router.push(`/problem/${problemId}`);
+const goToProblem = (problemDisplayId: number) => {
+  router.push(`/problem/${problemDisplayId}`);
 };
 </script>
 

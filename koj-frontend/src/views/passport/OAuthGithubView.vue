@@ -8,10 +8,10 @@
 
 <script setup lang="ts">
 import { ElMessage } from "element-plus";
-import { OAuthControllerService } from "@/api";
 import { useCurrentUserStore } from "@/stores/currentUser";
 import { Github } from "@icon-park/vue-next"
 import logo from "@/assets/logo-no-text.png"
+import { PassportControllerService } from "@/api";
 
 const router = useRouter()
 const {setCurrentUser} = useCurrentUserStore()
@@ -23,7 +23,7 @@ onMounted(async () => {
     return
   }
   try {
-    await OAuthControllerService.handleGithubPassportUsingGet(code)
+    await PassportControllerService.handleGithubPassportUsingGet(code)
   } catch (e) {
     await router.push('/login')
     return
