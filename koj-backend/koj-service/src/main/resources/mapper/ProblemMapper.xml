@@ -76,7 +76,7 @@
         <collection property="tags" ofType="fun.kylen.koj.model.vo.TagVO" select="getProblemTag" column="id"/>
     </resultMap>
     <resultMap id="problemset" type="fun.kylen.koj.model.vo.ProblemsetVO">
-        <result property="id" column="id" jdbcType="BIGINT"/>
+        <result property="problemId" column="id" jdbcType="BIGINT"/>
         <result property="problemDisplayId" column="problem_display_id" jdbcType="VARCHAR"/>
         <result property="title" column="title" jdbcType="VARCHAR"/>
         <result property="problemType" column="problem_type" jdbcType="VARCHAR"/>
@@ -153,7 +153,6 @@
             p.difficulty
         from problem p
         where p.auth = 1 and p.is_group = 0
-
     </select>
 
     <select id="getProblemDetail" resultMap="problemInfoVO">

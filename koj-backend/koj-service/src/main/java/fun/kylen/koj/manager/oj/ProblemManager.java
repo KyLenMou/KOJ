@@ -34,11 +34,7 @@ public class ProblemManager {
         if (pageSize >= 100) {
             throw new BusinessException(ResultEnum.FAIL, "请不要爬取数据哦 :) ");
         }
-        Page<ProblemsetVO> problemsetVOPage = problemEntityService.listProblemsetVOByPage(new Page<>(current, pageSize));
-        problemsetVOPage.getRecords().forEach(r -> {
-            r.setId(null);
-        });
-        return problemsetVOPage;
+        return problemEntityService.listProblemsetVOByPage(new Page<>(current, pageSize));
     }
 
     public ProblemInfoVO getProblemDetail(String problemDisplayId) {

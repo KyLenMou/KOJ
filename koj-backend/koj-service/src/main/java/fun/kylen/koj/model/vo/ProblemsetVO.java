@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Data
 public class ProblemsetVO implements Serializable {
-    private Long id;
+    private Long problemId;
 
     private String problemDisplayId;
 
