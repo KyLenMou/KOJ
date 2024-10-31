@@ -16,3 +16,21 @@ KOJ基于Springboot+Vue3前后端分离框架构建，数据库为Mysql，使用
 | 使用**Redis**作为缓存中间件                    | 使用**Mavon Editor**作为富文本编辑器 |
 | 使用**RabbitMQ**作为评测队列解耦提交与判题模块 | 使用**ECharts**作为数据可视化组件    |
 
+## 前端展示
+
+- 评测队列
+
+  ![image-20241031154643833](README.assets/image-20241031154643833.png)
+
+- 做题界面
+  
+  ![image-20241031154920573](README.assets/image-20241031154920573.png)
+
+- 沉浸做题
+  ![image-20241031155027977](README.assets/image-20241031155027977.png)
+
+- 添加题目页面
+  ![image-20241031155121169](README.assets/image-20241031155121169.png)
+
+- 题目管理页面
+  ![image-20241031155143622](README.assets/image-20241031155143622.png)
