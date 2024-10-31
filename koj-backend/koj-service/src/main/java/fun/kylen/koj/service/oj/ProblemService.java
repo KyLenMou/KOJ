@@ -7,7 +7,10 @@ import fun.kylen.koj.model.vo.ProblemsetVO;
 
 public interface ProblemService {
 
-    Page<ProblemsetVO> listProblemsetVOByPage(PageDTO pageDTO);
-
     ProblemInfoVO getProblemDetail(String problemDisplayId);
+
+    Page<ProblemsetVO> listProblemsetVOByPage(Integer current, Integer pageSize);
+
+    Page<ProblemsetVO> listProblemsetVOFromEs(Integer current, Integer pageSize, String searchText);
+
 }

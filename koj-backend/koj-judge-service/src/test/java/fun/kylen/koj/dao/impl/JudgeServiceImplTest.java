@@ -1,4 +1,4 @@
-package fun.kylen.koj.service.impl;
+package fun.kylen.koj.dao.impl;
 
 import cn.hutool.core.io.resource.ResourceUtil;
 import cn.hutool.core.util.StrUtil;
@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.yaml.snakeyaml.Yaml;
 
-import static org.junit.jupiter.api.Assertions.*;
 /**
  * @Author: KyLen
  * @Date: 2024/9/18 16:09

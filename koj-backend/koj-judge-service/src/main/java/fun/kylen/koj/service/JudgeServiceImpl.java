@@ -1,4 +1,4 @@
-package fun.kylen.koj.service.impl;
+package fun.kylen.koj.service;
 
 import fun.kylen.koj.constant.JudgeConstant;
 import fun.kylen.koj.dao.ProblemCaseEntityService;
@@ -11,13 +11,11 @@ import fun.kylen.koj.domain.Submission;
 import fun.kylen.koj.domain.SubmissionCase;
 import fun.kylen.koj.judge.JudgeContext;
 import fun.kylen.koj.model.ProblemAndSubmissionCase;
-import fun.kylen.koj.service.JudgeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @Author: KyLen

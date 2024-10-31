@@ -13,14 +13,20 @@ import org.springframework.stereotype.Service;
 public class ProblemServiceImpl implements ProblemService{
     @Autowired
     private ProblemManager problemManager;
-    @Override
-    public Page<ProblemsetVO> listProblemsetVOByPage(PageDTO pageDTO) {
-        return problemManager.listProblemsetVOByPage(pageDTO);
-    }
 
     @Override
     public ProblemInfoVO getProblemDetail(String problemDisplayId) {
         return problemManager.getProblemDetail(problemDisplayId);
+    }
+
+    @Override
+    public Page<ProblemsetVO> listProblemsetVOByPage(Integer current, Integer pageSize) {
+        return problemManager.listProblemsetVOByPage(current, pageSize);
+    }
+
+    @Override
+    public Page<ProblemsetVO> listProblemsetVOFromEs(Integer current, Integer pageSize, String searchText) {
+        return problemManager.listProblemsetVOFromEs(current, pageSize, searchText);
     }
 }
 

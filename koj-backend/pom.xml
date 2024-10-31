@@ -11,6 +11,7 @@
     <modules>
         <module>koj-service</module>
         <module>koj-entity</module>
+        <module>koj-judge-service</module>
     </modules>
     <packaging>pom</packaging>
 

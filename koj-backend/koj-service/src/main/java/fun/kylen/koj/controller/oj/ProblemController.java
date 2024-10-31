@@ -21,15 +21,18 @@ import org.springframework.web.bind.annotation.*;
 public class ProblemController {
     @Autowired
     private ProblemService problemService;
-
-    // todo 取消pageDTO
-    @PostMapping("/list")
-    public R<Page<ProblemsetVO>> listProblemsetVOByPage(@RequestBody PageDTO pageDTO) {
-        return R.ok(problemService.listProblemsetVOByPage(pageDTO));
+    @GetMapping
+    public R<Page<ProblemsetVO>> listProblemsetVOFromEs(@RequestParam("current") Integer current,
+                                                        @RequestParam("pageSize") Integer pageSize,
+                                                        @RequestParam("searchText") String searchText) {
+        return R.ok(problemService.listProblemsetVOFromEs(current, pageSize, searchText));
     }
 
-    @GetMapping
+    @GetMapping("/detail")
     public R<ProblemInfoVO> getProblemDetail(@RequestParam("problemDisplayId") String problemDisplayId) {
         return R.ok(problemService.getProblemDetail(problemDisplayId));
     }
+
+
+
 }
