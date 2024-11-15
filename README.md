@@ -1,8 +1,8 @@
-# KOJ - KCode Online Judge - 在线评测系统
+# KOJ - Kode Online Judge - 在线评测系统
 
 
 
-<img src="./koj-frontend/src/assets/logo.png" alt="image-20241017105532938" style="zoom:50%;" />
+<img src="./KOJ-LOGO.png" alt="image-20241017105532938" style="zoom:50%;" />
 
 ## 技术选型
 
