@@ -1,13 +1,15 @@
 <template>
-  <div id="app">
-    <router-view/>
+  <div id="notFoundView">
+    404 Not Found
   </div>
 </template>
 
 <script setup lang="ts">
+
 </script>
- 
+
 <style scoped>
-#app {
+#notFoundView {
+
 }
 </style>

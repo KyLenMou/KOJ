@@ -1,23 +1,53 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import NProgress from 'nprogress'; // progress bar
+import DefaultLayout from '@/components/DefaultLayout.vue';
+import appRoutes from './routes';
+import createRouteGuard from './guard';
+
+NProgress.configure({ showSpinner: false }); // NProgress Configuration
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(),
   routes: [
+    // 本地地址
     {
       path: '/',
-      name: 'home',
-      component: HomeView
+      redirect: `${import.meta.env.VITE_CONTEXT}login`,
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
-    }
-  ]
-})
+      path: '/' + import.meta.env.VITE_CONTEXT,
+      redirect: `${import.meta.env.VITE_CONTEXT}home`,
+    },
+    // 线上地址
+    {
+      path: import.meta.env.VITE_CONTEXT,
+      redirect: { path: `${import.meta.env.VITE_CONTEXT}login` },
+    },
+    {
+      path: import.meta.env.VITE_CONTEXT + 'login',
+      name: 'login',
+      component: () => import('@/views/passport/LoginView.vue'),
+      meta: {
+        requiresAuth: false,
+      },
+    },
+    {
+      name: 'root',
+      path: import.meta.env.VITE_CONTEXT,
+      component: DefaultLayout,
+      children: appRoutes,
+    },
+    {
+      path: import.meta.env.VITE_CONTEXT + ':pathMatch(.*)*',
+      name: 'notFound',
+      component: () => import('@/views/NotFoundView.vue'),
+    },
+  ],
+  scrollBehavior() {
+    return { top: 0 };
+  },
+});
 
-export default router
+// createRouteGuard(router);
+
+export default router;

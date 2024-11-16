@@ -1,13 +1,14 @@
 <template>
-  <div id="app">
-    <router-view/>
+  <div id="registerView">
   </div>
 </template>
 
 <script setup lang="ts">
+
 </script>
- 
+
 <style scoped>
-#app {
+#registerView {
+
 }
 </style>
