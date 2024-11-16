@@ -8,6 +8,8 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     DefaultLayout: typeof import('./src/components/DefaultLayout.vue')['default']
+    DefaultNavMenu: typeof import('./src/components/DefaultNavMenu.vue')['default']
+    NavMenu: typeof import('./src/components/NavMenu.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Tiny: typeof import('@opentiny/vue')['default']
@@ -16,6 +18,7 @@ declare module 'vue' {
     TinyButton: typeof import('@opentiny/vue')['Button']
     TinyCard: typeof import('@opentiny/vue')['Card']
     TinyCol: typeof import('@opentiny/vue')['Col']
+    TinyDivder: typeof import('@opentiny/vue')['Divder']
     TinyDivider: typeof import('@opentiny/vue')['Divider']
     TinyGrid: typeof import('@opentiny/vue')['Grid']
     TinyGridColumn: typeof import('@opentiny/vue')['GridColumn']

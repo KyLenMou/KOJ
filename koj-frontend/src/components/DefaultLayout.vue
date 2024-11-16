@@ -1,33 +1,13 @@
 <template>
   <div id="defaultLayout">
-    <tiny-nav-menu ref="navMenu" :data="menuData" style="height: 50px">
-      <!-- logo -->
-      <template #logo>
-        <tiny-image fit="fill" :src="getImg()" style="height: 40px" />
-      </template>
-      <!-- toolbar -->
-      <template #toolbar>
-        <tiny-layout style="width: 200px">
-          <tiny-search mini placeholder="请输入关键词"></tiny-search>
-        </tiny-layout>
-        <tiny-divider direction="vertical"></tiny-divider>
-        <tiny-badge is-dot :hidden="true">
-          <template #default>
-            <tiny-button :icon="IconPublicNotice" circle></tiny-button>
-          </template>
-        </tiny-badge>
-        <tiny-divider direction="vertical"></tiny-divider>
-        <tiny-user-head type="icon" round min></tiny-user-head>
-      </template>
-    </tiny-nav-menu>
-    <tiny-layout class="content-and-footer">
+    <DefaultNavMenu v-model="isNavMenuInit"/>
+    <tiny-layout class="content-and-footer" v-if="isNavMenuInit">
       <tiny-row id="oj-content">
-        <!-- <router-view v-slot="{ Component }" v-if="!isNavMenuLoading"> -->
-          <transition name="cool-transition">
-            <router-view/>
-            <!-- <component :is="Component" /> -->
-          </transition>
-        <!-- </router-view> -->
+        <transition name="cool-transition">
+          <router-view v-slot="{ Component, route }">
+            <component :is="Component" :key="route.fullPath" />
+          </router-view>
+        </transition>
       </tiny-row>
       <tiny-row class="layout-footer">
         <span> KOJ KCode Online Judge ©2024 Created by KyLen </span>
@@ -37,41 +17,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, nextTick, watchEffect } from 'vue'
-import { iconPublicNotice } from '@opentiny/vue-icon'
-const IconPublicNotice = iconPublicNotice()
-// 获得logo图片
-const getImg = () => {
-  return new URL(`@/assets/logo-koj.png`, import.meta.url).href
-}
-// 菜单数据
-const menuData = ref([
-  {
-    title: '首页',
-    url: '/home'
-  },
-  {
-    title: '题目集',
-    url: '/problemset'
-  },
-  {
-    title: '在线调试',
-    url: '/debug'
-  },
-  {
-    title: '评测队列',
-    url: '/queue'
-  }
-])
+import { ref, onMounted, onBeforeUnmount, nextTick, watchEffect, watch } from 'vue'
+const isNavMenuInit = ref(false) 
 
-// 等待菜单加载完成后再显示内容
-const navMenu = ref(null)
-const isNavMenuLoading = ref(true)
-watchEffect(() => {
-  if (navMenu.value) {
-    isNavMenuLoading.value = false
-  }
-})
 </script>
 <style scoped>
 #defaultLayout {
