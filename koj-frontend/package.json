@@ -11,7 +11,7 @@
     "type-check": "vue-tsc --build --force",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
-    "openapi": "openapi --input http://localhost:9000/v2/api-docs --output ./src/api --client axios"
+    "openapi": "openapi --input http://localhost:8080/v2/api-docs --output ./src/api --client axios"
   },
   "dependencies": {
     "@opentiny/vue": "~3.19.0",
@@ -19,6 +19,7 @@
     "mitt": "^3.0.1",
     "nprogress": "^0.2.0",
     "pinia": "^2.1.7",
+    "pinia-plugin-persistedstate": "^4.1.3",
     "vue": "^3.4.29",
     "vue-router": "^4.3.3"
   },
@@ -35,6 +36,7 @@
     "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.23.0",
     "npm-run-all2": "^6.2.0",
+    "openapi-typescript-codegen": "^0.29.0",
     "prettier": "^3.2.5",
     "typescript": "~5.4.0",
     "vite": "^5.3.1",

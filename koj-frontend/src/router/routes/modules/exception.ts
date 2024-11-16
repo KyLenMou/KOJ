@@ -1,4 +1,4 @@
-import { RoleType } from '@/router/RoleType';
+import { RoleType } from '@/common/RoleType';
 
 export default {
   path: 'exception',
@@ -10,6 +10,6 @@ export default {
     locale: 'menu.exception',
     requiresAuth: true,
     order: 6,
-    roles: [RoleType.admin, RoleType.user],
+    roles: [RoleType.admin, RoleType.user, RoleType.guest],
   }
 };

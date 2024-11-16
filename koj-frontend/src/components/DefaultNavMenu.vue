@@ -17,13 +17,22 @@
           </template>
         </tiny-badge>
         <tiny-divider direction="vertical"></tiny-divider>
-        <tiny-user-head type="icon" round min></tiny-user-head>
+
+        <tiny-dropdown>
+          <tiny-user-head type="icon" round min></tiny-user-head>
+          <template #dropdown>
+            <tiny-dropdown-menu>
+              <tiny-dropdown-item @click="openLoginForm">登录</tiny-dropdown-item>
+            </tiny-dropdown-menu>
+          </template>
+        </tiny-dropdown>
       </template>
     </tiny-nav-menu>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useLoginStore } from '@/stores/dialog'
 import { iconPublicNotice } from '@opentiny/vue-icon'
 const IconPublicNotice = iconPublicNotice()
 import { onMounted, ref, watchEffect, defineEmits } from 'vue'
@@ -35,6 +44,12 @@ watchEffect(() => {
     emit('update:modelValue', true)
   }
 })
+
+const loginStore = useLoginStore()
+
+const openLoginForm = () => {
+  loginStore.showLoginDialog()
+}
 
 const props = defineProps([
   'modelValue' // 接收父组件使用 v-model 传进来的值，必须用 modelValue 这个名字来接收
