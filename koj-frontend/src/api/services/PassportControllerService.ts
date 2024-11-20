@@ -89,13 +89,13 @@ export class PassportControllerService {
     /**
      * userRegister
      * @param userRegisterDto userRegisterDTO
-     * @returns R_UserInfoVO_ OK
+     * @returns R_Void_ OK
      * @returns any Created
      * @throws ApiError
      */
     public static userRegisterUsingPost(
         userRegisterDto: UserRegisterDTO,
-    ): CancelablePromise<R_UserInfoVO_ | any> {
+    ): CancelablePromise<R_Void_ | any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/passport/register',

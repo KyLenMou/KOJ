@@ -17,50 +17,50 @@
           </template>
         </tiny-badge>
         <tiny-divider direction="vertical"></tiny-divider>
-
-        <tiny-dropdown>
+        <tiny-dropdown v-if="user.id?.length">
           <tiny-user-head type="icon" round min></tiny-user-head>
           <template #dropdown>
             <tiny-dropdown-menu>
-              <tiny-dropdown-item @click="openLoginForm">登录</tiny-dropdown-item>
+              <tiny-dropdown-item @click="logout">退出登录</tiny-dropdown-item>
             </tiny-dropdown-menu>
           </template>
         </tiny-dropdown>
+        <tiny-button v-else @click="openLoginForm"> 登录/注册 </tiny-button>
       </template>
     </tiny-nav-menu>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useLoginStore } from '@/stores/dialog'
+import { useDialogStore } from '@/stores/dialog'
+import useUserStore from '@/stores/user'
+import { TinyModal } from '@opentiny/vue'
 import { iconPublicNotice } from '@opentiny/vue-icon'
+import { storeToRefs } from 'pinia'
 const IconPublicNotice = iconPublicNotice()
 import { onMounted, ref, watchEffect, defineEmits } from 'vue'
 
-const navMenu = ref(null)
+// 用户数据
+const userStore = useUserStore()
+const { user } = storeToRefs(userStore)
 
-watchEffect(() => {
-  if (navMenu.value) {
-    emit('update:modelValue', true)
-  }
-})
-
-const loginStore = useLoginStore()
-
-const openLoginForm = () => {
-  loginStore.showLoginDialog()
+// 退出登录
+const logout = async () => {
+  // 注意，后台会返回提示信息并且显示，不需要额外处理
+  await userStore.logout()
 }
 
-const props = defineProps([
-  'modelValue' // 接收父组件使用 v-model 传进来的值，必须用 modelValue 这个名字来接收
-])
-
-const emit = defineEmits(['update:modelValue']) // 必须用 update:modelValue 这个名字来通知父组件修改值
+// 登录对话框
+const dialogStore = useDialogStore()
+const openLoginForm = () => {
+  dialogStore.showPassportDialogVisible()
+}
 
 // 获得logo图片
 const getImg = () => {
   return new URL(`@/assets/logo-koj.png`, import.meta.url).href
 }
+
 // 菜单数据
 const menuData = ref([
   {
@@ -80,6 +80,18 @@ const menuData = ref([
     url: '/queue'
   }
 ])
+
+// 先让导航栏加载完成
+const navMenu = ref(null)
+watchEffect(() => {
+  if (navMenu.value) {
+    emit('update:modelValue', true)
+  }
+})
+const props = defineProps([
+  'modelValue' // 接收父组件使用 v-model 传进来的值，必须用 modelValue 这个名字来接收
+])
+const emit = defineEmits(['update:modelValue']) // 必须用 update:modelValue 这个名字来通知父组件修改值
 </script>
 
 <style scoped>

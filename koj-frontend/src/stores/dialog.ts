@@ -2,16 +2,16 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
-export const useLoginStore = defineStore('login', () => {
-  const visible = ref(false)
+export const useDialogStore = defineStore('dialog', () => {
+  const passportDialogVisible = ref(false)
 
-  function showLoginDialog() {
-    visible.value = true
+  function showPassportDialogVisible() {
+    passportDialogVisible.value = true
   }
 
-  function hideLoginDialog() {
-    visible.value = false
+  function hidePassportDialogVisible() {
+    passportDialogVisible.value = false
   }
 
-  return { visible, showLoginDialog, hideLoginDialog }
+  return { passportDialogVisible, showPassportDialogVisible, hidePassportDialogVisible }
 })

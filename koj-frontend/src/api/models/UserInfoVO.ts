@@ -4,10 +4,7 @@
 /* eslint-disable */
 export type UserInfoVO = {
     avatar?: string;
-    email?: string;
-    gender?: string;
     id?: string;
-    signature?: string;
     titleColor?: string;
     titleName?: string;
     userRole?: string;

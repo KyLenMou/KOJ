@@ -1,17 +1,16 @@
 <template>
   <div id="app">
     <router-view />
-    <passport-form v-model:visible="visible"/>
+    <passport-form v-model:passportDialogVisible="passportDialogVisible" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useLoginStore } from './stores/dialog';
-import { storeToRefs } from 'pinia';
+import { useDialogStore } from './stores/dialog'
+import { storeToRefs } from 'pinia'
 
-const loginStore = useLoginStore()
-const { visible } = storeToRefs(loginStore)
+const dialogStore= useDialogStore()
+const { passportDialogVisible } = storeToRefs(dialogStore)
 </script>
 <style scoped>
 #app {

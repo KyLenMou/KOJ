@@ -12,6 +12,7 @@ declare module 'vue' {
     Login: typeof import('./src/components/LoginForm.vue')['default']
     LoginForm: typeof import('./src/components/LoginForm.vue')['default']
     NavMenu: typeof import('./src/components/NavMenu.vue')['default']
+    PassportForm: typeof import('./src/components/PassportForm.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Tiny: typeof import('@opentiny/vue')['default']

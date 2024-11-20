@@ -1,36 +1,49 @@
-import { defineStore } from 'pinia'
-// import { setToken, clearToken } from '@/utils/auth';
-import type { UserState, UserInfo } from './types'
-import { RoleType } from '@/common/RoleType'
-import { computed, ref } from 'vue'
-import { PassportControllerService, type UserLoginDTO } from '@/api'
-import log from '@/common/DevUtils'
+import { defineStore, storeToRefs } from 'pinia'
+import { ref } from 'vue'
+import { PassportControllerService, type UserInfoVO, type UserLoginDTO } from '@/api'
+import { useDialogStore } from './dialog'
 
 const useUserStore = defineStore(
   'user',
   () => {
-    const user = ref<UserState>({
-      userId: '',
+    const user = ref<UserInfoVO>({
+      id: '',
       username: '',
-      role: RoleType.guest
+      userRole: '',
+      avatar: '',
+      titleColor: '',
+      titleName: ''
     })
 
-    const isAdmin = computed(() => user.value.role === 'admin')
-
-    const setUser = (userId: string, username: string, role: RoleType) => {
-      user.value.userId = userId
-      user.value.username = username
-      user.value.role = role
+    const getCurrentUser = async () => {
+      const { data, code } = await PassportControllerService.getCurrentUserInfoUsingGet()
+      if (code) return
+      if (data) {
+        user.value = data
+      }
     }
 
     const login = async (userLoginDTO: UserLoginDTO) => {
-      const res = await PassportControllerService.userLoginUsingPost(userLoginDTO)
-      log.info(res)
-      if (res.data) {
-        setUser(res.data.userId, res.data.username, res.data.userRole)
-      }
+      const { data, code } = await PassportControllerService.userLoginUsingPost(userLoginDTO)
+      if (code) return false
+      user.value = data
+      return true
     }
-    return { user, isAdmin, setUser, login }
+
+    const logout = async () => {
+      const { code } = await PassportControllerService.userLogoutUsingPost()
+      if (code) return false
+      Object.assign(user.value, {
+        id: '',
+        username: '',
+        userRole: '',
+        avatar: '',
+        titleColor: '',
+        titleName: ''
+      })
+      return true
+    }
+    return { user, getCurrentUser, login, logout }
   },
   {
     persist: true
