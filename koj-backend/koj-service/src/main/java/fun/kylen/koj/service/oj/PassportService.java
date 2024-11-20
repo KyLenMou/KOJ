@@ -6,7 +6,7 @@ import fun.kylen.koj.model.vo.UserInfoVO;
 
 public interface PassportService {
 
-    UserInfoVO userRegister(UserRegisterDTO userRegisterDTO);
+    void userRegister(UserRegisterDTO userRegisterDTO);
 
     UserInfoVO handleGithubPassport(String code);
 

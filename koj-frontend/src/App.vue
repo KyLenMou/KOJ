@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <router-view />
-    <login-form v-model:visible="visible" />
+    <passport-form v-model:visible="visible"/>
   </div>
 </template>
 

@@ -17,8 +17,8 @@ public class PassportServiceImpl implements PassportService {
     private OAuthManager oAuthManager;
 
     @Override
-    public UserInfoVO userRegister(UserRegisterDTO userRegisterDTO) {
-        return passportManager.userRegister(userRegisterDTO);
+    public void userRegister(UserRegisterDTO userRegisterDTO) {
+        passportManager.userRegister(userRegisterDTO);
     }
 
     @Override

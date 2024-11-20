@@ -4,7 +4,6 @@
 /* eslint-disable */
 export type UserLoginDTO = {
     password?: string;
-    remember?: boolean;
     username?: string;
 };
 

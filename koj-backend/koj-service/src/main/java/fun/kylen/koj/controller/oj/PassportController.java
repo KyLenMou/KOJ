@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 /**
  * @Author: KyLen
@@ -25,19 +26,20 @@ public class PassportController {
     private PassportService passportService;
 
     @PostMapping("/register")
-    public R<UserInfoVO> userRegister(@Validated @RequestBody UserRegisterDTO userRegisterDTO) {
-        return R.ok(passportService.userRegister(userRegisterDTO));
+    public R<Void> userRegister(@Validated @RequestBody UserRegisterDTO userRegisterDTO) {
+        passportService.userRegister(userRegisterDTO);
+        return R.okWithMessage("注册成功，请登录");
     }
 
-    @GetMapping("/get-register-code")
-    public R<Void> getRegisterCode(@RequestParam("email") @Email String email) {
+    @PostMapping("/send-register-code")
+    public R<Void> sendRegisterCode(@RequestParam("email") @Email @NotBlank String email) {
         passportService.sendRegisterCode(email);
         return R.okWithMessage("已发送验证码");
     }
 
     @PostMapping("/login")
     public R<UserInfoVO> userLogin(@Validated @RequestBody UserLoginDTO userLoginDTO) {
-        return R.ok(passportService.userLogin(userLoginDTO));
+        return R.ok(passportService.userLogin(userLoginDTO),"登录成功");
     }
 
     @PostMapping("/logout")

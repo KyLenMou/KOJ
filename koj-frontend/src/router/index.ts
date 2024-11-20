@@ -9,27 +9,9 @@ NProgress.configure({ showSpinner: false }); // NProgress Configuration
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    // 本地地址
-    {
-      path: '/',
-      redirect: `${import.meta.env.VITE_CONTEXT}login`,
-    },
     {
       path: '/' + import.meta.env.VITE_CONTEXT,
       redirect: `${import.meta.env.VITE_CONTEXT}home`,
-    },
-    // 线上地址
-    {
-      path: import.meta.env.VITE_CONTEXT,
-      redirect: { path: `${import.meta.env.VITE_CONTEXT}login` },
-    },
-    {
-      path: import.meta.env.VITE_CONTEXT + 'login',
-      name: 'login',
-      component: () => import('@/views/passport/LoginView.vue'),
-      meta: {
-        requiresAuth: false,
-      },
     },
     {
       name: 'root',

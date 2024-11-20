@@ -24,7 +24,7 @@ public enum ResultEnum {
 
     FORBIDDEN(403,"禁止访问"),
 
-    NOT_FOUND(404,"访问的数据不存在"),
+    NOT_FOUND(404,"请求资源不存在"),
 
     SYSTEM_ERROR(500,"系统错误，请联系管理员");
 

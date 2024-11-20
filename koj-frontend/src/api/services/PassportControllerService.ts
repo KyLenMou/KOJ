@@ -27,28 +27,6 @@ export class PassportControllerService {
         });
     }
     /**
-     * getRegisterCode
-     * @param email email
-     * @returns R_Void_ OK
-     * @throws ApiError
-     */
-    public static getRegisterCodeUsingGet(
-        email: string,
-    ): CancelablePromise<R_Void_> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/passport/get-register-code',
-            query: {
-                'email': email,
-            },
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-    /**
      * handleGithubPassport
      * @param code code
      * @returns R_UserInfoVO_ OK
@@ -122,6 +100,29 @@ export class PassportControllerService {
             method: 'POST',
             url: '/passport/register',
             body: userRegisterDto,
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+    /**
+     * sendRegisterCode
+     * @param email email
+     * @returns R_Void_ OK
+     * @returns any Created
+     * @throws ApiError
+     */
+    public static sendRegisterCodeUsingPost(
+        email: string,
+    ): CancelablePromise<R_Void_ | any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/passport/send-register-code',
+            query: {
+                'email': email,
+            },
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,

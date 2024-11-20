@@ -35,7 +35,7 @@ public class PassportManager {
     @Autowired
     private EmailManager emailManager;
 
-    public UserInfoVO userRegister(UserRegisterDTO userRegisterDTO) {
+    public void userRegister(UserRegisterDTO userRegisterDTO) {
         String username = userRegisterDTO.getUsername().trim();
         String password = userRegisterDTO.getPassword().trim();
         String confirmPassword = userRegisterDTO.getConfirmPassword();
@@ -51,7 +51,7 @@ public class PassportManager {
         }
         // 用户名要求
         if (username.length() < 5 ||username.length() > 32) {
-            throw new BusinessException(ResultEnum.FAIL, "用户名不能多于32个字符");
+            throw new BusinessException(ResultEnum.FAIL, "用户名长度应在5-32位之间");
         }
         // 邮箱验证码是否正确
         String registerCode = redisUtil.getStr(RedisKeyConstant.EMAIL_REGISTER + email);
@@ -81,8 +81,6 @@ public class PassportManager {
             log.error("用户{}注册失败", username);
             throw new BusinessException(ResultEnum.FAIL, "注册失败");
         }
-        // 登录
-        return loginWithSetCurrentUser(user, true);
     }
 
 
@@ -125,13 +123,12 @@ public class PassportManager {
         }
 
         // 注册过
-        return loginWithSetCurrentUser(userInfo, true);
+        return loginWithSetCurrentUser(userInfo);
     }
 
     public UserInfoVO userLogin(UserLoginDTO userLoginDTO) {
         String username = userLoginDTO.getUsername();
         String password = userLoginDTO.getPassword();
-        Boolean remember = userLoginDTO.getRemember();
         // 查询用户名是否存在
         UserInfo user = userInfoEntityService.lambdaQuery().eq(UserInfo::getUsername, username).one();
         if (user == null) {
@@ -143,7 +140,7 @@ public class PassportManager {
         if (!PasswordUtil.check(password, encryptedPassword)) {
             throw new BusinessException(ResultEnum.FAIL, "用户名或密码错误");
         }
-        return loginWithSetCurrentUser(user, remember);
+        return loginWithSetCurrentUser(user);
     }
 
     public void userLogout() {
@@ -194,10 +191,10 @@ public class PassportManager {
      * @param user
      * @return
      */
-    private UserInfoVO loginWithSetCurrentUser(UserInfo user, Boolean remember) {
+    private UserInfoVO loginWithSetCurrentUser(UserInfo user) {
         UserInfoVO userInfoVO = new UserInfoVO();
         BeanUtil.copyProperties(user, userInfoVO);
-        StpUtil.login(user.getId(), remember);
+        StpUtil.login(user.getId());
         StpUtil.getSession().set(StpConstant.CURRENT_USER, userInfoVO);
         return userInfoVO;
     }
