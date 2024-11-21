@@ -62,17 +62,17 @@
                 </div>
               </tiny-row>
               <tiny-row>
-                <tiny-button class="avatar-inner-btn">
+                <tiny-button class="avatar-inner-btn" @click="goTo('user')">
                   <img src="@/assets/images/userhome.svg" width="18" /> 我的主页
                 </tiny-button>
               </tiny-row>
               <tiny-row>
-                <tiny-button class="avatar-inner-btn"
-                  ><img src="@/assets/images/usersetting.svg" width="18" /> 我的设置
+                <tiny-button class="avatar-inner-btn" @click="goTo('user/settings')">
+                  <img src="@/assets/images/usersetting.svg" width="18" /> 我的设置
                 </tiny-button>
               </tiny-row>
               <tiny-row>
-                <tiny-button class="avatar-inner-btn">
+                <tiny-button class="avatar-inner-btn" @click="goTo('admin')">
                   <img src="@/assets/images/admin.svg" width="18" /> 后台管理
                 </tiny-button>
               </tiny-row>
@@ -100,10 +100,16 @@ import { iconPublicNotice } from '@opentiny/vue-icon'
 import { storeToRefs } from 'pinia'
 const IconPublicNotice = iconPublicNotice()
 import { onMounted, ref, watchEffect, defineEmits } from 'vue'
+import { useRouter } from 'vue-router';
 
 // 用户数据
 const userStore = useUserStore()
 const { user } = storeToRefs(userStore)
+// 菜单跳转
+const router = useRouter()
+const goTo = (url: string) => {
+  router.push(`/${url}`)
+}
 
 // 退出登录
 const logout = async () => {

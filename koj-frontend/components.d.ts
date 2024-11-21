@@ -7,11 +7,14 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AdminLayout: typeof import('./src/components/AdminLayout.vue')['default']
     DefaultLayout: typeof import('./src/components/DefaultLayout.vue')['default']
     DefaultNavMenu: typeof import('./src/components/DefaultNavMenu.vue')['default']
     Login: typeof import('./src/components/LoginForm.vue')['default']
     LoginForm: typeof import('./src/components/LoginForm.vue')['default']
     NavMenu: typeof import('./src/components/NavMenu.vue')['default']
+    OjLayout: typeof import('./src/components/OjLayout.vue')['default']
+    OjNavMenu: typeof import('./src/components/OjNavMenu.vue')['default']
     PassportForm: typeof import('./src/components/PassportForm.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
@@ -21,6 +24,7 @@ declare module 'vue' {
     TinyButton: typeof import('@opentiny/vue')['Button']
     TinyCard: typeof import('@opentiny/vue')['Card']
     TinyCol: typeof import('@opentiny/vue')['Col']
+    TinyContainer: typeof import('@opentiny/vue')['Container']
     TinyDialogBox: typeof import('@opentiny/vue')['DialogBox']
     TinyDivder: typeof import('@opentiny/vue')['Divder']
     TinyDivider: typeof import('@opentiny/vue')['Divider']
@@ -38,9 +42,12 @@ declare module 'vue' {
     TinyLayout: typeof import('@opentiny/vue')['Layout']
     TinyLink: typeof import('@opentiny/vue')['Link']
     TinyNavMenu: typeof import('@opentiny/vue')['NavMenu']
+    TinyPopover: typeof import('@opentiny/vue')['Popover']
+    TinyProgress: typeof import('@opentiny/vue')['Progress']
     TinyRow: typeof import('@opentiny/vue')['Row']
     TinySearch: typeof import('@opentiny/vue')['Search']
     TinySticky: typeof import('@opentiny/vue')['Sticky']
+    TinyTreeMenu: typeof import('@opentiny/vue')['TreeMenu']
     TinyUserHead: typeof import('@opentiny/vue')['UserHead']
   }
 }

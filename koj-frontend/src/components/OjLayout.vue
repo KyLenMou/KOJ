@@ -1,13 +1,13 @@
 <template>
   <div id="defaultLayout">
-    <DefaultNavMenu v-model="isNavMenuInit"/>
+    <oj-nav-menu v-model="isNavMenuInit" />
     <tiny-layout class="content-and-footer" v-if="isNavMenuInit">
       <tiny-row id="oj-content">
-        <transition name="cool-transition">
-          <router-view v-slot="{ Component, route }">
+        <router-view v-slot="{ Component, route }">
+          <transition name="cool-transition">
             <component :is="Component" :key="route.fullPath" />
-          </router-view>
-        </transition>
+          </transition>
+        </router-view>
       </tiny-row>
       <tiny-row class="layout-footer">
         <span> KOJ KCode Online Judge ©2024 Created by KyLen </span>
@@ -18,8 +18,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, nextTick, watchEffect, watch } from 'vue'
-const isNavMenuInit = ref(false) 
-
+const isNavMenuInit = ref(false)
 </script>
 <style scoped>
 #defaultLayout {

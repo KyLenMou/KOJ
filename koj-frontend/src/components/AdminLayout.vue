@@ -18,7 +18,7 @@
               />
               <template #dropdown>
                 <tiny-dropdown-menu popper-class="my-class">
-                  <tiny-dropdown-item>回到OJ主页</tiny-dropdown-item>
+                  <tiny-dropdown-item>回到主页</tiny-dropdown-item>
                   <tiny-dropdown-item>退出登录</tiny-dropdown-item>
                 </tiny-dropdown-menu>
               </template>
@@ -38,7 +38,7 @@
         </tiny-tree-menu>
       </template>
       <div id="admin-content">
-        <tiny-card style="width: 100%; height: 100%">
+        <tiny-card class="admin-content-card">
           <router-view />
         </tiny-card>
       </div>
@@ -51,7 +51,7 @@ import useUserStore from '@/stores/user'
 import { TinyModal } from '@opentiny/vue'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router'
 
 // 获得logo图片
 const getImg = () => {
@@ -65,7 +65,8 @@ const { user } = storeToRefs(userStore)
 const router = useRouter()
 
 const handleMenuClick = (menu: any) => {
-    router.push(`/admin/${menu.id}`)
+  if (menu.id === 'problem') return
+  router.push(`/admin/${menu.id}`)
 }
 
 const menuData = ref([
@@ -78,25 +79,15 @@ const menuData = ref([
     label: '系统设置'
   },
   {
-    id: 30,
-    label: '用户管理',
-    children: [
-      {
-        id: 31,
-        label: '用户列表'
-      },
-      {
-        id: 32,
-        label: '生成用户'
-      }
-    ]
+    id: 'user',
+    label: '用户管理'
   },
   {
     id: 'problem',
     label: '题目管理',
     children: [
       {
-        id: 'problem-list',
+        id: 'problemset',
         label: '题目列表'
       },
       {
@@ -104,7 +95,7 @@ const menuData = ref([
         label: '创建题目'
       },
       {
-        id: 43,
+        id: 'tag',
         label: '标签管理'
       }
     ]
@@ -120,5 +111,10 @@ const menuData = ref([
 }
 :deep(.tiny-tree-node__content::before) {
   border-left: 4px solid black !important;
+}
+.admin-content-card {
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  width: 100%;
+  height: 100%;
 }
 </style>

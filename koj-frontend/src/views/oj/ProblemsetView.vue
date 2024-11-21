@@ -44,7 +44,7 @@
             </tiny-grid>
           </tiny-col>
           <tiny-col :span="4">
-            <tiny-card title="题目详情" custom-class="problem-detail" :auto-width="true">
+            <tiny-card title="题目详情" custom-class="card-boarder" :auto-width="true">
                     123
                 </tiny-card>
           </tiny-col>
@@ -371,9 +371,7 @@ const handleDelete = (id: number) => {
 </script>
 
 <style scoped>
-#problemsetView {
-}
-.problem-detail {
+.card-boarder {
   border: 1px solid #dbdbdb;
   border-radius: 5px;
 }

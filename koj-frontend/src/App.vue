@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div>
     <router-view />
     <passport-form v-model:passportDialogVisible="passportDialogVisible" />
   </div>
@@ -12,7 +12,6 @@ import { storeToRefs } from 'pinia'
 const dialogStore= useDialogStore()
 const { passportDialogVisible } = storeToRefs(dialogStore)
 </script>
+
 <style scoped>
-#app {
-}
 </style>
