@@ -3,8 +3,8 @@ package fun.kylen.koj.service.admin;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import fun.kylen.koj.domain.Tag;
-import fun.kylen.koj.model.dto.PageDTO;
-import fun.kylen.koj.model.vo.TagVO;
+import fun.kylen.koj.model.oj.dto.PageDTO;
+import fun.kylen.koj.model.oj.vo.TagVO;
 
 import java.util.List;
 

@@ -10,9 +10,9 @@ import fun.kylen.koj.constant.RedisKeyConstant;
 import fun.kylen.koj.constant.StpConstant;
 import fun.kylen.koj.constant.UserRoleConstant;
 import fun.kylen.koj.domain.UserInfo;
-import fun.kylen.koj.model.dto.UserLoginDTO;
-import fun.kylen.koj.model.dto.UserRegisterDTO;
-import fun.kylen.koj.model.vo.UserInfoVO;
+import fun.kylen.koj.model.oj.dto.UserLoginDTO;
+import fun.kylen.koj.model.oj.dto.UserRegisterDTO;
+import fun.kylen.koj.model.oj.vo.UserInfoVO;
 import fun.kylen.koj.dao.UserInfoEntityService;
 import fun.kylen.koj.utils.PasswordUtil;
 import fun.kylen.koj.utils.RedisUtil;
@@ -71,10 +71,10 @@ public class PassportManager {
         // 用户
         UserInfo user = new UserInfo();
         user.setUsername(username);
-        user.setUserPassword(password);
+        user.setPassword(password);
         user.setEmail(email);
         // 设置用户权限
-        user.setUserRole(UserRoleConstant.DEFAULT_USER);
+        user.setRole(UserRoleConstant.DEFAULT_USER);
         // 保存到数据库
         boolean save = userInfoEntityService.save(user);
         if (!save) {
@@ -129,13 +129,14 @@ public class PassportManager {
     public UserInfoVO userLogin(UserLoginDTO userLoginDTO) {
         String username = userLoginDTO.getUsername();
         String password = userLoginDTO.getPassword();
+        // todo 邮箱登录
         // 查询用户名是否存在
         UserInfo user = userInfoEntityService.lambdaQuery().eq(UserInfo::getUsername, username).one();
         if (user == null) {
             throw new BusinessException(ResultEnum.FAIL, "用户名或密码错误");
         }
         // 查询用户密码
-        String encryptedPassword = user.getUserPassword();
+        String encryptedPassword = user.getPassword();
         // 判断密码是否正确
         if (!PasswordUtil.check(password, encryptedPassword)) {
             throw new BusinessException(ResultEnum.FAIL, "用户名或密码错误");

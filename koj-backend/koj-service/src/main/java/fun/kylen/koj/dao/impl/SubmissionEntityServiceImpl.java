@@ -5,9 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import fun.kylen.koj.dao.SubmissionEntityService;
 import fun.kylen.koj.domain.Submission;
 import fun.kylen.koj.mapper.SubmissionMapper;
-import fun.kylen.koj.model.dto.SubmissionPageDTO;
-import fun.kylen.koj.model.vo.SubmissionListVO;
-import org.apache.ibatis.annotations.Param;
+import fun.kylen.koj.model.oj.vo.SubmissionListVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -5,9 +5,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import fun.kylen.koj.dao.ProblemEntityService;
 import fun.kylen.koj.domain.Problem;
 import fun.kylen.koj.mapper.ProblemMapper;
-import fun.kylen.koj.model.vo.ProblemInfoVO;
-import fun.kylen.koj.model.vo.ProblemVO;
-import fun.kylen.koj.model.vo.ProblemsetVO;
+import fun.kylen.koj.model.oj.vo.ProblemDetailVO;
+import fun.kylen.koj.model.admin.vo.AdminProblem;
+import fun.kylen.koj.model.oj.vo.ProblemsetVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,13 +29,13 @@ public class ProblemEntityServiceImpl extends ServiceImpl<ProblemMapper, Problem
     }
 
     @Override
-    public Page<ProblemVO> listProblemVOByPage(Page<ProblemVO> page) {
-        return problemMapper.listProblemVOByPage(page);
+    public Page<AdminProblem> listProblemByPage(Page<AdminProblem> page) {
+        return problemMapper.listProblemByPage(page);
     }
 
     @Override
-    public ProblemInfoVO getProblemDetail(String problemDisplayId) {
-        return problemMapper.getProblemDetail(problemDisplayId);
+    public ProblemDetailVO getProblemDetailVO(String problemDisplayId) {
+        return problemMapper.getProblemDetailVO(problemDisplayId);
     }
 }
 

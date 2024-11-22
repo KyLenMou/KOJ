@@ -3,7 +3,7 @@ package fun.kylen.koj.config;
 import cn.dev33.satoken.stp.StpInterface;
 import cn.dev33.satoken.stp.StpUtil;
 import fun.kylen.koj.constant.StpConstant;
-import fun.kylen.koj.model.vo.UserInfoVO;
+import fun.kylen.koj.model.oj.vo.UserInfoVO;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;

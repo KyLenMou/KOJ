@@ -2,9 +2,9 @@ package fun.kylen.koj.service.oj.impl;
 
 import fun.kylen.koj.manager.oj.OAuthManager;
 import fun.kylen.koj.manager.oj.PassportManager;
-import fun.kylen.koj.model.dto.UserLoginDTO;
-import fun.kylen.koj.model.dto.UserRegisterDTO;
-import fun.kylen.koj.model.vo.UserInfoVO;
+import fun.kylen.koj.model.oj.dto.UserLoginDTO;
+import fun.kylen.koj.model.oj.dto.UserRegisterDTO;
+import fun.kylen.koj.model.oj.vo.UserInfoVO;
 import fun.kylen.koj.service.oj.PassportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

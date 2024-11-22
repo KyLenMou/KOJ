@@ -2,8 +2,7 @@ package fun.kylen.koj.controller.oj;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import fun.kylen.koj.common.R;
-import fun.kylen.koj.domain.Submission;
-import fun.kylen.koj.model.dto.SubmissionDTO;
+import fun.kylen.koj.model.oj.dto.SubmissionDTO;
 import fun.kylen.koj.service.oj.SubmitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;

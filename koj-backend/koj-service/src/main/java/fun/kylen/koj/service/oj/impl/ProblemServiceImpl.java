@@ -2,9 +2,8 @@ package fun.kylen.koj.service.oj.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import fun.kylen.koj.manager.oj.ProblemManager;
-import fun.kylen.koj.model.dto.PageDTO;
-import fun.kylen.koj.model.vo.ProblemInfoVO;
-import fun.kylen.koj.model.vo.ProblemsetVO;
+import fun.kylen.koj.model.oj.vo.ProblemDetailVO;
+import fun.kylen.koj.model.oj.vo.ProblemsetVO;
 import fun.kylen.koj.service.oj.ProblemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,8 +14,8 @@ public class ProblemServiceImpl implements ProblemService{
     private ProblemManager problemManager;
 
     @Override
-    public ProblemInfoVO getProblemDetail(String problemDisplayId) {
-        return problemManager.getProblemDetail(problemDisplayId);
+    public ProblemDetailVO getProblemDetailVO(String problemDisplayId) {
+        return problemManager.getProblemDetailVO(problemDisplayId);
     }
 
     @Override

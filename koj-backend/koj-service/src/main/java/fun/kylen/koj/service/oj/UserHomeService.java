@@ -1,6 +1,6 @@
 package fun.kylen.koj.service.oj;
 
-import fun.kylen.koj.model.vo.UserHomeInfoVO;
+import fun.kylen.koj.model.oj.vo.UserHomeInfoVO;
 
 public interface UserHomeService {
 

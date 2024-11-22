@@ -9,9 +9,9 @@ import fun.kylen.koj.dao.UserInfoEntityService;
 import fun.kylen.koj.domain.Submission;
 import fun.kylen.koj.domain.SubmissionCase;
 import fun.kylen.koj.domain.UserInfo;
-import fun.kylen.koj.model.vo.SubmissionDetailVO;
-import fun.kylen.koj.model.vo.SubmissionListVO;
-import fun.kylen.koj.model.vo.SubmissionVerdictVO;
+import fun.kylen.koj.model.oj.vo.SubmissionDetailVO;
+import fun.kylen.koj.model.oj.vo.SubmissionListVO;
+import fun.kylen.koj.model.oj.vo.SubmissionVerdictVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -62,7 +62,7 @@ public class SubmissionManager {
         SubmissionVerdictVO submissionVerdictVO = new SubmissionVerdictVO();
         submissionVerdictVO.setVerdict(submissionVerdictVO.getVerdict());
         submissionVerdictVO.setVerdictIndex(submissionCases.size() + 1);
-        submissionVerdictVO.setTime(submission.getTime());
+        submissionVerdictVO.setTime(submission.getRunTime());
         submissionVerdictVO.setMemory(submissionVerdictVO.getMemory());
 
         /*

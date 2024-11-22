@@ -9,7 +9,6 @@ import fun.kylen.koj.dao.ProblemCaseEntityService;
 import fun.kylen.koj.dao.ProblemEntityService;
 import fun.kylen.koj.dao.SubmissionCaseEntityService;
 import fun.kylen.koj.dao.SubmissionEntityService;
-import fun.kylen.koj.dao.impl.SubmissionCaseEntityServiceImpl;
 import fun.kylen.koj.domain.Submission;
 import fun.kylen.koj.domain.SubmissionCase;
 import fun.kylen.koj.model.LanguageCmdArgs;
@@ -121,8 +120,8 @@ public class JudgeStrategy {
                 submissionEntityService.lambdaUpdate()
                         .eq(Submission::getId, submitId)
                         .set(Submission::getVerdict, JudgeStatusConstant.TIME_LIMIT_EXCEEDED)
-                        .set(Submission::getTime, actualTime)
-                        .set(Submission::getMemory, actualMemory)
+                        .set(Submission::getRunTime, actualTime)
+                        .set(Submission::getRunMemory, actualMemory)
                         .update();
                 break;
             }
@@ -137,8 +136,8 @@ public class JudgeStrategy {
                 submissionEntityService.lambdaUpdate()
                         .eq(Submission::getId, submitId)
                         .set(Submission::getVerdict, JudgeStatusConstant.MEMORY_LIMIT_EXCEEDED)
-                        .set(Submission::getTime, actualTime)
-                        .set(Submission::getMemory, actualMemory)
+                        .set(Submission::getRunTime, actualTime)
+                        .set(Submission::getRunMemory, actualMemory)
                         .update();
                 break;
             }
@@ -170,8 +169,8 @@ public class JudgeStrategy {
         submissionEntityService.lambdaUpdate()
                 .eq(Submission::getId, submitId)
                 .set(Submission::getVerdict, JudgeStatusConstant.ACCEPTED)
-                .set(Submission::getTime, maxTime)
-                .set(Submission::getMemory, maxMemory)
+                .set(Submission::getRunTime, maxTime)
+                .set(Submission::getRunMemory, maxMemory)
                 .update();
     }
 

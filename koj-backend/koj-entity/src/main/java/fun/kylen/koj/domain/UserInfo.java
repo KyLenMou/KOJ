@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -31,7 +30,7 @@ public class UserInfo implements Serializable {
     /**
      * 密码
      */
-    private String userPassword;
+    private String password;
 
     /**
      * 邮箱
@@ -121,7 +120,7 @@ public class UserInfo implements Serializable {
     /**
      * 用户角色 root超级管理员、admin普通管理员、default_user普通用户
      */
-    private String userRole;
+    private String role;
 
     /**
      * 创建时间

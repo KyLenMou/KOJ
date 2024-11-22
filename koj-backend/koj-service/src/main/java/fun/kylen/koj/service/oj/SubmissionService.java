@@ -1,11 +1,9 @@
 package fun.kylen.koj.service.oj;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import fun.kylen.koj.model.dto.SubmissionDTO;
-import fun.kylen.koj.model.dto.SubmissionPageDTO;
-import fun.kylen.koj.model.vo.SubmissionDetailVO;
-import fun.kylen.koj.model.vo.SubmissionListVO;
-import fun.kylen.koj.model.vo.SubmissionVerdictVO;
+import fun.kylen.koj.model.oj.vo.SubmissionDetailVO;
+import fun.kylen.koj.model.oj.vo.SubmissionListVO;
+import fun.kylen.koj.model.oj.vo.SubmissionVerdictVO;
 
 /**
 * @author KyLen

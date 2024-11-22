@@ -8,8 +8,8 @@ import fun.kylen.koj.constant.JudgeStatusConstant;
 import fun.kylen.koj.constant.StpConstant;
 import fun.kylen.koj.dao.*;
 import fun.kylen.koj.domain.*;
-import fun.kylen.koj.model.dto.SubmissionDTO;
-import fun.kylen.koj.model.vo.UserInfoVO;
+import fun.kylen.koj.model.oj.dto.SubmissionDTO;
+import fun.kylen.koj.model.oj.vo.UserInfoVO;
 import fun.kylen.koj.mq.JudgeMessageDispatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -52,7 +52,7 @@ public class SubmitManager {
         Problem problem = problemEntityService.lambdaQuery()
                 .eq(Problem::getId, problemId)
                 .one();
-        submission.setProblemDisplayId(problem.getProblemDisplayId());
+        submission.setProblemDisplayId(problem.getDisplayId());
 
         submission.setSubmitTime(new Date());
         submission.setUserId(currentUser.getId());

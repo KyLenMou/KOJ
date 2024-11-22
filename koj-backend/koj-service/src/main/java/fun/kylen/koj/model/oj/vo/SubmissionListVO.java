@@ -1,4 +1,4 @@
-package fun.kylen.koj.model.vo;
+package fun.kylen.koj.model.oj.vo;
 
 import lombok.Data;
 import java.io.Serializable;

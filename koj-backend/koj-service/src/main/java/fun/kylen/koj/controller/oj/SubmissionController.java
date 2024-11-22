@@ -2,9 +2,9 @@ package fun.kylen.koj.controller.oj;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import fun.kylen.koj.common.R;
-import fun.kylen.koj.model.vo.SubmissionDetailVO;
-import fun.kylen.koj.model.vo.SubmissionListVO;
-import fun.kylen.koj.model.vo.SubmissionVerdictVO;
+import fun.kylen.koj.model.oj.vo.SubmissionDetailVO;
+import fun.kylen.koj.model.oj.vo.SubmissionListVO;
+import fun.kylen.koj.model.oj.vo.SubmissionVerdictVO;
 import fun.kylen.koj.service.oj.SubmissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

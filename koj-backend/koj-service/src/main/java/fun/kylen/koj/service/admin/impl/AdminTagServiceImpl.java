@@ -5,13 +5,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import fun.kylen.koj.domain.Tag;
 import fun.kylen.koj.manager.admin.AdminTagManager;
 import fun.kylen.koj.mapper.TagMapper;
-import fun.kylen.koj.model.dto.PageDTO;
-import fun.kylen.koj.model.vo.TagVO;
+import fun.kylen.koj.model.oj.dto.PageDTO;
+import fun.kylen.koj.model.oj.vo.TagVO;
 import fun.kylen.koj.service.admin.AdminTagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 /**

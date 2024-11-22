@@ -2,14 +2,10 @@ package fun.kylen.koj.service.oj.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import fun.kylen.koj.manager.oj.SubmissionManager;
-import fun.kylen.koj.manager.oj.SubmitManager;
-import fun.kylen.koj.model.dto.SubmissionDTO;
-import fun.kylen.koj.model.dto.SubmissionPageDTO;
-import fun.kylen.koj.model.vo.SubmissionDetailVO;
-import fun.kylen.koj.model.vo.SubmissionListVO;
-import fun.kylen.koj.model.vo.SubmissionVerdictVO;
+import fun.kylen.koj.model.oj.vo.SubmissionDetailVO;
+import fun.kylen.koj.model.oj.vo.SubmissionListVO;
+import fun.kylen.koj.model.oj.vo.SubmissionVerdictVO;
 import fun.kylen.koj.service.oj.SubmissionService;
-import fun.kylen.koj.service.oj.SubmitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

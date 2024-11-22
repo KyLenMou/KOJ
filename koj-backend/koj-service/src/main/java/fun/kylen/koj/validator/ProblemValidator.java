@@ -4,7 +4,7 @@ import fun.kylen.koj.dao.ProblemEntityService;
 import fun.kylen.koj.dao.UserInfoEntityService;
 import fun.kylen.koj.domain.Problem;
 import fun.kylen.koj.domain.ProblemCase;
-import fun.kylen.koj.model.dto.ProblemDTO;
+import fun.kylen.koj.model.oj.dto.ProblemDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -41,10 +41,10 @@ public class ProblemValidator {
     }
 
     public void validate(Problem problem) {
-        String problemId = problem.getProblemDisplayId();
+        String problemId = problem.getDisplayId();
         // 长度为1到32
         commonValidator.validateContent(problemId, "题目的展示ID", 1, 32);
-        commonValidator.validateNull(problemEntityService.lambdaQuery().eq(Problem::getProblemDisplayId, problemId).one(), "题目的展示ID");
+        commonValidator.validateNull(problemEntityService.lambdaQuery().eq(Problem::getDisplayId, problemId).one(), "题目的展示ID");
         String title = problem.getTitle();
         // 长度为1到256
         commonValidator.validateContent(title, "题目标题", 1, 256);
@@ -52,9 +52,6 @@ public class ProblemValidator {
         // 不能没有作者
         commonValidator.validateNotNull(authorUserId, "作者");
         commonValidator.validateNotNull(userInfoEntityService.getById(authorUserId), "作者");
-        String problemType = problem.getProblemType();
-        // 题目类型只能是ACM或OI
-        commonValidator.validateStrings(problemType, "题目的类型", "ACM", "OI");
         Integer timeLimit = problem.getTimeLimit();
         // 时间限制范围为1到5000
         commonValidator.validateNumber(timeLimit, "题目的时间限制", 1, 5000);
@@ -64,9 +61,9 @@ public class ProblemValidator {
         Integer stackLimit = problem.getStackLimit();
         // 栈限制范围为1到1024
         commonValidator.validateNumber(stackLimit, "题目的栈限制", 1, 1024);
-        String descriptionText = problem.getDescriptionText();
+        String description = problem.getDescription();
         // 长度为1到65535
-        commonValidator.validateContent(descriptionText, "题目描述", 1, 65535);
+        commonValidator.validateContent(description, "题目描述", 1, 65535);
         String input = problem.getInput();
         // 长度为1到65535
         commonValidator.validateContent(input, "输入描述", 1, 65535);
@@ -76,28 +73,12 @@ public class ProblemValidator {
         String examples = problem.getExamples();
         // 长度为0到65535
         commonValidator.validateContent(examples, "题面样例", 0, 65535);
-        String noteText = problem.getNoteText();
+        String note = problem.getNote();
         // 长度为0到65535
-        commonValidator.validateContent(noteText, "题目提示", 0, 65535);
-        String problemSource = problem.getProblemSource();
-        // 长度为1到255
-        commonValidator.validateContent(problemSource, "题目来源", 0, 65535);
-        Boolean isRemote = problem.getIsRemote();
-        commonValidator.validateNotNull(isRemote, "是否为远程判题");
+        commonValidator.validateContent(note, "题目提示", 0, 65535);
         Integer difficulty = problem.getDifficulty();
         // 难度范围为100到4000
         commonValidator.validateNumber(difficulty, "题目难度", 100, 4000);
-        Integer auth = problem.getAuth();
-        // 权限范围为1到3
-        commonValidator.validateNumber(auth, "题目的权限", 1, 3);
-        Integer ioScore = problem.getIoScore();
-        // ioScore范围为1到10000
-        commonValidator.validateNumber(ioScore, "oi题目的分数", 1, 10000);
-        Integer cfScore = problem.getCfScore();
-        // cfScore范围为1到10000
-        commonValidator.validateNumber(cfScore, "cf题目的分数", 1, 10000);
-        Boolean codeShare = problem.getCodeShare();
-        commonValidator.validateNotNull(codeShare, "用户是否可用分享");
         String judgeMode = problem.getJudgeMode();
         // 只能为default、spj、interactive
         commonValidator.validateStrings(judgeMode, "判题模式", "default", "spj", "interactive");
@@ -109,17 +90,10 @@ public class ProblemValidator {
         commonValidator.validateContent(spjLanguage, "特判程序或交互程序的语言", 0, 32);
         Boolean isRemoveEndBlank = problem.getIsRemoveEndBlank();
         commonValidator.validateNotNull(isRemoveEndBlank, "是否去除末尾空格");
-        Boolean openCaseResult = problem.getOpenCaseResult();
-        commonValidator.validateNotNull(openCaseResult, "是否开放测试用例结果");
         Boolean isUploadCase = problem.getIsUploadCase();
         commonValidator.validateNotNull(isUploadCase, "是否上传测试用例");
-        Boolean isGroup = problem.getIsGroup();
-        commonValidator.validateNotNull(isGroup, "是否为团队题目");
-        Integer isPublic = problem.getIsPublic();
-        commonValidator.validateNotNull(isPublic, "是否公开");
-        String caseVersion = problem.getCaseVersion();
-        String modifiedUserId = problem.getModifiedUserId();
-        Long groupId = problem.getGroupId();
+        Integer isVisible = problem.getVisible();
+        commonValidator.validateNotNull(isVisible, "是否公开");
     }
 
     // public void validateProblemUpdate(Problem problem) throws BusinessException {

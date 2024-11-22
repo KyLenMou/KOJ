@@ -3,7 +3,7 @@ package fun.kylen.koj.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import fun.kylen.koj.domain.Submission;
-import fun.kylen.koj.model.vo.SubmissionListVO;
+import fun.kylen.koj.model.oj.vo.SubmissionListVO;
 import org.apache.ibatis.annotations.Param;
 
 /**

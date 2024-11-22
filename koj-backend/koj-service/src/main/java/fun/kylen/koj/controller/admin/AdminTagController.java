@@ -5,13 +5,12 @@ import cn.dev33.satoken.annotation.SaMode;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import fun.kylen.koj.common.R;
 import fun.kylen.koj.domain.Tag;
-import fun.kylen.koj.model.dto.PageDTO;
+import fun.kylen.koj.model.oj.dto.PageDTO;
 import fun.kylen.koj.service.admin.AdminTagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 /**

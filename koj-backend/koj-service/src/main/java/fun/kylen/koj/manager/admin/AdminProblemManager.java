@@ -9,10 +9,9 @@ import fun.kylen.koj.dao.ProblemCaseEntityService;
 import fun.kylen.koj.dao.ProblemEntityService;
 import fun.kylen.koj.dao.ProblemTagEntityService;
 import fun.kylen.koj.domain.*;
-import fun.kylen.koj.model.dto.PageDTO;
-import fun.kylen.koj.model.dto.ProblemDTO;
-import fun.kylen.koj.model.vo.ProblemVO;
-import fun.kylen.koj.model.vo.UserInfoVO;
+import fun.kylen.koj.model.oj.dto.ProblemDTO;
+import fun.kylen.koj.model.admin.vo.AdminProblem;
+import fun.kylen.koj.model.oj.vo.UserInfoVO;
 import fun.kylen.koj.validator.ProblemValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -42,8 +41,6 @@ public class AdminProblemManager {
             throw new BusinessException(ResultEnum.NOT_LOGIN);
         }
         problemDTO.getProblem().setAuthorUserId(currentUser.getId());
-        // 设置非远程判题
-        problemDTO.getProblem().setIsRemote(false);
 
         // 校验
         problemValidator.validateDTO(problemDTO);
@@ -75,7 +72,7 @@ public class AdminProblemManager {
         problemTagEntityService.saveBatch(problemTagList);
     }
 
-    public Page<ProblemVO> listProblemVOByPage(PageDTO pageDTO) {
-        return problemEntityService.listProblemVOByPage(new Page<>(pageDTO.getCurrent(), pageDTO.getPageSize()));
+    public Page<AdminProblem> listProblemByPage(Integer current, Integer size) {
+        return problemEntityService.listProblemByPage(new Page<>(current, size));
     }
 }

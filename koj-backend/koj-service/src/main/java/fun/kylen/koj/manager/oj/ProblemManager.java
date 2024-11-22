@@ -6,11 +6,9 @@ import fun.kylen.koj.common.ResultEnum;
 import fun.kylen.koj.dao.ProblemCaseEntityService;
 import fun.kylen.koj.dao.ProblemEntityService;
 import fun.kylen.koj.dao.ProblemTagEntityService;
-import fun.kylen.koj.domain.Problem;
 import fun.kylen.koj.es.ProblemEsDTO;
-import fun.kylen.koj.model.dto.PageDTO;
-import fun.kylen.koj.model.vo.ProblemInfoVO;
-import fun.kylen.koj.model.vo.ProblemsetVO;
+import fun.kylen.koj.model.oj.vo.ProblemDetailVO;
+import fun.kylen.koj.model.oj.vo.ProblemsetVO;
 import fun.kylen.koj.validator.ProblemValidator;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -50,13 +48,10 @@ public class ProblemManager {
         return problemEntityService.listProblemsetVOByPage(new Page<>(current, pageSize));
     }
 
-    public ProblemInfoVO getProblemDetail(String problemDisplayId) {
-        ProblemInfoVO problem = problemEntityService.getProblemDetail(problemDisplayId);
+    public ProblemDetailVO getProblemDetailVO(String problemDisplayId) {
+        ProblemDetailVO problem = problemEntityService.getProblemDetailVO(problemDisplayId);
         if (problem == null) {
             throw new BusinessException(ResultEnum.NOT_FOUND);
-        }
-        if (problem.getAuth() != 1) {
-            throw new BusinessException(ResultEnum.FAIL, "该题目暂时无法查看");
         }
         return problem;
     }
@@ -89,7 +84,7 @@ public class ProblemManager {
                 ProblemEsDTO problemEsDTO = problemEsDTOSearchHit.getContent();
                 ProblemsetVO problemsetVO = new ProblemsetVO();
                 problemsetVO.setProblemId(problemEsDTO.getId());
-                problemsetVO.setProblemDisplayId(problemEsDTO.getProblemDisplayId());
+                problemsetVO.setDisplayId(problemEsDTO.getProblemDisplayId());
                 problemsetVO.setTitle(problemEsDTO.getTitle());
                 resourceList.add(problemsetVO);
             }

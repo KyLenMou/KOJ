@@ -1,7 +1,7 @@
 package fun.kylen.koj.service.oj.impl;
 
 import fun.kylen.koj.manager.oj.UserHomeManager;
-import fun.kylen.koj.model.vo.UserHomeInfoVO;
+import fun.kylen.koj.model.oj.vo.UserHomeInfoVO;
 import fun.kylen.koj.service.oj.UserHomeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

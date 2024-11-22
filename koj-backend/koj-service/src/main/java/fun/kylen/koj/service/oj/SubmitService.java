@@ -1,7 +1,6 @@
 package fun.kylen.koj.service.oj;
 
-import fun.kylen.koj.domain.Submission;
-import fun.kylen.koj.model.dto.SubmissionDTO;
+import fun.kylen.koj.model.oj.dto.SubmissionDTO;
 
 /**
 * @author KyLen

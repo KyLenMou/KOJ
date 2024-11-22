@@ -1,4 +1,4 @@
-package fun.kylen.koj.model.dto;
+package fun.kylen.koj.model.oj.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

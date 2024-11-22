@@ -1,4 +1,4 @@
-package fun.kylen.koj.model.vo;
+package fun.kylen.koj.model.oj.vo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;

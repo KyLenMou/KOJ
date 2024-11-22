@@ -4,10 +4,8 @@ import cn.dev33.satoken.annotation.SaCheckRole;
 import cn.dev33.satoken.annotation.SaMode;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import fun.kylen.koj.common.R;
-import fun.kylen.koj.domain.Problem;
-import fun.kylen.koj.model.dto.PageDTO;
-import fun.kylen.koj.model.dto.ProblemDTO;
-import fun.kylen.koj.model.vo.ProblemVO;
+import fun.kylen.koj.model.oj.dto.ProblemDTO;
+import fun.kylen.koj.model.admin.vo.AdminProblem;
 import fun.kylen.koj.service.admin.AdminProblemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -31,8 +29,8 @@ public class AdminProblemController {
         return R.ok();
     }
 
-    @PostMapping("/list")
-    public R<Page<ProblemVO>> listProblemVOByPage(@RequestBody PageDTO pageDTO) {
-        return R.ok(adminProblemService.listProblemVOByPage(pageDTO));
+    @GetMapping("/list")
+    public R<Page<AdminProblem>> listProblemByPage(@RequestParam("current") Integer current, @RequestParam("size") Integer size) {
+        return R.ok(adminProblemService.listProblemByPage(current, size));
     }
 }

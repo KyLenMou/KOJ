@@ -43,11 +43,6 @@ public class Submission implements Serializable {
     private String username;
 
     /**
-     * 提交的时间
-     */
-    private Date submitTime;
-
-    /**
      * 代码语言
      */
     private String language;
@@ -70,37 +65,22 @@ public class Submission implements Serializable {
     /**
      * 错误提醒（编译错误，或者vj提醒）
      */
-    private String errorMessage;
+    private String runMessage;
 
     /**
      * 运行时间(ms)
      */
-    private Integer time;
+    private Integer runTime;
 
     /**
      * 运行内存（kb）
      */
-    private Integer memory;
-
-    /**
-     * OI判题则不为空
-     */
-    private Integer oiScore;
+    private Integer runMemory;
 
     /**
      * 代码长度
      */
     private Integer length;
-
-    /**
-     * 团队id，不为团队内提交则为null
-     */
-    private Long groupId;
-
-    /**
-     * 比赛id，非比赛题目默认为0
-     */
-    private Long contestId;
 
     /**
      * 提交者所在ip
@@ -116,6 +96,11 @@ public class Submission implements Serializable {
      * 是否为人工评测
      */
     private Integer isManual;
+
+    /**
+     * 提交的时间
+     */
+    private Date submitTime;
 
     /**
      * 创建时间

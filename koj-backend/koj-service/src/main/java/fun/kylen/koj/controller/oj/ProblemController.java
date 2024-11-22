@@ -2,9 +2,8 @@ package fun.kylen.koj.controller.oj;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import fun.kylen.koj.common.R;
-import fun.kylen.koj.model.dto.PageDTO;
-import fun.kylen.koj.model.vo.ProblemInfoVO;
-import fun.kylen.koj.model.vo.ProblemsetVO;
+import fun.kylen.koj.model.oj.vo.ProblemDetailVO;
+import fun.kylen.koj.model.oj.vo.ProblemsetVO;
 import fun.kylen.koj.service.oj.ProblemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -29,8 +28,8 @@ public class ProblemController {
     }
 
     @GetMapping("/detail")
-    public R<ProblemInfoVO> getProblemDetail(@RequestParam("problemDisplayId") String problemDisplayId) {
-        return R.ok(problemService.getProblemDetail(problemDisplayId));
+    public R<ProblemDetailVO> getProblemDetailVO(@RequestParam("problemDisplayId") String problemDisplayId) {
+        return R.ok(problemService.getProblemDetailVO(problemDisplayId));
     }
 
 

@@ -3,8 +3,7 @@ package fun.kylen.koj.dao;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import fun.kylen.koj.domain.Submission;
-import fun.kylen.koj.model.dto.SubmissionPageDTO;
-import fun.kylen.koj.model.vo.SubmissionListVO;
+import fun.kylen.koj.model.oj.vo.SubmissionListVO;
 
 /**
 * @author KyLen

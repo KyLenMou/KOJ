@@ -1,7 +1,7 @@
 package fun.kylen.koj.controller.oj;
 
 import fun.kylen.koj.common.R;
-import fun.kylen.koj.model.vo.UserHomeInfoVO;
+import fun.kylen.koj.model.oj.vo.UserHomeInfoVO;
 import fun.kylen.koj.service.oj.UserHomeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
