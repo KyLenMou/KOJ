@@ -4,10 +4,9 @@
 /* eslint-disable */
 import type { Problem } from './Problem';
 import type { ProblemCase } from './ProblemCase';
-import type { Tag } from './Tag';
 export type ProblemDTO = {
     problem?: Problem;
-    tags?: Array<Tag>;
+    tagIds?: Array<number>;
     testCases?: Array<ProblemCase>;
     uploadTestcaseDir?: string;
 };

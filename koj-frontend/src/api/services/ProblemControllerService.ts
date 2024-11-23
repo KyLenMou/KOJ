@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { R_Page_ProblemsetVO_ } from '../models/R_Page_ProblemsetVO_';
-import type { R_ProblemInfoVO_ } from '../models/R_ProblemInfoVO_';
+import type { R_ProblemDetailVO_ } from '../models/R_ProblemDetailVO_';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
@@ -37,14 +37,14 @@ export class ProblemControllerService {
         });
     }
     /**
-     * getProblemDetail
+     * getProblemDetailVO
      * @param problemDisplayId problemDisplayId
-     * @returns R_ProblemInfoVO_ OK
+     * @returns R_ProblemDetailVO_ OK
      * @throws ApiError
      */
-    public static getProblemDetailUsingGet(
+    public static getProblemDetailVoUsingGet(
         problemDisplayId: string,
-    ): CancelablePromise<R_ProblemInfoVO_> {
+    ): CancelablePromise<R_ProblemDetailVO_> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/problem/detail',

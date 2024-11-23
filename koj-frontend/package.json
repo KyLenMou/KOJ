@@ -16,6 +16,7 @@
   "dependencies": {
     "@opentiny/vue": "~3.19.0",
     "axios": "^1.7.7",
+    "mavon-editor": "^3.0.1",
     "mitt": "^3.0.1",
     "nprogress": "^0.2.0",
     "pinia": "^2.1.7",

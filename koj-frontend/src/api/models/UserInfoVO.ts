@@ -5,9 +5,9 @@
 export type UserInfoVO = {
     avatar?: string;
     id?: string;
+    role?: string;
     titleColor?: string;
     titleName?: string;
-    userRole?: string;
     username?: string;
 };
 

@@ -1,5 +1,5 @@
 <template>
-  <div id="problemsetView">
+  <div>
     <tiny-card style="width: 100%" class="problemsetCard">
       <template #title>
         <h2>题目集</h2>

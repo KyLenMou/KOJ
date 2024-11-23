@@ -3,38 +3,31 @@
 /* tslint:disable */
 /* eslint-disable */
 export type Problem = {
-    auth?: number;
     authorUserId?: string;
+    authorUsername?: string;
     caseVersion?: string;
-    cfScore?: number;
-    codeShare?: boolean;
     createTime?: string;
-    descriptionText?: string;
+    description?: string;
     difficulty?: number;
+    displayId?: string;
     examples?: string;
-    groupId?: number;
     id?: number;
     input?: string;
-    ioScore?: number;
-    isGroup?: boolean;
-    isPublic?: number;
-    isRemote?: boolean;
     isRemoveEndBlank?: boolean;
     isUploadCase?: boolean;
     judgeMode?: string;
     memoryLimit?: number;
     modifiedUserId?: string;
-    noteText?: string;
-    openCaseResult?: boolean;
+    modifiedUsername?: string;
+    note?: string;
+    openCaseResult?: number;
     output?: string;
-    problemDisplayId?: string;
-    problemSource?: string;
-    problemType?: string;
     spjCode?: string;
     spjLanguage?: string;
     stackLimit?: number;
     timeLimit?: number;
     title?: string;
     updateTime?: string;
+    visible?: number;
 };
 

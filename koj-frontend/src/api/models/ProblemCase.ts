@@ -6,10 +6,8 @@ export type ProblemCase = {
     createTime?: string;
     id?: number;
     input?: string;
-    isBanned?: number;
     output?: string;
     problemId?: number;
-    score?: number;
     updateTime?: string;
 };
 

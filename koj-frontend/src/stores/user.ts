@@ -9,7 +9,7 @@ const useUserStore = defineStore(
     const user = ref<UserInfoVO>({
       id: '',
       username: '',
-      userRole: '',
+      role: '',
       avatar: '',
       titleColor: '',
       titleName: ''
@@ -36,7 +36,7 @@ const useUserStore = defineStore(
       Object.assign(user.value, {
         id: '',
         username: '',
-        userRole: '',
+        role: '',
         avatar: '',
         titleColor: '',
         titleName: ''

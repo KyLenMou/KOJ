@@ -30,6 +30,11 @@ const adminRoutes: RouteRecordRaw[] = [
         component: () => import('@/views/admin/AdminProblemsetView.vue')
       },
       {
+        path: 'problem',
+        name: 'AdminProblem',
+        component: () => import('@/views/admin/AdminProblemView.vue')
+      },
+      {
         path: 'settings',
         name: 'AdminSettings',
         component: () => import('@/views/admin/AdminSettingsView.vue')
