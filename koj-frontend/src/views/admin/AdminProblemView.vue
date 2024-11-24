@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div v-loading="isLoadingForm" tiny-loading__background="rgba(0,0,0,0.2)">
     <tiny-form ref="ruleFormRef" :model="problemForm" label-position="top">
       <tiny-form-item>
         <template #label>
           <div style="display: flex">
-            <div class="card-title">编辑题目</div>
+            <div class="admin-card-title">编辑题目</div>
             <tiny-popconfirm
               title="当前操作不会保存，确认返回？"
               type="warning"
@@ -75,17 +75,17 @@
       <tiny-row>
         <tiny-col :lg="2" :md="4">
           <tiny-form-item label="时间限制(ms)" prop="timeLimit">
-            <tiny-numeric v-model="problemForm.problem.timeLimit" :step="100"></tiny-numeric>
+            <tiny-numeric v-model="problemForm.problem.timeLimit" :step="500"></tiny-numeric>
           </tiny-form-item>
         </tiny-col>
         <tiny-col :lg="2" :md="4">
           <tiny-form-item label="内存限制(MB)" prop="memoryLimit">
-            <tiny-numeric v-model="problemForm.problem.memoryLimit" :step="100"></tiny-numeric>
+            <tiny-numeric v-model="problemForm.problem.memoryLimit" :step="128"></tiny-numeric>
           </tiny-form-item>
         </tiny-col>
         <tiny-col :lg="2" :md="4">
           <tiny-form-item label="栈限制(MB)" prop="stackLimit">
-            <tiny-numeric v-model="problemForm.problem.stackLimit" :step="100"></tiny-numeric>
+            <tiny-numeric v-model="problemForm.problem.stackLimit" :step="128"></tiny-numeric>
           </tiny-form-item>
         </tiny-col>
         <tiny-col :lg="2" :md="4">
@@ -96,7 +96,7 @@
       </tiny-row>
       <tiny-form-item>
         <template #label>
-          <div class="card-title">编辑题面</div>
+          <div class="admin-card-title">编辑题面</div>
         </template>
       </tiny-form-item>
       <tiny-row>
@@ -139,7 +139,6 @@
                     </template>
                   </tiny-split>
                 </div>
-
                 <tiny-button
                   type="success"
                   plain
@@ -155,7 +154,7 @@
       </tiny-row>
       <tiny-form-item>
         <template #label>
-          <div class="card-title">编辑评测</div>
+          <div class="admin-card-title">编辑评测</div>
         </template>
       </tiny-form-item>
       <tiny-row>
@@ -237,36 +236,25 @@
 </template>
 
 <script setup lang="ts">
-import { AdminTagControllerService, type ProblemDTO, type Tag } from '@/api'
-import { computed, onMounted, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
-const tabActiveName = ref('1')
+import {
+  AdminProblemControllerService,
+  AdminTagControllerService,
+  type AdminEditProblemDTO,
+  type Tag
+} from '@/api'
+import { TinyModal, TinyLoading } from '@opentiny/vue'
+import { onMounted, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+
 const router = useRouter()
-const submitEdit = () => {
-  problemForm.value.problem.examples = JSON.stringify(exampleJsonObjects.value)
-  console.log(problemForm.value)
-}
-const backToProblemset = () => {
-  router.push({ name: 'AdminProblemset' })
-}
-const deleteTestCase = (index: number) => {
-  problemForm.value.testCases.splice(index, 1)
-}
-const deleteExampleJson = (index: number) => {
-  exampleJsonObjects.value.splice(index, 1)
-}
-const addExampleJson = () => {
-  exampleJsonObjects.value.push({
-    input: '',
-    output: ''
-  })
-}
-const addTestCase = () => {
-  problemForm.value.testCases.push({
-    input: '',
-    output: ''
-  })
-}
+const route = useRoute()
+const tabActiveName = ref('1')
+const isLoadingForm = ref(true)
+const tagOptions = ref<any>([])
+const isUpdate = ref(false)
+const vLoading = TinyLoading.directiv
+
+// 样例JSON
 interface exampleJson {
   input: string
   output: string
@@ -277,7 +265,34 @@ const exampleJsonObjects = ref<exampleJson[]>([
     output: ''
   }
 ])
-const problemForm = ref<ProblemDTO | any>({
+// 回到题目列表
+const backToProblemset = () => {
+  router.push({ name: 'AdminProblemset' })
+}
+// 添加样例JSON
+const addExampleJson = () => {
+  exampleJsonObjects.value.push({
+    input: '',
+    output: ''
+  })
+}
+// 删除样例JSON
+const deleteExampleJson = (index: number) => {
+  exampleJsonObjects.value.splice(index, 1)
+}
+// 添加测试用例
+const addTestCase = () => {
+  problemForm.value.testCases.push({
+    input: '',
+    output: ''
+  })
+}
+// 删除测试用例
+const deleteTestCase = (index: number) => {
+  problemForm.value.testCases.splice(index, 1)
+}
+// 题目表单
+const problemForm = ref<AdminEditProblemDTO | any>({
   problem: {
     description: '',
     difficulty: 800,
@@ -307,8 +322,20 @@ const problemForm = ref<ProblemDTO | any>({
     }
   ]
 })
-const tagOptions = ref<any>([])
+// 提交
+const submitEdit = async () => {
+  problemForm.value.problem.examples = JSON.stringify(exampleJsonObjects.value)
+  const { code } = await AdminProblemControllerService.editProblemUsingPost(
+    problemForm.value,
+    isUpdate.value
+  )
+  if (code) return
+  // 返回到题目列表
+  backToProblemset()
+}
 onMounted(async () => {
+  isLoadingForm.value = true
+  // 获取标签列表
   const { data } = await AdminTagControllerService.listAllTagUsingGet()
   tagOptions.value = data?.map((tag: Tag) => {
     return {
@@ -316,15 +343,26 @@ onMounted(async () => {
       label: tag.tagName
     }
   })
+  // 如果是编辑题目
+  const problemId = route.query.problemId
+  if (problemId) {
+    const { data } = await AdminProblemControllerService.getEditProblemUsingGet(Number(problemId))
+    problemForm.value = data
+    try {
+      exampleJsonObjects.value = JSON.parse(problemForm.value.problem.examples)
+    } catch (e) {
+      TinyModal.message({ message: '样例JSON格式转换错误', status: 'error' })
+      exampleJsonObjects.value = []
+      problemForm.value.problem.examples = ''
+    }
+    // 更新题目
+    isUpdate.value = true
+  }
+  isLoadingForm.value = false
 })
 </script>
 
 <style scoped>
-.card-title {
-  font-size: 1.8em;
-  font-weight: bolder;
-  color: black;
-}
 .tiny-tabs {
   border-bottom: 1px solid #ebeef5;
 }

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div style="font-size: 1.8em; font-weight: bolder; color: black">题目列表</div>
+    <div class="admin-card-title">题目列表</div>
     <tiny-grid
-      :fetch-data="fetchDataOption"
+      :fetch-data="getProblems"
       :pager="pagerConfig"
       :loading="tableLoading"
       size="mini"
@@ -13,7 +13,7 @@
       <template #toolbar>
         <tiny-grid-toolbar refresh>
           <div style="display: flex; gap: 20px">
-            <tiny-button type="primary" @click="goToEditProblem">新增题目</tiny-button>
+            <tiny-button type="primary" @click="goToAddProblem">新增题目</tiny-button>
             <tiny-search style="width: 300px" placeholder="请输入题目ID、展示ID或题目名称" />
           </div>
         </tiny-grid-toolbar>
@@ -63,8 +63,8 @@
       </tiny-grid-column>
       <tiny-grid-column title="操作" align="center" width="14%">
         <template #default="{ row }">
-          <tiny-button type="info" size="mini"> 修改 </tiny-button>
-          <tiny-button type="danger" size="mini"> 删除 </tiny-button>
+          <tiny-button type="info" size="mini" @click="goToEditProblem(row.id)"> 修改 </tiny-button>
+          <tiny-button type="danger" size="mini" @click="deleteProblem(row.id)"> 删除 </tiny-button>
         </template>
       </tiny-grid-column>
     </tiny-grid>
@@ -72,25 +72,29 @@
 </template>
 
 <script setup lang="ts">
-import { AdminProblemControllerService, type AdminProblem, type Problem } from '@/api'
+import { AdminProblemControllerService, type AdminProblemVO, type Problem } from '@/api'
+import { TinyModal, TinyNotify } from '@opentiny/vue'
+import type { TinyGrid } from '@opentiny/vue'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-
 const tableLoading = ref(false)
+// tiny-grid 分页配置
 const pagerConfig = ref({
   attrs: {
     currentPage: 1,
     pageSize: 10,
     pageSizes: [10, 30, 50],
     total: 0,
-    align: 'right', // 可选值：['left', 'center', 'right']
+    align: 'right',
     layout: 'total, sizes, prev, pager, next, jumper'
   }
 })
-const fetchDataOption = ref({
+// tiny-grid 获取题目列表
+const getProblems = ref({
   api: async ({ page }: { page: { currentPage: number; pageSize: number } }) => {
+    console.log(page)
     tableLoading.value = true
     const { currentPage, pageSize } = page
     const { data } = await AdminProblemControllerService.listProblemByPageUsingGet(
@@ -99,13 +103,29 @@ const fetchDataOption = ref({
     )
     tableLoading.value = false
     return {
-      result: data?.records as AdminProblem[],
+      result: data?.records as AdminProblemVO[],
       page: { total: data?.total }
     }
   }
 })
-const goToEditProblem = () => {
+// 新增题目
+const goToAddProblem = () => {
   router.push({ name: 'AdminProblem' })
+}
+// 更新题目
+const goToEditProblem = (problemId: number) => {
+  router.push({ name: 'AdminProblem', query: { problemId: problemId } })
+}
+// 删除题目
+const deleteProblem = async (problemId: number) => {
+  const res = await TinyModal.confirm(
+    '您确定要删除吗？删除后，该题目所有测试用例和提交等关联数据都会被删除！'
+  )
+  if (res === 'confirm') {
+    const { code } = await AdminProblemControllerService.deleteProblemUsingDelete(problemId)
+    if (code) return
+    // todo 刷新表格
+  }
 }
 </script>
 

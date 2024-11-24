@@ -32,7 +32,7 @@ axios.interceptors.response.use(
     return res
   },
   function (error) {
-    TinyModal.message({ message: error, status: 'error' })
+    TinyModal.message({ message: "服务器错误，请联系管理员", status: 'error' })
     return error
   }
 )
