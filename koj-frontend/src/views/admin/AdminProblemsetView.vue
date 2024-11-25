@@ -2,6 +2,7 @@
   <div>
     <div class="admin-card-title">题目列表</div>
     <tiny-grid
+    ref="problemGrid"
       :fetch-data="getProblems"
       :pager="pagerConfig"
       :loading="tableLoading"
@@ -79,6 +80,7 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const tableLoading = ref(false)
+const problemGrid = ref()
 // tiny-grid 分页配置
 const pagerConfig = ref({
   attrs: {
@@ -124,11 +126,7 @@ const deleteProblem = async (problemId: number) => {
     const { code } = await AdminProblemControllerService.deleteProblemUsingDelete(problemId)
     if (code) return
     // 刷新表格
-    // 模拟点击页面上的刷新按钮
-    const refreshButton = document.querySelector('div.tiny-grid-refresh__btn') as any
-    if (refreshButton) {
-      refreshButton.click()
-    }
+    problemGrid.value.handleFetch()
   }
 }
 </script>
