@@ -73,8 +73,7 @@
 
 <script setup lang="ts">
 import { AdminProblemControllerService, type AdminProblemVO, type Problem } from '@/api'
-import { TinyModal, TinyNotify } from '@opentiny/vue'
-import type { TinyGrid } from '@opentiny/vue'
+import { TinyModal } from '@opentiny/vue'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -93,8 +92,7 @@ const pagerConfig = ref({
 })
 // tiny-grid 获取题目列表
 const getProblems = ref({
-  api: async ({ page }: { page: { currentPage: number; pageSize: number } }) => {
-    console.log(page)
+  api: async ({ page }: any) => {
     tableLoading.value = true
     const { currentPage, pageSize } = page
     const { data } = await AdminProblemControllerService.listProblemByPageUsingGet(
@@ -116,6 +114,7 @@ const goToAddProblem = () => {
 const goToEditProblem = (problemId: number) => {
   router.push({ name: 'AdminProblem', query: { problemId: problemId } })
 }
+
 // 删除题目
 const deleteProblem = async (problemId: number) => {
   const res = await TinyModal.confirm(
@@ -124,7 +123,12 @@ const deleteProblem = async (problemId: number) => {
   if (res === 'confirm') {
     const { code } = await AdminProblemControllerService.deleteProblemUsingDelete(problemId)
     if (code) return
-    // todo 刷新表格
+    // 刷新表格
+    // 模拟点击页面上的刷新按钮
+    const refreshButton = document.querySelector('div.tiny-grid-refresh__btn') as any
+    if (refreshButton) {
+      refreshButton.click()
+    }
   }
 }
 </script>
