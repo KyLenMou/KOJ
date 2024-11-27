@@ -27,18 +27,20 @@ public class AdminTagController {
     private AdminTagService adminTagService;
 
     @PostMapping
-    public R<Long> addTag(@RequestBody Tag tag) {
-        return R.ok(adminTagService.addTag(tag));
+    public R<Long> addTag(@RequestParam("tagName") String tagName){
+        return R.ok(adminTagService.addTag(tagName), "添加成功");
     }
 
     @DeleteMapping
-    public R<Boolean> deleteTag(@RequestParam("id") Long id) {
-        return R.ok(adminTagService.deleteTag(id));
+    public R<Void> deleteTag(@RequestParam("id") Long id) {
+        adminTagService.deleteTag(id);
+        return R.okWithMessage("删除成功");
     }
 
     @PutMapping
-    public R<Boolean> updateTag(@RequestBody @Validated Tag tag) {
-        return R.ok(adminTagService.updateTag(tag));
+    public R<Void> updateTag(@RequestBody @Validated Tag tag) {
+        adminTagService.updateTag(tag);
+        return R.okWithMessage("更新成功");
     }
 
     @GetMapping
@@ -46,10 +48,6 @@ public class AdminTagController {
         return R.ok(adminTagService.getTagById(id));
     }
 
-    @PostMapping("/list")
-    public R<Page<Tag>> listTagByPage(@RequestBody PageDTO pageDTO) {
-        return R.ok(adminTagService.listTagByPage(pageDTO));
-    }
     @GetMapping("/list")
     public R<List<Tag>> listAllTag() {
         return R.ok(adminTagService.listAllTag());

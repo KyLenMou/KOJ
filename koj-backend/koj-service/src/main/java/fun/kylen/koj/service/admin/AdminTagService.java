@@ -14,18 +14,13 @@ import java.util.List;
 * @createDate 2024-08-25 21:29:47
 */
 public interface AdminTagService extends IService<Tag> {
-
-    Page<TagVO> listTagVOByPage(PageDTO pageDTO);
-
-    Page<Tag> listTagByPage(PageDTO pageDTO);
-
     Tag getTagById(Long id);
 
-    Boolean updateTag(Tag tag);
+    void updateTag(Tag tag);
 
-    Boolean deleteTag(Long id);
+    void deleteTag(Long id);
 
-    Long addTag(Tag tag);
+    Long addTag(String tagName);
 
     List<Tag> listAllTag();
 

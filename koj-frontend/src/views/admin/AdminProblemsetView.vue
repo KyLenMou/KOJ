@@ -2,20 +2,24 @@
   <div>
     <div class="admin-card-title">题目列表</div>
     <tiny-grid
-    ref="problemGrid"
+      ref="problemGrid"
+      size="mini"
       :fetch-data="getProblems"
       :pager="pagerConfig"
       :loading="tableLoading"
-      size="mini"
       :auto-resize="true"
       :auto-load="true"
       :stripe="true"
     >
       <template #toolbar>
         <tiny-grid-toolbar refresh>
-          <div style="display: flex; gap: 20px">
+          <div style="display: flex">
             <tiny-button type="primary" @click="goToAddProblem">新增题目</tiny-button>
-            <tiny-search style="width: 300px" placeholder="请输入题目ID、展示ID或题目名称" />
+            <tiny-button type="info" @click="showTagModal = true">管理标签</tiny-button>
+            <tiny-search
+              style="width: 300px; margin-left: 10px"
+              placeholder="请输入题目ID、展示ID或题目名称"
+            />
           </div>
         </tiny-grid-toolbar>
       </template>
@@ -36,19 +40,14 @@
       </tiny-grid-column>
       <tiny-grid-column field="judgeMode" title="评测模式" align="center" width="6%">
         <template #default="{ row }">
-          <tiny-tag v-if="row.judgeMode === 'default'" size="small" effect="plain"
-            >默认评测</tiny-tag
-          >
-          <tiny-tag v-else-if="row.judgeMode === 'spj'" size="small" effect="plain" type="success"
-            >特殊评测</tiny-tag
-          >
-          <tiny-tag v-else-if="row.judgeMode === 'interact'" size="small" effect="plain" type="info"
-            >交互评测</tiny-tag
-          >
-          <tiny-tag v-else effect="dark" size="small" type="danger">未知评测</tiny-tag>
+          <judge-mode-tag :judgeMode="row.judgeMode" />
         </template>
       </tiny-grid-column>
-      <tiny-grid-column field="difficulty" title="难度" align="center" width="6%" />
+      <tiny-grid-column field="difficulty" title="难度" align="center" width="6%">
+        <template #default="{ row }">
+          <difficulty-div :difficulty="row.difficulty" />
+        </template>
+      </tiny-grid-column>
       <tiny-grid-column field="visible" title="是否可见" align="center" width="6%">
         <template #default="{ row }">
           <tiny-switch v-model="row.visible" :true-value="1" :false-value="0" />
@@ -69,18 +68,55 @@
         </template>
       </tiny-grid-column>
     </tiny-grid>
+    <tiny-modal
+      v-model="showTagModal"
+      title="标签管理"
+      status="info"
+      show-footer
+      width="470px"
+      :resize="false"
+    >
+      <tiny-row :gutter="10">
+        <tiny-col :span="9">
+          <tiny-input v-model="newTagName" placeholder="新增标签" style="margin-bottom: 10px" />
+        </tiny-col>
+        <tiny-col :span="3">
+          <tiny-button type="info" style="border-radius: 6px" @click="addTag">添加</tiny-button>
+        </tiny-col>
+      </tiny-row>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px">
+        <tiny-tag
+          v-for="tag in tags"
+          size="medium"
+          :key="tag.id"
+          closable
+          type="info"
+          @close="handleClose(tag)"
+          :before-delete="beforeDeleteTag"
+          >{{ tag.tagName }}</tiny-tag
+        >
+      </div>
+    </tiny-modal>
   </div>
 </template>
 
 <script setup lang="ts">
-import { AdminProblemControllerService, type AdminProblemVO, type Problem } from '@/api'
+import {
+  AdminProblemControllerService,
+  AdminTagControllerService,
+  type AdminProblemVO,
+  type Tag
+} from '@/api'
 import { TinyModal } from '@opentiny/vue'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const tableLoading = ref(false)
 const problemGrid = ref()
+const showTagModal = ref(true)
+const tags = ref<Tag[] | any>([])
+const newTagName = ref('')
 // tiny-grid 分页配置
 const pagerConfig = ref({
   attrs: {
@@ -101,6 +137,7 @@ const getProblems = ref({
       currentPage,
       pageSize
     )
+    console.log(data)
     tableLoading.value = false
     return {
       result: data?.records as AdminProblemVO[],
@@ -116,7 +153,6 @@ const goToAddProblem = () => {
 const goToEditProblem = (problemId: number) => {
   router.push({ name: 'AdminProblem', query: { problemId: problemId } })
 }
-
 // 删除题目
 const deleteProblem = async (problemId: number) => {
   const res = await TinyModal.confirm(
@@ -129,6 +165,35 @@ const deleteProblem = async (problemId: number) => {
     problemGrid.value.handleFetch()
   }
 }
+const addTag = async () => {
+  const { code } = await AdminTagControllerService.addTagUsingPost(newTagName.value)
+  if (code) return
+  newTagName.value = ''
+  await getAllTags()
+}
+const handleClose = async (tag: any) => {
+  const { code } = await AdminTagControllerService.deleteTagUsingDelete(tag.id)
+  if (code) return
+  await getAllTags()
+}
+
+const beforeDeleteTag = async (done: any) => {
+  TinyModal.confirm({
+    status: 'warning',
+    message:
+      '确定删除该标签吗？所有包含该标签的题目将不再包含该标签！如果需要重新添加，则需要对每个题目重新添加该标签！'
+  }).then((res: any) => {
+    res === 'confirm' && done()
+  })
+}
+const getAllTags = async () => {
+  const { code, data } = await AdminTagControllerService.listAllTagUsingGet()
+  if (code) return
+  tags.value = data
+}
+onMounted(async () => {
+  await getAllTags()
+})
 </script>
 
 <style scoped></style>

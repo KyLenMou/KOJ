@@ -26,33 +26,23 @@ public class AdminTagServiceImpl extends ServiceImpl<TagMapper, Tag>
     private AdminTagManager adminTagManager;
 
     @Override
-    public Page<TagVO> listTagVOByPage(PageDTO pageDTO) {
-        return adminTagManager.listTagVOByPage(pageDTO);
-    }
-
-    @Override
-    public Page<Tag> listTagByPage(PageDTO pageDTO) {
-        return adminTagManager.listTagByPage(pageDTO);
-    }
-
-    @Override
     public Tag getTagById(Long id) {
         return adminTagManager.getTagById(id);
     }
 
     @Override
-    public Boolean updateTag(Tag tag) {
-        return adminTagManager.updateTag(tag);
+    public void updateTag(Tag tag) {
+        adminTagManager.updateTag(tag);
     }
 
     @Override
-    public Boolean deleteTag(Long id) {
-        return adminTagManager.deleteTag(id);
+    public void deleteTag(Long id) {
+        adminTagManager.deleteTag(id);
     }
 
     @Override
-    public Long addTag(Tag tag) {
-        return adminTagManager.addTag(tag);
+    public Long addTag(String tagName) {
+        return adminTagManager.addTag(tagName);
     }
 
     @Override
