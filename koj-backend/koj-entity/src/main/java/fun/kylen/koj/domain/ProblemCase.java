@@ -38,16 +38,6 @@ public class ProblemCase implements Serializable {
     private String output;
 
     /**
-     * 该测试样例的得分
-     */
-    private Integer score;
-
-    /**
-     * 0可用，1不可用
-     */
-    private Integer isBanned;
-
-    /**
      * 创建时间
      */
     private Date createTime;
