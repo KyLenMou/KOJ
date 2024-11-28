@@ -4,6 +4,7 @@
     v-model="localValue"
     :language="language"
     :toolbarsFlag="false"
+    :autofocus="false"
     placeholder="请输入..."
   />
 </template>

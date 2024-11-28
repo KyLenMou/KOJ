@@ -114,7 +114,7 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 const tableLoading = ref(false)
 const problemGrid = ref()
-const showTagModal = ref(true)
+const showTagModal = ref(false)
 const tags = ref<Tag[] | any>([])
 const newTagName = ref('')
 // tiny-grid 分页配置
@@ -180,6 +180,7 @@ const handleClose = async (tag: any) => {
 const beforeDeleteTag = async (done: any) => {
   TinyModal.confirm({
     status: 'warning',
+    title: "删除标签",
     message:
       '确定删除该标签吗？所有包含该标签的题目将不再包含该标签！如果需要重新添加，则需要对每个题目重新添加该标签！'
   }).then((res: any) => {

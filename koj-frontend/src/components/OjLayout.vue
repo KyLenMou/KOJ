@@ -28,9 +28,11 @@ const isNavMenuInit = ref(false)
   height: 100vh; /* 设置布局高度为视口高度 */
 }
 #oj-content {
-  padding: 1em 15%;
   overflow-y: auto; /* 仅内容区域可垂直滚动 */
   min-height: 90vh; /* 防止因最小高度导致的溢出 */
+  max-width: 1300px;
+  min-width: 1000px;
+  margin: 0 auto;
 }
 :deep(.tiny-nav-menu) {
   z-index: 1000;
@@ -63,9 +65,12 @@ const isNavMenuInit = ref(false)
   padding: 0 15%;
 }
 
-:deep(.slot-logo) {
-  margin-top: 5px;
+@media (max-width: 1300px) {
+  :deep(.tiny-nav-menu) {
+    padding: 0;
+  }
 }
+
 
 .content-and-footer {
   overflow-y: auto;
