@@ -2,9 +2,10 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type R_boolean_ = {
+import type { Page_AdminProblemVO_ } from './Page_AdminProblemVO_';
+export type R_Page_AdminProblemVO_ = {
     code?: number;
-    data?: boolean;
+    data?: Page_AdminProblemVO_;
     message?: string;
 };
 

@@ -17,6 +17,11 @@ const ojRoutes: RouteRecordRaw[] = [
         component: () => import('@/views/oj/ProblemsetView.vue')
       },
       {
+        path: '/problem/:id',
+        name: 'Problem',
+        component: () => import('@/views/problem/ProblemView.vue')
+      },
+      {
         path: '/:pathMatch(.*)*',
         component: () => import('@/views/oj/NotFoundView.vue')
       }

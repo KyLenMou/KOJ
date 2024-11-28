@@ -2,8 +2,10 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type PageDTO = {
-    current?: number;
-    pageSize?: number;
+import type { TagVO } from './TagVO';
+export type R_List_TagVO_ = {
+    code?: number;
+    data?: Array<TagVO>;
+    message?: string;
 };
 

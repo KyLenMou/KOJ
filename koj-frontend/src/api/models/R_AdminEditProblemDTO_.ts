@@ -2,10 +2,10 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Page_Tag_ } from './Page_Tag_';
-export type R_Page_Tag_ = {
+import type { AdminEditProblemDTO } from './AdminEditProblemDTO';
+export type R_AdminEditProblemDTO_ = {
     code?: number;
-    data?: Page_Tag_;
+    data?: AdminEditProblemDTO;
     message?: string;
 };
 

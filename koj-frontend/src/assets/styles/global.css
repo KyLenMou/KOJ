@@ -1,0 +1,23 @@
+.oj-card-title {
+  font-size: 1.5em;
+  font-weight: bolder;
+  color: black;
+}
+.oj-card-subtitle {
+  font-size: 1.2em;
+  font-weight: bolder;
+  color: black;
+}
+
+.admin-card-title {
+  font-size: 1.8em;
+  font-weight: bolder;
+  color: black;
+}
+
+.difficulty-div {
+  font-weight: bold;
+  font-family: verdana, arial, sans-serif;
+}
+
+
