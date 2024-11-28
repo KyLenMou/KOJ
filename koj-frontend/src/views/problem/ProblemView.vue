@@ -40,12 +40,13 @@
           </tiny-popover>
         </div>
         <tiny-button
-          style="margin-left: auto; margin-right: 10px" size="small"
+          style="margin-left: auto; margin-right: 10px"
+          size="small"
           @click="splitLayout = splitLayout === 'fashion' ? 'classic' : 'fashion'"
           >切换布局</tiny-button
         >
         <tiny-button style="margin-right: 10px" size="small">返回</tiny-button>
-        <user-button style="margin-right: 10px;"/>
+        <user-button style="margin-right: 10px" />
       </div>
     </div>
     <div id="problem-view-body">
@@ -79,7 +80,7 @@
               </div>
             </template>
             <template #right>
-              <div class="split-content">内容B区</div>
+              <code-editor />
             </template>
           </tiny-split>
         </template>
@@ -103,7 +104,7 @@
         <template #right>
           <tiny-split v-model="splitClassic2" mode="vertical">
             <template #top>
-              <div class="demo-split-pane">上面板</div>
+              <code-editor />
             </template>
             <template #bottom>
               <div class="demo-split-pane">下面板</div>
@@ -188,18 +189,9 @@ onMounted(async () => {
 .description-content {
   overflow-y: auto;
   max-height: 100%;
-  direction: rtl;
-}
-.description-content > * {
-  direction: ltr;
 }
 
 .description-content::-webkit-scrollbar {
-  width: 5px;
-}
-
-.description-content::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(0, 0, 0, 0.4);
-  cursor: pointer;
+  display: none;
 }
 </style>
