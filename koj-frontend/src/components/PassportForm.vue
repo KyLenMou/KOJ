@@ -145,7 +145,7 @@
 
 <script setup lang="ts">
 import { reactive, ref, watch } from 'vue'
-import { TinyButton, TinyDialogBox, TinyModal } from '@opentiny/vue'
+import { TinyButton, TinyDialogBox } from '@opentiny/vue'
 import { PassportControllerService, type UserLoginDTO, type UserRegisterDTO } from '@/api'
 import useUserStore from '@/stores/user'
 
@@ -228,8 +228,6 @@ watch(localVisible, (newVal) => {
 </script>
 
 <style scoped>
-#passport-form {
-}
 .circle-container {
   display: flex;
   justify-content: center;

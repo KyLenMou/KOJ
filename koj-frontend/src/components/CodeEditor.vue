@@ -34,8 +34,6 @@
     <tiny-popover trigger="click" style="margin: auto 10px auto 0" width="300">
       <template #default>
         <tiny-form label-position="top">
-          <tiny-row>
-            <tiny-col :span="8">
               <tiny-form-item label="字体大小">
                 <tiny-numeric
                   v-model="fontSize"
@@ -44,8 +42,14 @@
                   :max="30"
                   circulate
                 ></tiny-numeric></tiny-form-item
-            ></tiny-col>
-            <tiny-col :span="4">
+            >
+          <tiny-row>
+            <tiny-col :span="6">
+                <tiny-form-item label="显示行号">
+                    <tiny-switch v-model="lineNumbers" size="small" true-value="on" false-value="off"></tiny-switch>
+                </tiny-form-item>
+            </tiny-col>
+            <tiny-col :span="6">
               <tiny-form-item label="Tab大小">
                 <tiny-select v-model="tabSize">
                   <tiny-option :value="2"></tiny-option>
@@ -75,6 +79,10 @@ const language = ref('cpp')
 const isDark = ref(false)
 const fontSize = ref(16)
 const tabSize = ref(4)
+const lineNumbers = ref('on')
+watch(lineNumbers, (v) => {
+  codeEditor.value.updateOptions({ lineNumbers: v })
+})
 watch(fontSize, (v) => {
   codeEditor.value.updateOptions({ fontSize: v })
 })
@@ -128,6 +136,7 @@ onMounted(() => {
     minimap: {
       enabled: false
     },
+　　lineNumbers: lineNumbers.value,
     fontSize: fontSize.value,
     tabSize: tabSize.value,
     readOnly: false,
