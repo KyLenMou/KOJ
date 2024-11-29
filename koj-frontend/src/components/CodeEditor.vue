@@ -1,11 +1,11 @@
 <template>
-  <div class="codeEditorToolBar">
+  <div class="code-editor-toolBar">
     <tiny-select v-model="language" style="width: 100px; margin: auto 5px" size="mini">
       <tiny-option label="C" value="c"></tiny-option>
       <tiny-option label="C++" value="cpp"></tiny-option>
       <tiny-option label="Java" value="java"></tiny-option>
       <tiny-option label="Python" value="python"></tiny-option>
-      <tiny-option label="GoLang" value="go"></tiny-option>
+      <tiny-option label="Go" value="go"></tiny-option>
     </tiny-select>
     <tiny-switch
       v-model="isDark"
@@ -34,6 +34,8 @@
     <tiny-popover trigger="click" style="margin: auto 10px auto 0" width="300">
       <template #default>
         <tiny-form label-position="top">
+          <tiny-row>
+            <tiny-col :span="12">
               <tiny-form-item label="字体大小">
                 <tiny-numeric
                   v-model="fontSize"
@@ -42,20 +44,47 @@
                   :max="30"
                   circulate
                 ></tiny-numeric></tiny-form-item
-            >
+            ></tiny-col>
+          </tiny-row>
           <tiny-row>
-            <tiny-col :span="6">
-                <tiny-form-item label="显示行号">
-                    <tiny-switch v-model="lineNumbers" size="small" true-value="on" false-value="off"></tiny-switch>
-                </tiny-form-item>
-            </tiny-col>
             <tiny-col :span="6">
               <tiny-form-item label="Tab大小">
                 <tiny-select v-model="tabSize">
                   <tiny-option :value="2"></tiny-option>
                   <tiny-option :value="4"></tiny-option>
+                  <tiny-option :value="8"></tiny-option>
                 </tiny-select> </tiny-form-item
             ></tiny-col>
+            <tiny-col :span="6">
+              <tiny-form-item label="滚动条宽度">
+                <tiny-select v-model="scrollbarSize">
+                  <tiny-option :value="4"></tiny-option>
+                  <tiny-option :value="8"></tiny-option>
+                  <tiny-option :value="16"></tiny-option>
+                </tiny-select>
+              </tiny-form-item>
+            </tiny-col>
+          </tiny-row>
+          <tiny-row>
+            <tiny-col :span="6">
+              <tiny-form-item label="显示行号">
+                <tiny-switch
+                  v-model="lineNumbers"
+                  size="small"
+                  true-value="on"
+                  false-value="off"
+                ></tiny-switch> </tiny-form-item
+            ></tiny-col>
+            <tiny-col :span="6">
+              <tiny-form-item label="显示地图">
+                <tiny-switch
+                  v-model="minimap"
+                  size="small"
+                  :true-value="true"
+                  :false-value="false"
+                ></tiny-switch>
+              </tiny-form-item>
+            </tiny-col>
           </tiny-row>
         </tiny-form>
       </template>
@@ -70,16 +99,30 @@
 <script setup lang="ts">
 import * as monaco from 'monaco-editor'
 import { onMounted, ref, toRaw, withDefaults, defineProps, watch } from 'vue'
-
 import { IconDel, IconSetting } from '@opentiny/vue-icon'
 
+// todo 性能问题，以及拖拽时导致的问题
 const TinyIconDel = IconDel()
 const TinyIconSetting = IconSetting()
 const language = ref('cpp')
+const emit = defineEmits(['update:language'])
 const isDark = ref(false)
 const fontSize = ref(16)
 const tabSize = ref(4)
 const lineNumbers = ref('on')
+const scrollbarSize = ref(8)
+const minimap = ref(false)
+watch(minimap, (v) => {
+  codeEditor.value.updateOptions({ minimap: { enabled: v } })
+})
+watch(scrollbarSize, (v) => {
+  codeEditor.value.updateOptions({
+    scrollbar: {
+      verticalScrollbarSize: v,
+      horizontalScrollbarSize: v
+    }
+  })
+})
 watch(lineNumbers, (v) => {
   codeEditor.value.updateOptions({ lineNumbers: v })
 })
@@ -91,6 +134,7 @@ watch(tabSize, (v) => {
 })
 watch(language, (v) => {
   monaco.editor.setModelLanguage(toRaw(codeEditor.value).getModel(), v)
+  emit('update:language', v)
 })
 watch(isDark, (v) => {
   if (v) {
@@ -113,7 +157,7 @@ interface Props {
  * 给组件指定初始值
  */
 const props = withDefaults(defineProps<Props>(), {
-  code: () => '#include<bits/stdc++.h>',
+  code: () => '',
   handleChange: (v: string) => {
     console.log(toRaw(v))
   }
@@ -134,9 +178,14 @@ onMounted(() => {
     colorDecorators: true,
     foldingStrategy: 'indentation', // 代码可分小段折叠
     minimap: {
-      enabled: false
+      enabled: minimap.value
     },
-　　lineNumbers: lineNumbers.value,
+    scrollbar: {
+      // 滚动条设置
+      verticalScrollbarSize: scrollbarSize.value, // 竖滚动条
+      horizontalScrollbarSize: scrollbarSize.value // 横滚动条
+    },
+    lineNumbers: lineNumbers.value as any,
     fontSize: fontSize.value,
     tabSize: tabSize.value,
     readOnly: false,
@@ -151,7 +200,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.codeEditorToolBar {
+.code-editor-toolBar {
   width: 100%;
   height: 35px;
   border-bottom: 1px solid #e8e8e8;

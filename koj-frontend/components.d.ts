@@ -7,11 +7,19 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    1: typeof import('./src/components/1.vue')['default']
     AdminLayout: typeof import('./src/components/AdminLayout.vue')['default']
     CodeEditor: typeof import('./src/components/CodeEditor.vue')['default']
+    CodeEditor1: typeof import('./src/components/CodeEditor1.vue')['default']
+    CompareDifference: typeof import('./src/components/CompareDifference.vue')['default']
     copy: typeof import('./src/components/DifficultyDiv copy.vue')['default']
     DefaultLayout: typeof import('./src/components/DefaultLayout.vue')['default']
     DefaultNavMenu: typeof import('./src/components/DefaultNavMenu.vue')['default']
+    Difference: typeof import('./src/components/Difference.vue')['default']
+    DifferenceCompare: typeof import('./src/components/DifferenceCompare.vue')['default']
+    DifferenceComponent: typeof import('./src/components/DifferenceComponent.vue')['default']
+    DifferenceDiv: typeof import('./src/components/DifferenceDiv.vue')['default']
+    Different: typeof import('./src/components/Different.vue')['default']
     DifficultyDiv: typeof import('./src/components/DifficultyDiv.vue')['default']
     DifficultyTag: typeof import('./src/components/DifficultyTag.vue')['default']
     JudgeModeTag: typeof import('./src/components/JudgeModeTag.vue')['default']
@@ -62,6 +70,7 @@ declare module 'vue' {
     TinyOptio: typeof import('@opentiny/vue')['Optio']
     TinyOption: typeof import('@opentiny/vue')['Option']
     TinyPopconfirm: typeof import('@opentiny/vue')['Popconfirm']
+    TinyPophover: typeof import('@opentiny/vue')['Pophover']
     TinyPopover: typeof import('@opentiny/vue')['Popover']
     TinyProgress: typeof import('@opentiny/vue')['Progress']
     TinyRadio: typeof import('@opentiny/vue')['Radio']
