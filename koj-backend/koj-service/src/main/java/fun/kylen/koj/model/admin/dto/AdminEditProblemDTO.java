@@ -1,16 +1,14 @@
-package fun.kylen.koj.model.oj.dto;
+package fun.kylen.koj.model.admin.dto;
 
 import fun.kylen.koj.domain.Problem;
 import fun.kylen.koj.domain.ProblemCase;
-import fun.kylen.koj.domain.Tag;
 import lombok.Data;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
-public class ProblemDTO {
+public class AdminEditProblemDTO {
 
     @Valid
     private Problem problem;
@@ -19,5 +17,5 @@ public class ProblemDTO {
 
     private String uploadTestcaseDir;
 
-    private List<Tag> tags;
+    private List<Long> tagIds;
 }

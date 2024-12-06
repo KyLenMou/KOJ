@@ -4,8 +4,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import fun.kylen.koj.domain.Problem;
 import com.baomidou.mybatisplus.extension.service.IService;
 import fun.kylen.koj.model.oj.vo.ProblemDetailVO;
-import fun.kylen.koj.model.admin.vo.AdminProblem;
+import fun.kylen.koj.model.admin.vo.AdminProblemVO;
 import fun.kylen.koj.model.oj.vo.ProblemsetVO;
+import fun.kylen.koj.model.oj.vo.TagVO;
 
 /**
 * @author KyLen
@@ -14,9 +15,7 @@ import fun.kylen.koj.model.oj.vo.ProblemsetVO;
 */
 public interface ProblemEntityService extends IService<Problem> {
 
-    Page<ProblemsetVO> listProblemsetVOByPage(Page<ProblemsetVO> page);
-
-    Page<AdminProblem> listProblemByPage(Page<AdminProblem> page);
+    Page<AdminProblemVO> listProblemByPage(Page<AdminProblemVO> page);
 
     ProblemDetailVO getProblemDetailVO(String problemDisplayId);
 }

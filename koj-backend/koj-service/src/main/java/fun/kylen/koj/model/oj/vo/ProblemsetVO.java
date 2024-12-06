@@ -11,13 +11,11 @@ import java.util.List;
  */
 @Data
 public class ProblemsetVO implements Serializable {
-    private Long problemId;
+    private Long id;
 
     private String displayId;
 
     private String title;
 
     private Integer difficulty;
-
-    private List<TagVO> tags;
 }

@@ -8,6 +8,7 @@ import java.util.List;
 public class ProblemDetailVO {
     private Long id;
     private String displayId;
+    // todo 考虑是否展示作者，目前没有展示，返回值为空
     private String authorUserId;
     private String authorUsername;
     private String title;

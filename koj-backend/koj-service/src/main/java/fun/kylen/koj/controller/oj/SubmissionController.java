@@ -38,7 +38,7 @@ public class SubmissionController {
         return R.ok(submissionService.getSubmissionDetail(submissionId));
     }
 
-    @GetMapping("/status") // todo 列表
+    @GetMapping("/verdict") // todo 列表
     public R<SubmissionVerdictVO> getSubmissionVerdict(@RequestParam(value = "submissionId") Long submissionId) {
         return R.ok(submissionService.getSubmissionVerdict(submissionId));
     }

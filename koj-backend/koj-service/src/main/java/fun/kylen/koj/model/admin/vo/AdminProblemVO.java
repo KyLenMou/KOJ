@@ -10,7 +10,7 @@ import java.util.List;
  * @TableName problem
  */
 @Data
-public class AdminProblem {
+public class AdminProblemVO {
     private Long id;
     private String displayId;
     private String authorUserId;

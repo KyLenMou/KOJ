@@ -6,5 +6,5 @@ package fun.kylen.koj.constant;
  * @Description:
  */
 public class StpConstant {
-    public final static String CURRENT_USER = "current-user";
+    public final static String CURRENT_USER = "current_user";
 }

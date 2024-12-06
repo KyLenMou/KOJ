@@ -10,10 +10,6 @@ import cn.hutool.crypto.digest.DigestUtil;
  * @Description:
  */
 public class PasswordUtil {
-    public static void main(String[] args) {
-        System.out.println(encrypt("1232047802347805890235t892ty792ty892y"));
-        System.out.println(encrypt("1"));
-    }
     /**
      * 密码加盐加密
      * @param originPassword 原密码

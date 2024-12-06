@@ -49,16 +49,9 @@
         <result property="judgeMode" column="judge_mode" jdbcType="VARCHAR"/>
         <collection property="tags" ofType="fun.kylen.koj.model.oj.vo.TagVO" select="getProblemTag" column="id"/>
     </resultMap>
-    <resultMap id="problemsetVO" type="fun.kylen.koj.model.oj.vo.ProblemsetVO">
-        <result property="problemId" column="id" jdbcType="BIGINT"/>
-        <result property="displayId" column="display_id" jdbcType="VARCHAR"/>
-        <result property="title" column="title" jdbcType="VARCHAR"/>
-        <result property="difficulty" column="difficulty" jdbcType="INTEGER"/>
-        <collection property="tags" ofType="fun.kylen.koj.model.oj.vo.TagVO" select="getProblemTag" column="id"/>
-    </resultMap>
-    <resultMap id="adminProblem" type="fun.kylen.koj.model.admin.vo.AdminProblem">
+    <resultMap id="adminProblem" type="fun.kylen.koj.model.admin.vo.AdminProblemVO">
         <id property="id" column="id" jdbcType="BIGINT"/>
-        <result property="displayId" column="problem_display_id" jdbcType="VARCHAR"/>
+        <result property="displayId" column="display_id" jdbcType="VARCHAR"/>
         <result property="authorUserId" column="author_user_id" jdbcType="VARCHAR"/>
         <result property="authorUsername" column="author_username" jdbcType="VARCHAR"/>
         <result property="title" column="title" jdbcType="VARCHAR"/>
@@ -87,15 +80,6 @@
                create_time,
                update_time
         from problem
-    </select>
-
-    <select id="listProblemsetVOByPage" resultMap="problemsetVO">
-        select p.id,
-               p.display_id,
-               p.title,
-               p.difficulty
-        from problem p
-        where p.visible = 1
     </select>
 
     <select id="getProblemDetailVO" resultMap="problemDetailVO">

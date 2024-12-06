@@ -3,6 +3,7 @@ package fun.kylen.koj.service.oj.impl;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import fun.kylen.koj.manager.oj.ProblemManager;
 import fun.kylen.koj.model.oj.vo.ProblemDetailVO;
+import fun.kylen.koj.model.oj.vo.ProblemInfoCardVO;
 import fun.kylen.koj.model.oj.vo.ProblemsetVO;
 import fun.kylen.koj.service.oj.ProblemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +20,20 @@ public class ProblemServiceImpl implements ProblemService{
     }
 
     @Override
-    public Page<ProblemsetVO> listProblemsetVOByPage(Integer current, Integer pageSize) {
-        return problemManager.listProblemsetVOByPage(current, pageSize);
+    public Page<ProblemsetVO> listProblemsetVOByPage(Integer current, Integer pageSize, String searchText) {
+        return problemManager.listProblemsetVOByPage(current, pageSize,searchText);
     }
 
     @Override
     public Page<ProblemsetVO> listProblemsetVOFromEs(Integer current, Integer pageSize, String searchText) {
         return problemManager.listProblemsetVOFromEs(current, pageSize, searchText);
     }
+
+    @Override
+    public ProblemInfoCardVO getProblemInfoCard(String problemId) {
+        return problemManager.getProblemInfoCard(problemId);
+    }
+
 }
 
 

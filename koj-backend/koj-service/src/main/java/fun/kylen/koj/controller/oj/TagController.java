@@ -1,9 +1,15 @@
 package fun.kylen.koj.controller.oj;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
+import fun.kylen.koj.common.R;
+import fun.kylen.koj.model.oj.vo.TagVO;
 import fun.kylen.koj.service.oj.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @Author: KyLen
@@ -17,9 +23,9 @@ public class TagController {
     @Autowired
     private TagService tagService;
 
-    // @PostMapping("/list/vo")
-    // public R<Page<TagVO>> listTagVOByPage(@RequestBody PageDTO pageDTO) {
-    //     return R.ok(tagService.listTagVOByPage(pageDTO));
-    // }
+    @GetMapping("/list")
+    public R<List<TagVO>> getTagList() {
+        return R.ok(tagService.getTagList());
+    }
 
 }

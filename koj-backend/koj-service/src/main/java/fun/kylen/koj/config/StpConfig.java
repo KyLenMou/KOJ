@@ -4,6 +4,7 @@ import cn.dev33.satoken.stp.StpInterface;
 import cn.dev33.satoken.stp.StpUtil;
 import fun.kylen.koj.constant.StpConstant;
 import fun.kylen.koj.model.oj.vo.UserInfoVO;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -25,8 +26,9 @@ public class StpConfig implements StpInterface {
     public List<String> getRoleList(Object loginId, String s) {
         UserInfoVO currentUser = (UserInfoVO) StpUtil.getSession().get(StpConstant.CURRENT_USER);
         if (currentUser != null) {
-            return Collections.singletonList(currentUser.getUserRole());
+            return Collections.singletonList(currentUser.getRole());
         }
         return Collections.emptyList();
     }
+
 }

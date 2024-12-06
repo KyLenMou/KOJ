@@ -6,8 +6,9 @@ import fun.kylen.koj.dao.ProblemEntityService;
 import fun.kylen.koj.domain.Problem;
 import fun.kylen.koj.mapper.ProblemMapper;
 import fun.kylen.koj.model.oj.vo.ProblemDetailVO;
-import fun.kylen.koj.model.admin.vo.AdminProblem;
+import fun.kylen.koj.model.admin.vo.AdminProblemVO;
 import fun.kylen.koj.model.oj.vo.ProblemsetVO;
+import fun.kylen.koj.model.oj.vo.TagVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,12 +25,7 @@ public class ProblemEntityServiceImpl extends ServiceImpl<ProblemMapper, Problem
     private ProblemMapper problemMapper;
 
     @Override
-    public Page<ProblemsetVO> listProblemsetVOByPage(Page<ProblemsetVO> page) {
-        return problemMapper.listProblemsetVOByPage(page);
-    }
-
-    @Override
-    public Page<AdminProblem> listProblemByPage(Page<AdminProblem> page) {
+    public Page<AdminProblemVO> listProblemByPage(Page<AdminProblemVO> page) {
         return problemMapper.listProblemByPage(page);
     }
 
@@ -37,6 +33,8 @@ public class ProblemEntityServiceImpl extends ServiceImpl<ProblemMapper, Problem
     public ProblemDetailVO getProblemDetailVO(String problemDisplayId) {
         return problemMapper.getProblemDetailVO(problemDisplayId);
     }
+
+
 }
 
 

@@ -7,4 +7,6 @@ package fun.kylen.koj.constant;
  */
 public class RedisKeyConstant {
     public final static String EMAIL_REGISTER = "email:register:";
+
+    public final static String DEBUG = "debug:";
 }
