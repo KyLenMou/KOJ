@@ -50,8 +50,8 @@
           @click="splitLayout = splitLayout === 'fashion' ? 'classic' : 'fashion'"
           >切换布局</tiny-button
         >
-        <tiny-button style="margin-right: 10px" size="small">返回</tiny-button>
-        <user-button style="margin-right: 10px" />
+        <tiny-button style="margin-right: 20px" size="small" @click="goToHome">返回首页</tiny-button>
+        <user-button style="margin-right: 20px" />
       </div>
     </div>
     <div id="problem-view-body">

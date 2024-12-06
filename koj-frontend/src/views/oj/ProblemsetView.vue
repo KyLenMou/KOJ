@@ -3,7 +3,11 @@
     <tiny-card style="width: 100%" class="problemsetCard">
       <template #title>
         <span class="oj-card-title" style="margin: 0 2px 10px 0">题目集</span>
-        <tiny-popover trigger="hover" width="250" content="点击列表内题目查看详情信息，点击题目ID或标题进入题目详情页面">
+        <tiny-popover
+          trigger="hover"
+          width="250"
+          content="点击列表内题目查看详情信息，点击题目ID或标题进入题目详情页面"
+        >
           <template #reference>
             <IconHelpQuery />
           </template>
@@ -11,7 +15,7 @@
       </template>
       <tiny-layout :col="12">
         <tiny-row>
-          <tiny-col :lg="8" :md="12">
+          <tiny-col :xl="8" :lg="8" :sm="12">
             <tiny-layout :cols="24" style="margin-bottom: 10px">
               <tiny-row :gutter="10">
                 <tiny-col :span="8">
@@ -118,14 +122,19 @@
               >
                 <tiny-grid-column field="displayId" title="题目ID" align="center" width="15%">
                   <template #default="{ row }">
-                    <tiny-link type="primary">{{ row.displayId }}</tiny-link>
+                    <tiny-link type="primary" @click="goToProblem(row.displayId)">{{
+                      row.displayId
+                    }}</tiny-link>
                   </template>
                 </tiny-grid-column>
                 <tiny-grid-column field="title" title="标题" align="center">
                   <template #default="{ row }">
-                    <tiny-link type="primary" style="font-weight: bold; font-size: 1.1em">{{
-                      row.title
-                    }}</tiny-link>
+                    <tiny-link
+                      type="primary"
+                      style="font-weight: bold; font-size: 1.1em"
+                      @click="goToProblem(row.displayId)"
+                      >{{ row.title }}
+                    </tiny-link>
                   </template>
                 </tiny-grid-column>
                 <tiny-grid-column field="difficulty" title="难度" width="15%" align="center">
@@ -136,7 +145,7 @@
               </tiny-grid>
             </tiny-row>
           </tiny-col>
-          <tiny-col :lg="4" :md="12">
+          <tiny-col :xl="4" :lg="4" :sm="12">
             <tiny-card id="problem-info-card" custom-class="card-boarder" :auto-width="true">
               <div style="display: flex; justify-content: space-between">
                 <div>
@@ -183,8 +192,12 @@
                 class="white-svg-button"
                 style="margin-top: 10px; display: flex; align-items: center"
               >
-                <tiny-button style="border-radius: 6px; flex-grow: 1" type="primary"
-                  ><TinyIconEdit /> 查看题目
+                <tiny-button
+                  style="border-radius: 6px; flex-grow: 1"
+                  type="primary"
+                  @click="goToProblem(problemInfo.displayId)"
+                >
+                  <TinyIconEdit /> 查看题目
                 </tiny-button>
                 <tiny-button type="warning" :icon="TinyIconStarO"></tiny-button>
               </div>
@@ -218,6 +231,7 @@ import {
   type ProblemsetVO,
   type Tag
 } from '@/api'
+import router from '@/router'
 const IconBefilter = iconBefilter()
 const IconPushpin = iconPushpin()
 const IconGrade = iconGrade()
@@ -234,6 +248,11 @@ const TinyIconEdit = iconEdit()
 const TinyIconStarO = iconStarO()
 const problemInfoCardLoading = ref()
 const problemsetLoading = ref(false)
+
+const goToProblem = (displayId: string | any) => {
+  // 跳转到/problem/:id
+  router.push({ name: 'Problem', params: { id: displayId } })
+}
 
 const pagerConfig = ref({
   attrs: {
@@ -278,7 +297,7 @@ const getProblemset = reactive({
       undefined,
       undefined,
       undefined,
-      undefined,
+      undefined
     )
     problemsetLoading.value = false
     if (data?.records?.length && data.records[0].id !== undefined) {
@@ -356,6 +375,6 @@ const getTagList = async () => {
   background-color: #000;
 }
 :deep(.tiny-checkbox-button.is-checked:after) {
-    border-right: 20px solid #000;
+  border-right: 20px solid #000;
 }
 </style>
