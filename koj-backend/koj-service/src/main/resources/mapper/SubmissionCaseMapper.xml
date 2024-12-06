@@ -5,30 +5,28 @@
 <mapper namespace="fun.kylen.koj.mapper.SubmissionCaseMapper">
 
     <resultMap id="BaseResultMap" type="fun.kylen.koj.domain.SubmissionCase">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <id property="submissionId" column="submission_id" jdbcType="BIGINT"/>
-            <id property="userId" column="user_id" jdbcType="VARCHAR"/>
-            <id property="problemId" column="problem_id" jdbcType="BIGINT"/>
-            <result property="problemCaseId" column="problem_case_id" jdbcType="BIGINT"/>
-            <result property="verdict" column="verdict" jdbcType="INTEGER"/>
-            <result property="time" column="time" jdbcType="INTEGER"/>
-            <result property="memory" column="memory" jdbcType="INTEGER"/>
-            <result property="oiScore" column="oi_score" jdbcType="INTEGER"/>
-            <result property="seq" column="seq" jdbcType="INTEGER"/>
-            <result property="inputData" column="input_data" jdbcType="VARCHAR"/>
-            <result property="outputData" column="output_data" jdbcType="VARCHAR"/>
-            <result property="userOutput" column="user_output" jdbcType="VARCHAR"/>
-            <result property="judgeOutput" column="judge_output" jdbcType="VARCHAR"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <id property="submissionId" column="submission_id" jdbcType="BIGINT"/>
+        <id property="userId" column="user_id" jdbcType="VARCHAR"/>
+        <id property="problemId" column="problem_id" jdbcType="BIGINT"/>
+        <result property="problemCaseId" column="problem_case_id" jdbcType="BIGINT"/>
+        <result property="verdict" column="verdict" jdbcType="INTEGER"/>
+        <result property="time" column="time" jdbcType="INTEGER"/>
+        <result property="memory" column="memory" jdbcType="INTEGER"/>
+        <result property="seq" column="seq" jdbcType="INTEGER"/>
+        <result property="inputData" column="input_data" jdbcType="VARCHAR"/>
+        <result property="outputData" column="output_data" jdbcType="VARCHAR"/>
+        <result property="userOutput" column="user_output" jdbcType="VARCHAR"/>
+        <result property="judgeOutput" column="judge_output" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,submission_id,user_id,
         problem_id,problem_case_id,verdict,
-        time,memory,oi_score,
-        seq,input_data,output_data,
-        user_output,judge_output,create_time,
-        update_time
+        time,memory,seq,
+        input_data,output_data,user_output,
+        judge_output,create_time,update_time
     </sql>
 </mapper>

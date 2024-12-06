@@ -16,7 +16,7 @@ import lombok.Data;
 @Data
 public class SubmissionCase implements Serializable {
     /**
-     * 
+     *
      */
     @TableId(type = IdType.AUTO)
     private Long id;
@@ -55,11 +55,6 @@ public class SubmissionCase implements Serializable {
      * 测试该样例所用空间KB
      */
     private Integer memory;
-
-    /**
-     * IO得分
-     */
-    private Integer oiScore;
 
     /**
      * 排序

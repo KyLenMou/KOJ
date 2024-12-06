@@ -1,10 +1,11 @@
 package fun.kylen.koj.sandbox;
 
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import fun.kylen.koj.constant.JudgeStatusConstant;
-import fun.kylen.koj.model.LanguageCmdArgs;
+import fun.kylen.koj.constant.JudgeVerdictConstant;
+import fun.kylen.koj.exception.SystemError;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,11 +14,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
-import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,8 +31,6 @@ import java.util.Map;
 public class SandboxRunner {
     @Value("${sandbox.url}")
     private String SANDBOX_URL;
-    @Resource(name = "languageCmdArgsMap")
-    private Map<String, LanguageCmdArgs> languageCmdArgsMap;
     @Autowired
     private RestTemplate sandboxRequester;
 
@@ -56,31 +53,45 @@ public class SandboxRunner {
         } catch (RestClientResponseException ex) {
             if (ex.getRawStatusCode() != 200) {
                 // 无法连接
-                // todo 使用全局异常处理器捕获SystemError，直接修改状态码
-                throw new RuntimeException("Cannot connect to sandbox service.");
+                throw new SystemError("无法连接到代码沙箱");
             }
+            throw new SystemError("连接代码沙箱出错");
         } catch (Exception e) {
-            throw new RuntimeException("Call SandBox Error.");
+            throw new SystemError("连接代码沙箱出错");
         }
-        return null;
     }
 
     /**
-     * 编译代码
+     * 只进行编译代码的操作，无论什么结果，只返回，不做任何处理
+     *
+     * @param maxCpuTime
+     * @param maxRealTime
+     * @param maxMemory
+     * @param maxStack
+     * @param srcName
+     * @param exeName
+     * @param args
+     * @param envs
+     * @param code
+     * @param extraFiles
+     * @param needCopyOutCached
+     * @param needCopyOutExe
+     * @param copyOutDir
+     * @return
      */
-    public JSONArray compile(Long maxCpuTime,
-                             Long maxRealTime,
-                             Long maxMemory,
-                             Long maxStack,
-                             String srcName,
-                             String exeName,
-                             List<String> args,
-                             List<String> envs,
-                             String code,
-                             HashMap<String, String> extraFiles,
-                             Boolean needCopyOutCached,
-                             Boolean needCopyOutExe,
-                             String copyOutDir) {
+    public JSONObject compile(Long maxCpuTime,
+                              Long maxRealTime,
+                              Long maxMemory,
+                              Long maxStack,
+                              String srcName,
+                              String exeName,
+                              List<String> args,
+                              List<String> envs,
+                              String code,
+                              HashMap<String, String> extraFiles,
+                              Boolean needCopyOutCached,
+                              Boolean needCopyOutExe,
+                              String copyOutDir) {
         JSONObject cmd = new JSONObject();
         cmd.set("args", args);
         cmd.set("env", envs);
@@ -101,7 +112,7 @@ public class SandboxRunner {
 
         if (extraFiles != null) {
             for (Map.Entry<String, String> entry : extraFiles.entrySet()) {
-                if (!StringUtils.isEmpty(entry.getKey()) && !StringUtils.isEmpty(entry.getValue())) {
+                if (!StrUtil.isEmpty(entry.getKey()) && !StrUtil.isEmpty(entry.getValue())) {
                     JSONObject content = new JSONObject();
                     content.set("content", entry.getValue());
                     copyIn.set(entry.getKey(), content);
@@ -127,18 +138,18 @@ public class SandboxRunner {
         JSONObject compileRes = (JSONObject) result.get(0);
         compileRes.set("originalStatus", compileRes.getStr("status"));
         compileRes.set("status", RESULT_MAP_STATUS.get(compileRes.getStr("status")));
-        return result;
+        return compileRes;
     }
 
     /**
      * 根据参数调用go-judge
      * 只运行代码，返回结果，不做评测
+     *
      * @param args
      * @param envs
      * @param input
-     * @param maxTime 单位 ms
+     * @param maxTime   单位 ms
      * @param maxMemory 单位 mb
-     * @param maxOutputSize
      * @param maxStack
      * @param exeName
      * @param fileId
@@ -147,10 +158,9 @@ public class SandboxRunner {
     public JSONArray run(String input,
                          List<String> args,
                          List<String> envs,
-                         Long maxTime,
-                         Long maxMemory,
+                         Integer maxTime,
+                         Integer maxMemory,
                          Integer maxStack,
-                         Long maxOutputSize,
                          String exeName,
                          String fileId) {
 
@@ -166,12 +176,12 @@ public class SandboxRunner {
 
         JSONObject stdout = new JSONObject();
         stdout.set("name", "stdout");
-        stdout.set("max", maxOutputSize);
+        stdout.set("max", MAX_OUTPUT_SIZE);
         files.put(stdout);
 
         JSONObject stderr = new JSONObject();
         stderr.set("name", "stderr");
-        stderr.set("max", 1024 * 1024 * 16);
+        stderr.set("max", 1024);
         files.put(stderr);
 
         cmd.set("files", files);
@@ -198,7 +208,7 @@ public class SandboxRunner {
         //     // 在文件名之后加入 '?' 来使文件变为可选，可选文件不存在的情况不会触发 FileError
         //     copyOut.put(ioWriteFileName + "?");
         // }
-        //0
+        // 0
         cmd.set("copyIn", copyIn);
         // cmd.set("copyOut", copyOut);
 
@@ -228,8 +238,7 @@ public class SandboxRunner {
             sandboxRequester.delete(SANDBOX_URL + "/file/{0}", fileId);
         } catch (RestClientResponseException ex) {
             if (ex.getRawStatusCode() != 200) {
-                log.error("安全沙箱判题的删除内存中的文件缓存操作异常----------------->{}",
-                          ex.getResponseBodyAsString());
+                log.error("安全沙箱判题的删除内存中的文件缓存操作异常：{}", ex.getResponseBodyAsString());
             }
         }
     }
@@ -237,25 +246,23 @@ public class SandboxRunner {
 
     private static final int maxProcessNumber = 128;
 
-    private static final int TIME_LIMIT_MS = 16000;
+    private static final int TIME_LIMIT_MS = 10000;
 
     private static final int MEMORY_LIMIT_MB = 512;
 
-    private static final int STACK_LIMIT_MB = 128;
-
-    private static final int STDIO_SIZE_MB = 32;
+    private static final int MAX_OUTPUT_SIZE = 32 * 1024 * 1024;
 
     public static final HashMap<String, Integer> RESULT_MAP_STATUS = new HashMap<>();
 
     static {
-        RESULT_MAP_STATUS.put("Time Limit Exceeded", JudgeStatusConstant.TIME_LIMIT_EXCEEDED);
-        RESULT_MAP_STATUS.put("Memory Limit Exceeded", JudgeStatusConstant.MEMORY_LIMIT_EXCEEDED);
-        RESULT_MAP_STATUS.put("Output Limit Exceeded", JudgeStatusConstant.OUTPUT_LIMIT_EXCEEDED);
-        RESULT_MAP_STATUS.put("Accepted", JudgeStatusConstant.ACCEPTED);
-        RESULT_MAP_STATUS.put("Nonzero Exit Status", JudgeStatusConstant.RUNTIME_ERROR);
-        RESULT_MAP_STATUS.put("Internal Error", JudgeStatusConstant.SYSTEM_ERROR);
-        RESULT_MAP_STATUS.put("File Error", JudgeStatusConstant.SYSTEM_ERROR);
-        RESULT_MAP_STATUS.put("Signalled", JudgeStatusConstant.RUNTIME_ERROR);
+        RESULT_MAP_STATUS.put("Time Limit Exceeded", JudgeVerdictConstant.TIME_LIMIT_EXCEEDED);
+        RESULT_MAP_STATUS.put("Memory Limit Exceeded", JudgeVerdictConstant.MEMORY_LIMIT_EXCEEDED);
+        RESULT_MAP_STATUS.put("Output Limit Exceeded", JudgeVerdictConstant.OUTPUT_LIMIT_EXCEEDED);
+        RESULT_MAP_STATUS.put("Accepted", JudgeVerdictConstant.ACCEPTED);
+        RESULT_MAP_STATUS.put("Nonzero Exit Status", JudgeVerdictConstant.RUNTIME_ERROR);
+        RESULT_MAP_STATUS.put("Internal Error", JudgeVerdictConstant.SYSTEM_ERROR);
+        RESULT_MAP_STATUS.put("File Error", JudgeVerdictConstant.SYSTEM_ERROR);
+        RESULT_MAP_STATUS.put("Signalled", JudgeVerdictConstant.RUNTIME_ERROR);
     }
 
 
@@ -267,11 +274,11 @@ public class SandboxRunner {
 
         JSONObject stdout = new JSONObject();
         stdout.set("name", "stdout");
-        stdout.set("max", 1024 * 1024 * STDIO_SIZE_MB);
+        stdout.set("max", MAX_OUTPUT_SIZE);
 
         JSONObject stderr = new JSONObject();
         stderr.set("name", "stderr");
-        stderr.set("max", 1024 * 1024 * STDIO_SIZE_MB);
+        stderr.set("max", 1024);
         COMPILE_FILES.put(content);
         COMPILE_FILES.put(stdout);
         COMPILE_FILES.put(stderr);

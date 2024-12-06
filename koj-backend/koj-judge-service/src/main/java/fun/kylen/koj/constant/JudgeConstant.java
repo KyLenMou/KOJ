@@ -7,16 +7,14 @@ package fun.kylen.koj.constant;
  */
 public class JudgeConstant {
     /**
-     * 沙箱类型
-     */
-    public final static String LOCAL_SANDBOX = "local";
-    public final static String REMOTE_SANDBOX = "remote";
-
-    /**
      * 判题类型
      */
     public final static String DEFAULT_JUDGE_TYPE = "default";
     public final static String SPJ_JUDGE_TYPE = "spj";
     public final static String INTERACTIVE_JUDGE_TYPE = "interactive";
 
+    /**
+     * 最大输出值
+     */
+    public final static int MAX_OUTPUT_SIZE = 32 * 1024 * 1024;
 }

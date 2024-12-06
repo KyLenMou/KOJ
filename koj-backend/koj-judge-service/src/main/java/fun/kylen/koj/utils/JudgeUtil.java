@@ -1,6 +1,10 @@
 package fun.kylen.koj.utils;
 
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.digest.DigestUtil;
+
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * @Author: Himit_ZH
@@ -8,6 +12,8 @@ import java.util.*;
  * @Description:
  */
 public class JudgeUtil {
+
+    private final static Pattern EOL_PATTERN = Pattern.compile("[^\\S\\n]+(?=\\n)");
 
     public static List<String> getArgs(String toProcess) {
         if (toProcess != null && !toProcess.isEmpty()) {
@@ -70,4 +76,27 @@ public class JudgeUtil {
         }
     }
 
+    /**
+     * 使用md5进行答案比对
+     *
+     * @param answer
+     * @param output
+     * @return
+     */
+    public static boolean check(String answer, String output) {
+        String ans = DigestUtil.md5Hex(removeBlankAndEOL(answer));
+        String out = DigestUtil.md5Hex(removeBlankAndEOL(output));
+        return StrUtil.equals(ans, out);
+    }
+
+    /**
+     * 去除value中的末尾空白符和换行符前的空格
+     *
+     * @param value
+     * @return
+     */
+    public static String removeBlankAndEOL(String value) {
+        if (value == null) return null;
+        return EOL_PATTERN.matcher(StrUtil.trimEnd(value)).replaceAll("");
+    }
 }

@@ -17,7 +17,7 @@ public class MqConstant {
     public static final String DEAD_JUDGE_QUEUE = "koj.judge.dead.queue";
     public static final String DEAD_JUDGE_BINDING = "koj.judge.dead.binding";
 
-    public final static String TEST_QUEUE = "koj.test.queue";
-    public final static String TEST_BINDING = "koj.test.binding";
-    public final static String TEST_ROUTE_KEY = "koj.test";
+    public final static String DEBUG_QUEUE = "koj.debug.queue";
+    public final static String DEBUG_BINDING = "koj.debug.binding";
+    public final static String DEBUG_ROUTE_KEY = "koj.debug";
 }

@@ -31,4 +31,8 @@ public class JudgeMessageDispatcher {
             });
         }
     }
+
+    public void debug(String debugId) {
+        rabbitTemplate.convertAndSend(MqConstant.KOJ_EXCHANGE, MqConstant.DEBUG_ROUTE_KEY, debugId);
+    }
 }

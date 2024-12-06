@@ -43,9 +43,9 @@ public class RabbitMqConfig {
     public Queue kojDeadLetterQueue() {
         return new Queue(MqConstant.DEAD_JUDGE_QUEUE, true);
     }
-    @Bean(MqConstant.TEST_QUEUE)
-    public Queue kojTestQueue() {
-        return new Queue(MqConstant.TEST_QUEUE,true,false,false);
+    @Bean(MqConstant.DEBUG_QUEUE)
+    public Queue kojDebugQueue() {
+        return new Queue(MqConstant.DEBUG_QUEUE, true, false, false);
     }
 
     @Bean(MqConstant.JUDGE_BINDING)
@@ -58,9 +58,9 @@ public class RabbitMqConfig {
                                    @Qualifier(MqConstant.KOJ_DEAD_EXCHANGE) TopicExchange kojDeadExchange) {
         return BindingBuilder.bind(kojDeadJudgeQueue).to(kojDeadExchange).with(MqConstant.DEAD_JUDGE_ROUTE_KEY);
     }
-    @Bean(MqConstant.TEST_BINDING)
-    public Binding kojTestBinding(@Qualifier(MqConstant.TEST_QUEUE) Queue kojTestQueue,
+    @Bean(MqConstant.DEBUG_BINDING)
+    public Binding kojDebugBinding(@Qualifier(MqConstant.DEBUG_QUEUE) Queue kojDebugQueue,
                                 @Qualifier(MqConstant.KOJ_EXCHANGE) TopicExchange kojExchange) {
-        return BindingBuilder.bind(kojTestQueue).to(kojExchange).with(MqConstant.TEST_ROUTE_KEY);
+        return BindingBuilder.bind(kojDebugQueue).to(kojExchange).with(MqConstant.DEBUG_ROUTE_KEY);
     }
 }

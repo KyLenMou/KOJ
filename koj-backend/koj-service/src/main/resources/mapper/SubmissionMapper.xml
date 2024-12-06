@@ -13,7 +13,6 @@
         <result property="language" column="language" jdbcType="VARCHAR"/>
         <result property="code" column="code" jdbcType="VARCHAR"/>
         <result property="verdict" column="verdict" jdbcType="INTEGER"/>
-        <result property="verdictIndex" column="verdict_index" jdbcType="INTEGER"/>
         <result property="runMessage" column="run_message" jdbcType="VARCHAR"/>
         <result property="runTime" column="run_time" jdbcType="INTEGER"/>
         <result property="runMemory" column="run_memory" jdbcType="INTEGER"/>
@@ -29,7 +28,7 @@
     <sql id="Base_Column_List">
         id,problem_id,problem_display_id,
         user_id,username,language,
-        code,verdict,verdict_index,
+        code,verdict,
         run_message,run_time,run_memory,
         length,ip,version,
         is_manual,submit_time,create_time,
@@ -45,7 +44,6 @@
         <result property="submitTime" column="submit_time" jdbcType="TIMESTAMP"/>
         <result property="language" column="language" jdbcType="VARCHAR"/>
         <result property="verdict" column="verdict" jdbcType="INTEGER"/>
-        <result property="verdictIndex" column="verdict_index" jdbcType="INTEGER"/>
         <result property="errorMessage" column="error_message" jdbcType="VARCHAR"/>
         <result property="time" column="time" jdbcType="INTEGER"/>
         <result property="memory" column="memory" jdbcType="INTEGER"/>
