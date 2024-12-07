@@ -2,7 +2,7 @@
   <tiny-dialog-box
     :lock-scroll="false"
     :show-close="false"
-    v-model:visible="localVisible"
+    v-model:visible="passportDialogVisible"
     :center="true"
     width="400px"
   >
@@ -38,7 +38,7 @@
         <tiny-form-item>
           <tiny-button
             type="primary"
-            style="width: 100%; border-radius: 6px"
+            style="width: 100%"
             @click="login"
             v-model:loading="isLoginButtonLoading"
           >
@@ -77,10 +77,7 @@
             placeholder="邮箱"
             style="width: 69%"
           ></tiny-input>
-          <tiny-button
-            style="width: 29%; border-radius: 6px; margin-left: 2%"
-            @click="sendRegisterCode"
-          >
+          <tiny-button style="width: 29%; margin-left: 2%" @click="sendRegisterCode">
             <span>发送验证码</span>
           </tiny-button>
         </tiny-form-item>
@@ -114,9 +111,7 @@
           ></tiny-input>
         </tiny-form-item>
         <tiny-form-item>
-          <tiny-button type="primary" style="width: 100%; border-radius: 6px" @click="register">
-            注册
-          </tiny-button>
+          <tiny-button type="primary" style="width: 100%" @click="register"> 注册 </tiny-button>
         </tiny-form-item>
         <tiny-form-item>
           <tiny-row :flex="true">
@@ -172,7 +167,7 @@ const login = async () => {
   })
   const res = await userStore.login(userLoginDTO)
   if (res) {
-    localVisible.value = false
+    passportDialogVisible.value = false
   }
   isLoginButtonLoading.value = false
 }
@@ -208,23 +203,7 @@ const register = async () => {
 }
 
 // visible传值
-const props = defineProps({
-    passportDialogVisible: {
-    type: Boolean,
-    default: false
-  }
-})
-const emit = defineEmits(['update:passportDialogVisible'])
-const localVisible = ref(props.passportDialogVisible)
-watch(
-  () => props.passportDialogVisible,
-  (newVal) => {
-    localVisible.value = newVal
-  }
-)
-watch(localVisible, (newVal) => {
-  emit('update:passportDialogVisible', newVal)
-})
+const passportDialogVisible = defineModel<boolean>()
 </script>
 
 <style scoped>

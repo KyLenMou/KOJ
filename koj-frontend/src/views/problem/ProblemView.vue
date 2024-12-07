@@ -19,6 +19,9 @@
           <tiny-tag type="warning" effect="plain">{{
             `内存限制：` + problemDetail.memoryLimit + `MB`
           }}</tiny-tag>
+          <tiny-tag type="success" effect="plain">{{
+            `栈限制：` + problemDetail.stackLimit + `MB`
+          }}</tiny-tag>
           <difficulty-tag :difficulty="problemDetail.difficulty" />
           <tiny-popover trigger="click">
             <template #default>
@@ -50,24 +53,26 @@
           @click="splitLayout = splitLayout === 'fashion' ? 'classic' : 'fashion'"
           >切换布局</tiny-button
         >
-        <tiny-button style="margin-right: 20px" size="small" @click="goToHome">返回首页</tiny-button>
+        <tiny-button style="margin-right: 20px" size="small" @click="goToHome"
+          >返回首页</tiny-button
+        >
         <user-button style="margin-right: 20px" />
       </div>
     </div>
     <div id="problem-view-body">
+      <!-- 时髦布局 -->
       <tiny-split
         v-if="splitLayout === 'fashion'"
-        left-top-min="400px"
-        right-top-min="400px"
+        left-top-min="900px"
+        right-bottom-min="300px"
         v-model="splitFashion1"
         trigger-simple
         collapse-right-bottom
-        three-areas
       >
         <template #left>
           <tiny-split
-            left-top-min="400px"
-            right-top-min="400px"
+            left-top-min="300px"
+            right-bottom-min="600px"
             v-model="splitFashion2"
             trigger-simple
             collapse-left-top
@@ -94,82 +99,14 @@
           </tiny-split>
         </template>
         <template #right>
-          <div style="height: calc(100% - 90px); overflow-y: auto">
-            <tiny-tabs v-model="activeTab" size="small" class="tabClass">
-              <tiny-tab-item name="editCase" title="测试用例" style="margin: 0 20px">
-                <tiny-tabs
-                  v-model="activeSubTab"
-                  tab-style="button-card"
-                  :with-close="true"
-                  :before-close="true"
-                  @close="handleDeleteCase"
-                >
-                  <tiny-tab-item
-                    v-for="(item, index) in testCases"
-                    :key="index"
-                    :title="`样例 #` + (index + 1)"
-                    :name="String(index + 1)"
-                  >
-                    <tiny-row>
-                      <tiny-tag style="margin: 5px 0" effect="dark">样例输入</tiny-tag>
-                      <tiny-input
-                        type="textarea"
-                        v-model="item.input"
-                        resize="none"
-                        :autosize="{ minRows: 2, maxRows: 10 }"
-                      />
-                    </tiny-row>
-                    <tiny-row>
-                      <tiny-tag style="margin: 5px 0" effect="dark">预计输出</tiny-tag>
-
-                      <tiny-input
-                        type="textarea"
-                        v-model="item.output"
-                        resize="none"
-                        :autosize="{ minRows: 2, maxRows: 10 }"
-                      />
-                    </tiny-row>
-                    <tiny-row>
-                      <tiny-tag style="margin: 5px 0" effect="dark">实际输出</tiny-tag>
-                      <tiny-input
-                        type="textarea"
-                        v-model="item.input"
-                        resize="none"
-                        :autosize="{ minRows: 2, maxRows: 10 }"
-                      />
-                    </tiny-row>
-                  </tiny-tab-item>
-                  <tiny-tab-item
-                    class="add-tab-item"
-                    title="添加样例"
-                    name="0"
-                    :with-close="false"
-                  />
-                </tiny-tabs>
-              </tiny-tab-item>
-              <tiny-tab-item name="debugCase" title="评测结果" style="margin: 0 20px"
-                >123</tiny-tab-item
-              >
-            </tiny-tabs>
-          </div>
-          <div style="height: 90px; border-top: 1px solid #ebeef5; padding: 10px">
-            <tiny-row :flex="true" align="middle" style="margin-bottom: 10px;">
-              <tiny-col :span="7">
-                <tiny-button style="width: 100%;">测试样例 #{{ activeSubTab }}</tiny-button>
-              </tiny-col>
-              <tiny-col :span="5">
-                <tiny-button style="width: 100%;">测试全部</tiny-button>
-              </tiny-col>
-            </tiny-row>
-            <tiny-row :flex="true" align="middle">
-              <tiny-col :span="12">
-                <tiny-button type="primary" style="width: 100%;">提交评测</tiny-button>
-              </tiny-col>
-            </tiny-row>
-          </div>
+          <problem-debug
+                v-model:problemSubmitDTO="problemSubmitDTO"
+                v-model:problemDetail="problemDetail"
+                v-model:testCases="testCases"
+              />
         </template>
       </tiny-split>
-
+      <!-- 传统布局 -->
       <tiny-split
         v-else
         v-model="splitClassic1"
@@ -204,75 +141,11 @@
               />
             </template>
             <template #bottom>
-              <div style="height: calc(100% - 50px); overflow-y: auto">
-                <tiny-tabs v-model="activeTab" size="small" class="tabClass">
-                  <tiny-tab-item name="editCase" title="测试用例" style="margin: 0 20px">
-                    <tiny-tabs
-                      v-model="activeSubTab"
-                      tab-style="button-card"
-                      :with-close="true"
-                      :before-close="true"
-                      @close="handleDeleteCase"
-                    >
-                      <tiny-tab-item
-                        v-for="(item, index) in testCases"
-                        :key="index"
-                        :title="`样例 #` + (index + 1)"
-                        :name="String(index + 1)"
-                      >
-                        <tiny-row>
-                          <tiny-col :lg="4" :md="12">
-                            <tiny-tag style="margin-bottom: 5px" effect="dark">样例输入</tiny-tag>
-                            <tiny-input
-                              type="textarea"
-                              v-model="item.input"
-                              resize="none"
-                              :autosize="{ minRows: 2, maxRows: 10 }"
-                            />
-                          </tiny-col>
-                          <tiny-col :lg="4" :md="12">
-                            <tiny-tag style="margin-bottom: 5px" effect="dark">预计输出</tiny-tag>
-
-                            <tiny-input
-                              type="textarea"
-                              v-model="item.output"
-                              resize="none"
-                              :autosize="{ minRows: 2, maxRows: 10 }"
-                            />
-                          </tiny-col>
-                          <tiny-col :lg="4" :md="12">
-                            <tiny-tag style="margin-bottom: 5px" effect="dark">实际输出</tiny-tag>
-                            <tiny-input
-                              type="textarea"
-                              v-model="item.input"
-                              resize="none"
-                              :autosize="{ minRows: 2, maxRows: 10 }"
-                            />
-                          </tiny-col>
-                        </tiny-row>
-                      </tiny-tab-item>
-                      <tiny-tab-item
-                        class="add-tab-item"
-                        title="添加样例"
-                        name="0"
-                        :with-close="false"
-                      />
-                    </tiny-tabs>
-                  </tiny-tab-item>
-                  <tiny-tab-item name="debugCase" title="评测结果" style="margin: 0 20px"
-                    >123</tiny-tab-item
-                  >
-                </tiny-tabs>
-              </div>
-              <div style="height: 50px; border-top: 1px solid #ebeef5; padding: 10px">
-                <tiny-row :flex="true" align="middle">
-                  <tiny-col>
-                    <tiny-button>测试样例 #{{ activeSubTab }}</tiny-button>
-                    <tiny-button>测试全部</tiny-button>
-                    <tiny-button type="primary">提交评测</tiny-button>
-                  </tiny-col>
-                </tiny-row>
-              </div>
+              <problem-debug
+                v-model:problemSubmitDTO="problemSubmitDTO"
+                v-model:problemDetail="problemDetail"
+                v-model:testCases="testCases"
+              />
             </template>
           </tiny-split>
         </template>
@@ -283,11 +156,16 @@
 
 <script setup lang="ts">
 import ProblemInfo from './ProblemInfo.vue'
-import { ProblemControllerService, type ProblemDetailVO, type SubmissionDTO } from '@/api'
+import ProblemDebug from './ProblemDebug.vue'
+import {
+  ProblemControllerService,
+  type ProblemDetailVO,
+  type SubmissionDTO
+} from '@/api'
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { iconPushpin } from '@opentiny/vue-icon'
-import { TinyModal, TinyNotify } from '@opentiny/vue'
+import { TinyModal } from '@opentiny/vue'
 const IconPushpin = iconPushpin()
 const router = useRouter()
 const goToHome = () => {
@@ -305,20 +183,7 @@ const handleCodeChange = (code: string) => {
 const handleLanguageUpdate = (newLanguage: string) => {
   problemSubmitDTO.value.language = newLanguage
 }
-// todo 最多10个测试用例
-const handleAddCase = () => {
-  testCases.value.push({
-    input: '1',
-    output: '2'
-  })
-}
-const handleDeleteCase = (index: string) => {
-  if (index !== '0') {
-    testCases.value.splice(Number(index) - 1, 1)
-  } else {
-    handleAddCase()
-  }
-}
+
 const splitLayout = ref('fashion')
 
 const splitFashion1 = ref(0.8)
@@ -326,9 +191,6 @@ const splitFashion2 = ref(0.45)
 
 const splitClassic1 = ref(0.49)
 const splitClassic2 = ref(0.7)
-
-const activeTab = ref('editCase')
-const activeSubTab = ref<String>('1')
 
 const testCases = ref<any>([])
 const problemSubmitDTO = ref<SubmissionDTO>({
@@ -372,6 +234,9 @@ onMounted(async () => {
   problemDetail.value = data as ProblemDetailVO
   try {
     testCases.value = JSON.parse(problemDetail.value.examples as string)
+    testCases.value.map((item: any) => {
+      item.userOutput = ''
+    })
   } catch (e) {
     TinyModal.message({ message: '测试样例出现了问题，请自行填充数据', status: 'error' })
     testCases.value = []
@@ -408,6 +273,9 @@ onMounted(async () => {
 .description-content::-webkit-scrollbar {
   display: none;
 }
+.tiny-button.tiny-button--primary {
+  fill: #000;
+}
 
 :deep(.tabClass > .tiny-tabs__header .tiny-tabs__nav) {
   margin-left: 20px;
@@ -416,9 +284,6 @@ onMounted(async () => {
   transform: rotate(45deg);
 }
 
-:deep(.tiny-textarea) {
-  --tv-Textarea-border-radius: 0;
-}
 :deep(.tiny-tabs.tiny-tabs--button-card .tiny-tabs__item__title) {
   padding: 0 10px;
 }

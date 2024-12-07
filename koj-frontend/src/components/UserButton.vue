@@ -64,7 +64,7 @@
         <tiny-user-head type="icon" round min style="cursor: pointer" />
       </template>
     </tiny-popover>
-    <tiny-button v-else @click="openLoginForm"> 登录/注册 </tiny-button>
+    <tiny-button v-else @click="openLoginForm" round> 登录/注册 </tiny-button>
   </div>
 </template>
 
@@ -116,8 +116,6 @@ const openAdmin = () => {
 }
 .avatar-inner-btn {
   width: 100%;
-  border-radius: 6px;
-  border-radius: 6px;
-  border-color: #e6e6e6 !important;
+  border-color: #bdbdbd !important;
 }
 </style>

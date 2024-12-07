@@ -143,7 +143,7 @@
                   type="success"
                   plain
                   :reset-time="0"
-                  style="border-radius: 6px; width: 100%; margin-top: 10px"
+                  style="width: 100%; margin-top: 10px"
                   @click="addExampleJson"
                   >添加样例</tiny-button
                 >
@@ -224,7 +224,7 @@
               type="success"
               plain
               :reset-time="0"
-              style="border-radius: 6px; width: 100%"
+              style="width: 100%"
               @click="addTestCase"
               >添加测试用例</tiny-button
             >

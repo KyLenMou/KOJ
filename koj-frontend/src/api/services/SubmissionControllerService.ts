@@ -82,7 +82,7 @@ export class SubmissionControllerService {
     ): CancelablePromise<R_SubmissionVerdictVO_> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/submission/status',
+            url: '/submission/verdict',
             query: {
                 'submissionId': submissionId,
             },

@@ -193,7 +193,7 @@
                 style="margin-top: 10px; display: flex; align-items: center"
               >
                 <tiny-button
-                  style="border-radius: 6px; flex-grow: 1"
+                  style="flex-grow: 1"
                   type="primary"
                   @click="goToProblem(problemInfo.displayId)"
                 >

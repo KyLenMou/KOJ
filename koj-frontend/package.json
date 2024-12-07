@@ -13,7 +13,7 @@
     "openapi": "openapi --input http://localhost:8080/v2/api-docs --output ./src/api --client axios"
   },
   "dependencies": {
-    "@opentiny/vue": "~3.19.0",
+    "@opentiny/vue": "^3.20.0",
     "axios": "^1.7.7",
     "mavon-editor": "^3.0.1",
     "mitt": "^3.0.1",

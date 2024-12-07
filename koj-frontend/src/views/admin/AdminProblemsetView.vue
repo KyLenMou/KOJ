@@ -81,7 +81,7 @@
           <tiny-input v-model="newTagName" placeholder="新增标签" style="margin-bottom: 10px" />
         </tiny-col>
         <tiny-col :span="3">
-          <tiny-button type="info" style="border-radius: 6px" @click="addTag">添加</tiny-button>
+          <tiny-button type="info" style="" @click="addTag">添加</tiny-button>
         </tiny-col>
       </tiny-row>
       <div style="display: flex; flex-wrap: wrap; gap: 10px">
@@ -180,7 +180,7 @@ const handleClose = async (tag: any) => {
 const beforeDeleteTag = async (done: any) => {
   TinyModal.confirm({
     status: 'warning',
-    title: "删除标签",
+    title: '删除标签',
     message:
       '确定删除该标签吗？所有包含该标签的题目将不再包含该标签！如果需要重新添加，则需要对每个题目重新添加该标签！'
   }).then((res: any) => {

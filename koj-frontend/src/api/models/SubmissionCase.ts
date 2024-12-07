@@ -8,7 +8,6 @@ export type SubmissionCase = {
     inputData?: string;
     judgeOutput?: string;
     memory?: number;
-    oiScore?: number;
     outputData?: string;
     problemCaseId?: number;
     problemId?: number;

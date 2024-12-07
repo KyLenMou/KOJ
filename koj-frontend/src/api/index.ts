@@ -9,6 +9,8 @@ export type { OpenAPIConfig } from './core/OpenAPI';
 
 export type { AdminEditProblemDTO } from './models/AdminEditProblemDTO';
 export type { AdminProblemVO } from './models/AdminProblemVO';
+export type { DebugDTO } from './models/DebugDTO';
+export type { DebugVO } from './models/DebugVO';
 export type { Page_AdminProblemVO_ } from './models/Page_AdminProblemVO_';
 export type { Page_ProblemsetVO_ } from './models/Page_ProblemsetVO_';
 export type { Page_SubmissionListVO_ } from './models/Page_SubmissionListVO_';
@@ -18,6 +20,7 @@ export type { ProblemDetailVO } from './models/ProblemDetailVO';
 export type { ProblemInfoCardVO } from './models/ProblemInfoCardVO';
 export type { ProblemsetVO } from './models/ProblemsetVO';
 export type { R_AdminEditProblemDTO_ } from './models/R_AdminEditProblemDTO_';
+export type { R_DebugVO_ } from './models/R_DebugVO_';
 export type { R_List_Tag_ } from './models/R_List_Tag_';
 export type { R_List_TagVO_ } from './models/R_List_TagVO_';
 export type { R_long_ } from './models/R_long_';
