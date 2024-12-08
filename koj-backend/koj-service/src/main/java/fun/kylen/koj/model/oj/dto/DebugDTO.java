@@ -53,5 +53,5 @@ public class DebugDTO {
     /**
      * 期望输出
      */
-    private List<String> expectedOutput;
+    private List<String> expectedOutputList;
 }

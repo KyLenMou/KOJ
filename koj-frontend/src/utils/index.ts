@@ -100,5 +100,97 @@ const difficultyTagArray = [
   { difficulty: 3000, color: '#000000' }
 ]
 
-
-export { getDiffcultyColor, getDiffcultyTagColor, difficultyTagArray }
+const getVerdictModel = (verdict: number) => {
+  switch (verdict) {
+    case 0:
+      return undefined
+    case 101:
+      return {
+        'short': 'CE',
+        'full': 'Compile Error',
+        'zh': '编译错误',
+        'type': 'warning',
+        'description': '您的程序未通过编译'
+      }
+    case 300:
+      return {
+        'short': 'AC',
+        'full': 'Accepted',
+        'zh': '答案正确',
+        'type': 'success',
+        'description': '您的程序通过了该测试用例'
+      }
+    case 301:
+      return {
+        'short': 'PAC',
+        'full': 'Partially Accepted',
+        'zh': '部分正确',
+        'type': 'info',
+        'description': '您的程序通过了部分测试用例'
+      }
+    case 400:
+      return {
+        'short': 'WA',
+        'full': 'Wrong Answer',
+        'zh': '答案错误',
+        'type': 'danger',
+        'description': '您的程序未通过该测试用例'
+      }
+    case 401:
+      return {
+        'short': 'RE',
+        'full': 'Runtime Error',
+        'zh': '运行时错误',
+        'type': 'danger',
+        'description': '您的程序在运行时发生错误'
+      }
+    case 402:
+      return {
+        'short': 'TLE',
+        'full': 'Time Limit Exceeded',
+        'zh': '时间超限',
+        'type': 'danger',
+        'description': '您的程序运行时间超过了限制'
+      }
+    case 403:
+      return {
+        'short': 'MLE',
+        'full': 'Memory Limit Exceeded',
+        'zh': '内存超限',
+        'type': 'danger',
+        'description': '您的程序使用的内存超过了限制'
+      }
+    case 404:
+      return {
+        'short': 'SLE',
+        'full': 'Stack Limit Exceeded',
+        'zh': '栈空间超限',
+        'type': 'danger',
+        'description': '您的程序使用的栈空间超过了限制'
+      }
+    case 405:
+      return {
+        'short': 'OLE',
+        'full': 'Output Limit Exceeded',
+        'zh': '输出超限',
+        'type': 'danger',
+        'description': '您的程序输出内容超过了限制'
+      }
+    case 500:
+      return {
+        'short': 'SE',
+        'full': 'System Error',
+        'zh': '系统错误',
+        'type': 'primary',
+        'description': '系统发生了错误，请联系管理员或稍后再试'
+      }
+    default:
+      return undefined
+  }
+}
+export {
+  getDiffcultyColor,
+  getDiffcultyTagColor,
+  difficultyTagArray,
+  getVerdictModel 
+}

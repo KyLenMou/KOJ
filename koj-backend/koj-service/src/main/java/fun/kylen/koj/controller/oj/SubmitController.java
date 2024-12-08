@@ -30,7 +30,7 @@ public class SubmitController {
 
     @PostMapping("/debug")
     public R<String> debug(@Validated @RequestBody DebugDTO debugDTO) {
-        return R.ok(submitService.debug(debugDTO),"提交成功");
+        return R.ok(submitService.debug(debugDTO),"测试成功");
     }
 
     @GetMapping("/debug")

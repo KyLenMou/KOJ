@@ -117,6 +117,7 @@ public class SubmitManager {
     public String debug(DebugDTO debugDTO) {
         // todo 调试的用户输入不能太大 输入和预计输出是一一对应的，大小必须相同
         // todo 校验代码语言是否合法
+        // TODO 用户输入不能出现空值，否则在沙箱构造cmd时出现了content为空的情况
         UserInfoVO currentUser = PassportUtil.getCurrentUser();
         // controller层已经做过校验，再做一次
         if (currentUser == null) {
@@ -156,7 +157,7 @@ public class SubmitManager {
         debugVO.setMessage(new ArrayList<>(Collections.nCopies(size, "")));
         debugVO.setUserInputList(debugDTO.getUserInputList());
         debugVO.setUserOutputList(new ArrayList<>(Collections.nCopies(size, "")));
-        debugVO.setExpectedOutputList(new ArrayList<>(Collections.nCopies(size, "")));
+        debugVO.setExpectedOutputList(debugDTO.getExpectedOutputList());
         return debugVO;
     }
 
@@ -180,6 +181,8 @@ public class SubmitManager {
         if (isAllDone) {
             redisUtil.del(RedisKeyConstant.DEBUG + debugId);
         }
+        // 如果调试任务已经完成，设置debugId为空，方便前端判断
+        debugVO.setDebugId("");
         return debugVO;
     }
 }

@@ -100,10 +100,10 @@
         </template>
         <template #right>
           <problem-debug
-                v-model:problemSubmitDTO="problemSubmitDTO"
-                v-model:problemDetail="problemDetail"
-                v-model:testCases="testCases"
-              />
+            v-if="isMounted"
+            v-model:problemSubmitDTO="problemSubmitDTO"
+            v-model:problemDetail="problemDetail"
+          />
         </template>
       </tiny-split>
       <!-- 传统布局 -->
@@ -141,10 +141,11 @@
               />
             </template>
             <template #bottom>
+                <!-- todo testcase需要父组件管理，否则切换布局之后数据会消失 -->
               <problem-debug
+                v-if="isMounted"
                 v-model:problemSubmitDTO="problemSubmitDTO"
                 v-model:problemDetail="problemDetail"
-                v-model:testCases="testCases"
               />
             </template>
           </tiny-split>
@@ -157,11 +158,7 @@
 <script setup lang="ts">
 import ProblemInfo from './ProblemInfo.vue'
 import ProblemDebug from './ProblemDebug.vue'
-import {
-  ProblemControllerService,
-  type ProblemDetailVO,
-  type SubmissionDTO
-} from '@/api'
+import { ProblemControllerService, type ProblemDetailVO, type SubmissionDTO } from '@/api'
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { iconPushpin } from '@opentiny/vue-icon'
@@ -192,7 +189,6 @@ const splitFashion2 = ref(0.45)
 const splitClassic1 = ref(0.49)
 const splitClassic2 = ref(0.7)
 
-const testCases = ref<any>([])
 const problemSubmitDTO = ref<SubmissionDTO>({
   code: '',
   language: 'cpp',
@@ -224,6 +220,7 @@ const problemDetail = ref<ProblemDetailVO>({
   title: '标题'
 })
 const route = useRoute()
+const isMounted = ref(false)
 onMounted(async () => {
   // 获取problem/:id的id
   const problemDisplayId = route.params.id
@@ -232,16 +229,7 @@ onMounted(async () => {
   )
   if (code) return
   problemDetail.value = data as ProblemDetailVO
-  try {
-    testCases.value = JSON.parse(problemDetail.value.examples as string)
-    testCases.value.map((item: any) => {
-      item.userOutput = ''
-    })
-  } catch (e) {
-    TinyModal.message({ message: '测试样例出现了问题，请自行填充数据', status: 'error' })
-    testCases.value = []
-    problemDetail.value.examples = ''
-  }
+  isMounted.value = true
 })
 </script>
 
