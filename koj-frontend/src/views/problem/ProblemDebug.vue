@@ -34,6 +34,13 @@
             >
               <img src="@/assets/images/closetab.svg" />
             </div>
+            <div
+              v-else
+              class="tab-refresh-button"
+              @click.stop="refreshTestCaseTab(index)"
+            >
+              <img src="@/assets/images/refresh.svg" />
+            </div>
           </div>
           <!-- 添加testcase按钮 -->
           <tiny-button :icon="IconPlus" type="text" @click="addCase" />
@@ -272,6 +279,10 @@ const switchTab = (index: any) => {
 const closeTestCaseTab = (index: number) => {
   testCases.value.splice(index, 1)
 }
+// 清空一个测试用例的状态
+const refreshTestCaseTab = (index: number) => {
+  testCases.value[index].verdict = 0
+}
 // 添加测试用例
 const addCase = () => {
   if (testCases.value.length >= 5) {
@@ -324,12 +335,31 @@ const addCase = () => {
   align-items: center;
   cursor: pointer;
 }
+.tab-refresh-button {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: black;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
 
 div:hover > .tab-close-button {
   display: flex;
 }
+div:hover > .tab-refresh-button {
+  display: flex;
+}
 .tab-close-button:hover {
   background: gainsboro;
+}
+.tab-refresh-button:hover {
+  background: gray;
 }
 .test-case-tabs {
   display: flex;
