@@ -34,11 +34,7 @@
             >
               <img src="@/assets/images/closetab.svg" />
             </div>
-            <div
-              v-else
-              class="tab-refresh-button"
-              @click.stop="refreshTestCaseTab(index)"
-            >
+            <div v-else class="tab-refresh-button" @click.stop="refreshTestCaseTab(index)">
               <img src="@/assets/images/refresh.svg" />
             </div>
           </div>
@@ -115,7 +111,7 @@
               />
             </div>
             <div class="debug-input">
-                <!-- todo wa的话需要触发红色校验一秒钟 -->
+              <!-- todo wa的话需要触发红色校验一秒钟 -->
               <tiny-tag style="margin-bottom: 5px" effect="plain">{{
                 `样例 #` + (index + 1) + ` 实际输出`
               }}</tiny-tag>
@@ -218,9 +214,9 @@ const debug = async (ids: number[]) => {
     debugDTO.expectedOutputList?.push(testCases.value[id].expectedOutput)
   })
 
-  const { code, data } = await SubmitControllerService.debugUsingPost(debugDTO)
+  const { code, data, message } = await SubmitControllerService.debugUsingPost(debugDTO)
   if (code) {
-    TinyModal.message({ message: '获取评测结果失败，请稍后重试', status: 'error' })
+    if (message.length === 0) TinyModal.message({ message: '获取评测结果失败，请稍后重试', status: 'error' })
     isButtonLoading.value = false
     return
   }

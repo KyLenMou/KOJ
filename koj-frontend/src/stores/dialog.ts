@@ -1,17 +1,18 @@
-// src/stores/useLoginStore.js
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
-export const useDialogStore = defineStore('dialog', () => {
+const useDialogStore = defineStore('dialog', () => {
   const passportDialogVisible = ref(false)
 
-  function showPassportDialogVisible() {
+  const showPassportDialogVisible = () => {
     passportDialogVisible.value = true
   }
 
-  function hidePassportDialogVisible() {
+  const hidePassportDialogVisible = () => {
     passportDialogVisible.value = false
   }
 
   return { passportDialogVisible, showPassportDialogVisible, hidePassportDialogVisible }
 })
+
+export default useDialogStore

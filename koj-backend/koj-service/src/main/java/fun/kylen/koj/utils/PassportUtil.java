@@ -1,9 +1,10 @@
 package fun.kylen.koj.utils;
 
 import cn.dev33.satoken.stp.StpUtil;
+import fun.kylen.koj.common.BusinessException;
+import fun.kylen.koj.common.ResultEnum;
 import fun.kylen.koj.constant.StpConstant;
 import fun.kylen.koj.model.oj.vo.UserInfoVO;
-import org.springframework.stereotype.Component;
 
 /**
  * @Author: KyLen
@@ -11,7 +12,16 @@ import org.springframework.stereotype.Component;
  * @Description:
  */
 public class PassportUtil {
+
     public static UserInfoVO getCurrentUser() {
+        return (UserInfoVO) StpUtil.getSession().get(StpConstant.CURRENT_USER);
+    }
+
+    public static UserInfoVO getCurrentUserIfLogin() {
+        UserInfoVO currentUser = PassportUtil.getCurrentUser();
+        if (currentUser == null) {
+            throw new BusinessException(ResultEnum.NOT_LOGIN, "请先登录");
+        }
         return (UserInfoVO) StpUtil.getSession().get(StpConstant.CURRENT_USER);
     }
 }

@@ -13,18 +13,27 @@
           <span class="oj-card-title">{{ problemDetail.title + ` ` }}</span>
         </div>
         <div style="display: flex; gap: 10px">
-          <tiny-tag type="info" effect="plain">{{
-            `时间限制：` + problemDetail.timeLimit + `ms`
-          }}</tiny-tag>
-          <tiny-tag type="warning" effect="plain">{{
-            `内存限制：` + problemDetail.memoryLimit + `MB`
-          }}</tiny-tag>
-          <tiny-tag type="success" effect="plain">{{
-            `栈限制：` + problemDetail.stackLimit + `MB`
-          }}</tiny-tag>
-          <difficulty-tag :difficulty="problemDetail.difficulty" />
-          <tiny-popover trigger="click">
+          <tiny-button type="warning" :icon="IconStarO" size="small"></tiny-button>
+          <tiny-popover width="200" trigger="hover">
             <template #default>
+              <div style="border-bottom: 1px solid gray; text-align: center">
+                点击复制链接或扫码分享
+              </div>
+              <tiny-qr-code v-bind="qrCode"></tiny-qr-code>
+            </template>
+            <template #reference>
+              <tiny-button
+                type="info"
+                :icon="IconShare"
+                size="small"
+                @click="copyUrl"
+              ></tiny-button>
+            </template>
+          </tiny-popover>
+          <tiny-button :icon="IconFeedback" size="small"></tiny-button>
+          <tiny-popover trigger="click" style="margin-left: 5px">
+            <template #default>
+              <difficulty-tag :difficulty="problemDetail.difficulty" style="margin-right: 5px" />
               <tiny-tag
                 v-for="tag in problemDetail.tags"
                 :key="tag"
@@ -36,7 +45,7 @@
             </template>
             <template #reference>
               <tiny-button
-                size="mini"
+                size="small"
                 style="border-radius: 5px"
                 type="primary"
                 plain
@@ -86,6 +95,9 @@
                   :output="problemDetail.output"
                   :examples="problemDetail.examples"
                   :note="problemDetail.note"
+                  :timeLimit="problemDetail.timeLimit"
+                  :memoryLimit="problemDetail.memoryLimit"
+                  :stackLimit="problemDetail.stackLimit"
                 />
               </div>
             </template>
@@ -122,6 +134,9 @@
               :output="problemDetail.output"
               :examples="problemDetail.examples"
               :note="problemDetail.note"
+              :timeLimit="problemDetail.timeLimit"
+              :memoryLimit="problemDetail.memoryLimit"
+              :stackLimit="problemDetail.stackLimit"
             />
           </div>
         </template>
@@ -141,7 +156,7 @@
               />
             </template>
             <template #bottom>
-                <!-- todo testcase需要父组件管理，否则切换布局之后数据会消失 -->
+              <!-- todo testcase需要父组件管理，否则切换布局之后数据会消失 -->
               <problem-debug
                 v-if="isMounted"
                 v-model:problemSubmitDTO="problemSubmitDTO"
@@ -161,9 +176,26 @@ import ProblemDebug from './ProblemDebug.vue'
 import { ProblemControllerService, type ProblemDetailVO, type SubmissionDTO } from '@/api'
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { iconPushpin } from '@opentiny/vue-icon'
 import { TinyModal } from '@opentiny/vue'
+import { iconPushpin, iconStarO, iconShare, iconFeedback } from '@opentiny/vue-icon'
 const IconPushpin = iconPushpin()
+const IconStarO = iconStarO()
+const IconShare = iconShare()
+const IconFeedback = iconFeedback()
+const qrCode = {
+  value: window.location.href,
+  icon: '/src/assets/logo.png',
+  iconSize: 42,
+  size: 166
+}
+const copyUrl = () => {
+  try {
+    navigator.clipboard.writeText(window.location.href)
+    TinyModal.message({ message: '复制链接成功', status: 'success' })
+  } catch (e) {
+    TinyModal.message({ message: '复制链接失败，请手动复制', status: 'error' })
+  }
+}
 const router = useRouter()
 const goToHome = () => {
   router.push('/')

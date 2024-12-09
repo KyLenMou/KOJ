@@ -2,6 +2,7 @@ package fun.kylen.koj.manager.oj;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.UUID;
+import fun.kylen.koj.annotation.RateLimit;
 import fun.kylen.koj.common.BusinessException;
 import fun.kylen.koj.common.ResultEnum;
 import fun.kylen.koj.constant.JudgeVerdictConstant;
@@ -17,6 +18,7 @@ import fun.kylen.koj.model.oj.vo.UserInfoVO;
 import fun.kylen.koj.mq.JudgeMessageDispatcher;
 import fun.kylen.koj.utils.PassportUtil;
 import fun.kylen.koj.utils.RedisUtil;
+import fun.kylen.koj.validator.JudgeValidator;
 import fun.kylen.koj.vo.DebugVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -45,6 +47,8 @@ public class SubmitManager {
     private ProblemCaseEntityService problemCaseEntityService;
     @Autowired
     private ProblemEntityService problemEntityService;
+    @Autowired
+    private JudgeValidator judgeValidator;
     @Autowired
     private RedisUtil redisUtil;
 
@@ -114,17 +118,17 @@ public class SubmitManager {
         }
     }
 
+    @RateLimit
     public String debug(DebugDTO debugDTO) {
-        // todo 调试的用户输入不能太大 输入和预计输出是一一对应的，大小必须相同
-        // todo 校验代码语言是否合法
-        // TODO 用户输入不能出现空值，否则在沙箱构造cmd时出现了content为空的情况
-        UserInfoVO currentUser = PassportUtil.getCurrentUser();
-        // controller层已经做过校验，再做一次
-        if (currentUser == null) {
-            throw new BusinessException(ResultEnum.NOT_LOGIN, "请先登录");
-        }
+        UserInfoVO currentUser = PassportUtil.getCurrentUserIfLogin();
+
+        judgeValidator.validateDebugDTO(debugDTO);
+
         try {
             DebugVO debugVO = getDebugVO(debugDTO);
+
+            // 设置当前调试任务的用户id，只能由当前用户访问
+            debugVO.setUserId(currentUser.getId());
 
             String debugId = UUID.fastUUID().toString();
 
@@ -140,9 +144,6 @@ public class SubmitManager {
     }
 
     private static DebugVO getDebugVO(DebugDTO debugDTO) {
-        // todo 校验所有的size大小是否一致
-
-
         int size = debugDTO.getUserInputList().size();
         DebugVO debugVO = new DebugVO();
         debugVO.setLanguage(debugDTO.getLanguage());
@@ -152,8 +153,8 @@ public class SubmitManager {
         debugVO.setStackLimit(debugDTO.getStackLimit());
         debugVO.setJudgeMode(debugDTO.getJudgeMode());
         debugVO.setVerdict(new ArrayList<>(Collections.nCopies(size, JudgeVerdictConstant.NULL)));
-        debugVO.setRunTime(new ArrayList<>(Collections.nCopies(size, -1)));
-        debugVO.setRunMemory(new ArrayList<>(Collections.nCopies(size, -1)));
+        debugVO.setRunTime(new ArrayList<>(Collections.nCopies(size, 0)));
+        debugVO.setRunMemory(new ArrayList<>(Collections.nCopies(size, 0)));
         debugVO.setMessage(new ArrayList<>(Collections.nCopies(size, "")));
         debugVO.setUserInputList(debugDTO.getUserInputList());
         debugVO.setUserOutputList(new ArrayList<>(Collections.nCopies(size, "")));
@@ -162,26 +163,21 @@ public class SubmitManager {
     }
 
     public DebugVO getDebugResult(String debugId) {
+        UserInfoVO currentUser = PassportUtil.getCurrentUserIfLogin();
         DebugVO debugVO = redisUtil.get(RedisKeyConstant.DEBUG + debugId, DebugVO.class);
-        if (debugVO == null) {
+        // 如果尝试获取他人已存在的调试任务，返回不存在以混淆调用者
+        if (debugVO == null || !debugVO.getUserId().equals(currentUser.getId())) {
             throw new BusinessException(ResultEnum.NOT_FOUND, "该调试任务不存在");
         }
+        // 如果未评测，理论上所有的都应该为NULL，所以只要出现NULL就返回
         for (int i = 0; i < debugVO.getVerdict().size(); i++) {
-            if (debugVO.getVerdict().get(i) == 0) {
+            if (debugVO.getVerdict().get(i) == JudgeVerdictConstant.NULL) {
                 return debugVO;
             }
         }
-        boolean isAllDone = true;
-        for (int i = 0; i < debugVO.getVerdict().size(); i++) {
-            if (debugVO.getVerdict().get(i) == 0) {
-                isAllDone = false;
-                break;
-            }
-        }
-        if (isAllDone) {
-            redisUtil.del(RedisKeyConstant.DEBUG + debugId);
-        }
-        // 如果调试任务已经完成，设置debugId为空，方便前端判断
+        // 否则全部都已经评测了，删除redis中的数据
+        redisUtil.del(RedisKeyConstant.DEBUG + debugId);
+        // 调试任务已经完成，设置debugId为空，方便前端判断
         debugVO.setDebugId("");
         return debugVO;
     }

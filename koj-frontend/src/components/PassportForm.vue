@@ -203,7 +203,7 @@ const register = async () => {
 }
 
 // visible传值
-const passportDialogVisible = defineModel<boolean>()
+const passportDialogVisible = defineModel<boolean>('passportDialogVisible')
 </script>
 
 <style scoped>

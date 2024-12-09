@@ -42,5 +42,4 @@ public class SubmissionController {
     public R<SubmissionVerdictVO> getSubmissionVerdict(@RequestParam(value = "submissionId") Long submissionId) {
         return R.ok(submissionService.getSubmissionVerdict(submissionId));
     }
-
 }

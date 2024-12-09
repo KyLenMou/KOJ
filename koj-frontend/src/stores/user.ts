@@ -1,7 +1,6 @@
-import { defineStore, storeToRefs } from 'pinia'
+import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { PassportControllerService, type UserInfoVO, type UserLoginDTO } from '@/api'
-import { useDialogStore } from './dialog'
 
 const useUserStore = defineStore(
   'user',

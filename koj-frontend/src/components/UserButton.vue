@@ -69,7 +69,7 @@
 </template>
 
 <script setup lang="ts">
-import { useDialogStore } from '@/stores/dialog';
+import useDialogStore from '@/stores/dialog';
 import useUserStore from '@/stores/user';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';

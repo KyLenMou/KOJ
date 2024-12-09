@@ -1,5 +1,10 @@
 <template>
   <div>
+    <div style="display: flex; gap: 10px;margin-bottom: 10px;">
+      <tiny-tag type="info" effect="plain">{{ `时间限制：` + timeLimit + `ms` }}</tiny-tag>
+      <tiny-tag type="warning" effect="plain">{{ `内存限制：` + memoryLimit + `MB` }}</tiny-tag>
+      <tiny-tag type="success" effect="plain">{{ `栈限制：` + stackLimit + `MB` }}</tiny-tag>
+    </div>
     <div class="info-title">题目描述</div>
     <md-preview :text="description" />
     <div class="info-title">输入</div>
@@ -7,6 +12,7 @@
     <div class="info-title">输出</div>
     <md-preview :text="output" />
     <div class="info-title">样例</div>
+    <!-- todo 使用tinygrid -->
     <table class="example-table">
       <thead>
         <tr>
@@ -16,8 +22,24 @@
       </thead>
       <tbody>
         <tr v-for="(example, index) in parsedExamples" :key="index">
-          <td style="white-space: pre-wrap;vertical-align: top; font-family: 'Courier New', Courier, monospace;">{{ example.input }}</td>
-          <td style="white-space: pre-wrap;vertical-align: top; font-family: 'Courier New', Courier, monospace;">{{ example.output }}</td>
+          <td
+            style="
+              white-space: pre-wrap;
+              vertical-align: top;
+              font-family: 'Courier New', Courier, monospace;
+            "
+          >
+            {{ example.input }}
+          </td>
+          <td
+            style="
+              white-space: pre-wrap;
+              vertical-align: top;
+              font-family: 'Courier New', Courier, monospace;
+            "
+          >
+            {{ example.output }}
+          </td>
         </tr>
       </tbody>
     </table>
@@ -27,14 +49,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed } from 'vue'
 
 const props = defineProps({
   description: String,
   input: String,
   output: String,
   examples: String,
-  note: String
+  note: String,
+  timeLimit: Number,
+  memoryLimit: Number,
+  stackLimit: Number
 })
 
 const parsedExamples = computed(() => {
@@ -64,6 +89,4 @@ const parsedExamples = computed(() => {
   font-size: 20px;
   font-weight: bold;
 }
-
-
 </style>
