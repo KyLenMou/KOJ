@@ -22,6 +22,7 @@ import fun.kylen.koj.validator.JudgeValidator;
 import fun.kylen.koj.vo.DebugVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,31 +53,34 @@ public class SubmitManager {
     @Autowired
     private RedisUtil redisUtil;
 
+    @RateLimit(RateLimit.Type.SUBMIT)
     public void submit(SubmissionDTO submissionDTO) {
-        UserInfoVO currentUser = PassportUtil.getCurrentUser();
-        // controller层已经做过校验
-        if (currentUser == null) {
-            throw new BusinessException(ResultEnum.NOT_LOGIN, "请先登录");
+        UserInfoVO currentUser = PassportUtil.getCurrentUserIfLogin();
+        Long problemId = submissionDTO.getProblemId();
+        // 先获取题目
+        Problem problem = problemEntityService.lambdaQuery()
+                .eq(Problem::getId, problemId)
+                .one();
+        if (problem == null) {
+            throw new BusinessException(ResultEnum.NOT_FOUND, "题目不存在");
         }
+        // 判断语言
+        String language = submissionDTO.getLanguage();
+        judgeValidator.validateCodeLanguage(language);
+        // 构造提交
         Submission submission = new Submission();
+        // 设置题目id，code，language
         BeanUtil.copyProperties(submissionDTO, submission);
+        // 设置展示id
+        submission.setProblemDisplayId(problem.getDisplayId());
         // 设置用户id
         submission.setUserId(currentUser.getId());
         // 设置用户名
         submission.setUsername(currentUser.getUsername());
-        // 设置展示id
-        Long problemId = submission.getProblemId();
-        Problem problem = problemEntityService.lambdaQuery()
-                .eq(Problem::getId, problemId)
-                .one();
-        submission.setProblemDisplayId(problem.getDisplayId());
         // 设置提交时间
         submission.setSubmitTime(new Date());
-        // todo validator校验 (是否存在题目，题目是否可见等)
-        // todo 校验代码语言是否合法
-        // todo 限制5秒内提交次数
-        // 设置 in queue
-        submission.setVerdict(JudgeVerdictConstant.IN_QUEUE);
+        // 设置提交状态，此时还没有发到消息队列
+        submission.setVerdict(JudgeVerdictConstant.NULL);
         // 设置乐观锁
         submission.setVersion(0);
         // 保存提交
@@ -85,14 +89,13 @@ public class SubmitManager {
             throw new BusinessException(ResultEnum.FAIL, "提交失败，请稍后重试");
         }
         // 为每个提交生成对应的所有测试用例评测情况
-        String userId = submission.getUserId();
+        String userId = currentUser.getId();
         Long submissionId = submission.getId();
         // 查询该题目的测试用例
         List<ProblemCase> problemCaseList = problemCaseEntityService.lambdaQuery()
                 .eq(ProblemCase::getProblemId, problemId)
                 .list();
-        // 构造 用户 题目 提交 测试用例
-        List<SubmissionCase> submissionCaseList = new ArrayList<>(problemCaseList.size());
+        // 构造该题目下，该用户提交对应的所有测试用例，一一创建并按照顺序插入
         problemCaseList.forEach(p -> {
             SubmissionCase submissionCase = new SubmissionCase();
             submissionCase.setSubmissionId(submissionId);
@@ -102,15 +105,18 @@ public class SubmitManager {
             submissionCase.setProblemCaseId(p.getId());
             // 默认未评测
             submissionCase.setVerdict(JudgeVerdictConstant.NULL);
-            submissionCaseList.add(submissionCase);
+            submissionCaseEntityService.save(submissionCase);
         });
-        // 将该用户对于该题目的提交的所有测试点添加到数据库 todo 一个一个插入保证顺序
-        submissionCaseEntityService.saveBatch(submissionCaseList);
         try {
             // 发送判题任务到消息队列
             judgeMessageDispatcher.dispatch(submissionId);
+            // 设置提交状态为正在排队
+            submissionEntityService.lambdaUpdate()
+                    .set(Submission::getVerdict, JudgeVerdictConstant.IN_QUEUE)
+                    .eq(Submission::getId, submissionId)
+                    .update();
         } catch (Exception e) {
-            // 发送到消息队列失败，用户需要重新对该提交进行判题 todo 新增重新判题接口，仅需把submitId发送到消息队列中即可
+            // 发送到消息队列失败，设置提交失败
             submissionEntityService.lambdaUpdate()
                     .set(Submission::getVerdict, JudgeVerdictConstant.SUBMIT_FAIL)
                     .eq(Submission::getId, submissionId)
@@ -118,7 +124,7 @@ public class SubmitManager {
         }
     }
 
-    @RateLimit
+    @RateLimit(RateLimit.Type.DEBUG)
     public String debug(DebugDTO debugDTO) {
         UserInfoVO currentUser = PassportUtil.getCurrentUserIfLogin();
 

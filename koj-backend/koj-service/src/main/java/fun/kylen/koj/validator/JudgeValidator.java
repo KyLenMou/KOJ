@@ -18,7 +18,7 @@ public class JudgeValidator {
 
     public void validateDebugDTO(DebugDTO debugDTO) {
         String language = debugDTO.getLanguage();
-        commonValidator.mustIn(language, "编程语言", "c", "cpp", "java", "python", "go");
+        this.validateCodeLanguage(language);
         String code = debugDTO.getCode();
         commonValidator.between(code, "程序代码",1, 65536);
         String judgeMode = debugDTO.getJudgeMode();
@@ -38,5 +38,9 @@ public class JudgeValidator {
         commonValidator.mustBeSame(userInputList.size(), expectedOutputList.size(), "输入与输出数据大小");
         // 最多调试五次
         commonValidator.between(userInputList.size(), "测试用例数量", 1, 5);
+    }
+
+    public void validateCodeLanguage(String language) {
+        commonValidator.mustIn(language, "编程语言", "c", "cpp", "java", "python", "go");
     }
 }

@@ -17,10 +17,14 @@ public class PassportUtil {
         return (UserInfoVO) StpUtil.getSession().get(StpConstant.CURRENT_USER);
     }
 
+    /**
+     * 返回用户信息，如果未登录则抛出异常
+     * @return
+     */
     public static UserInfoVO getCurrentUserIfLogin() {
         UserInfoVO currentUser = PassportUtil.getCurrentUser();
         if (currentUser == null) {
-            throw new BusinessException(ResultEnum.NOT_LOGIN, "请先登录");
+            throw new BusinessException(ResultEnum.NOT_LOGIN, "未登录，请先登录");
         }
         return (UserInfoVO) StpUtil.getSession().get(StpConstant.CURRENT_USER);
     }

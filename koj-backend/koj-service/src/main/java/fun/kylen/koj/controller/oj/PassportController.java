@@ -59,6 +59,7 @@ public class PassportController {
      */
     @GetMapping("/github")
     public R<UserInfoVO> handleGithubPassport(@RequestParam("code") String code) {
+        // todo 用户必须自定义设置用户名
         return R.ok(passportService.handleGithubPassport(code));
     }
 }

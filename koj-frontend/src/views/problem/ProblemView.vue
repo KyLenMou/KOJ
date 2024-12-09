@@ -56,12 +56,14 @@
             </template>
           </tiny-popover>
         </div>
-        <tiny-button
+        <div
+          class="switch-layout-button"
           style="margin-left: auto; margin-right: 10px"
-          size="small"
           @click="splitLayout = splitLayout === 'fashion' ? 'classic' : 'fashion'"
-          >切换布局</tiny-button
         >
+          <img v-show="splitLayout === 'classic'" src="@/assets/images/classiclayout.svg" />
+          <img v-show="splitLayout === 'fashion'" src="@/assets/images/fashionlayout.svg" />
+        </div>
         <tiny-button style="margin-right: 20px" size="small" @click="goToHome"
           >返回首页</tiny-button
         >
@@ -260,8 +262,9 @@ onMounted(async () => {
     problemDisplayId as string
   )
   if (code) return
-  problemDetail.value = data as ProblemDetailVO
   isMounted.value = true
+  problemDetail.value = data as ProblemDetailVO
+  problemSubmitDTO.value.problemId = data?.id
 })
 </script>
 
@@ -276,6 +279,23 @@ onMounted(async () => {
   height: calc(100vh - 50px);
   display: flex;
 }
+.switch-layout-button {
+  cursor: pointer;
+  border: 1px solid #ccc;
+  padding: 3px 4px 0 4px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.switch-layout-button:hover {
+  border-color: black;
+}
+
+.switch-layout-button:active {
+  border-color: black;
+  background-color: #dadada;
+}
+
 :deep(.tiny-split-wrapper) {
   border-radius: 0;
 }
