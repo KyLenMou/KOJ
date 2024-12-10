@@ -1,5 +1,5 @@
 ---
-language: C
+language: c
 src_path: main.c
 exe_path: main
 compile:
@@ -13,7 +13,7 @@ run:
   command: /w/{exe_path}
 
 ---
-language: C++
+language: cpp
 src_path: main.cpp
 exe_path: main
 compile:
@@ -27,7 +27,7 @@ run:
   command: /w/{exe_path}
 
 ---
-language: Java
+language: java
 src_path: Main.java
 exe_path: Main.jar
 compile:
@@ -41,7 +41,7 @@ run:
   command: /usr/bin/java -Dfile.encoding=UTF-8 -cp /w/{exe_path} Main
 
 ---
-language: Python
+language: python
 src_path: main.py
 exe_path: __pycache__/main.pypy39.pyc
 compile:
@@ -56,7 +56,7 @@ run:
 
 
 ---
-language: Golang
+language: go
 src_path: main.go
 exe_path: main
 compile:
