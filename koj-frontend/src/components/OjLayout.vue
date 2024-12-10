@@ -10,14 +10,15 @@
         </router-view>
       </tiny-row>
       <tiny-row class="layout-footer">
-        <span> KOJ KCode Online Judge ©2024 Created by KyLen </span>
+        <div>KOJ Kode Online Judge</div>
+        <div>Copyright © 2024 Created by KyLen</div>
       </tiny-row>
     </tiny-layout>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, nextTick, watchEffect, watch } from 'vue'
+import { ref } from 'vue'
 const isNavMenuInit = ref(false)
 </script>
 <style scoped>
@@ -71,14 +72,15 @@ const isNavMenuInit = ref(false)
   }
 }
 
-
 .content-and-footer {
   overflow-y: auto;
 }
 
 .layout-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   margin-top: auto;
-  padding: 1rem 2.5rem;
   font-weight: 400;
   font-size: 1rem;
   line-height: 1;

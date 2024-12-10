@@ -1,6 +1,7 @@
 package fun.kylen.koj.manager.oj;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import fun.kylen.koj.common.BusinessException;
 import fun.kylen.koj.common.ResultEnum;
@@ -52,11 +53,11 @@ public class SubmissionManager {
         }
         Page<Submission> submissionPage = submissionEntityService.lambdaQuery()
                 .eq(problemId != null, Submission::getProblemId, problemId)
-                .eq(problemDisplayId != null, Submission::getProblemDisplayId, problemDisplayId)
-                .eq(userId != null, Submission::getUserId, userId)
-                .eq(username != null, Submission::getUsername, username)
+                .eq(StrUtil.isNotBlank(problemDisplayId), Submission::getProblemDisplayId, problemDisplayId)
+                .eq(StrUtil.isNotBlank(problemDisplayId), Submission::getUserId, userId)
+                .eq(StrUtil.isNotBlank(problemDisplayId), Submission::getUsername, username)
                 .eq(verdict != null, Submission::getVerdict, verdict)
-                .eq(language != null, Submission::getLanguage, language)
+                .eq(StrUtil.isNotBlank(language), Submission::getLanguage, language)
                 .orderByDesc(Submission::getSubmitTime)
                 .page(new Page<>(current, size));
         Page<SubmissionListVO> submissionListVOPage = new Page<>();

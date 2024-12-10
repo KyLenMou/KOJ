@@ -1,8 +1,6 @@
 <template>
-  <div>
-    <router-view />
-    <passport-form v-model:passportDialogVisible="passportDialogVisible" />
-  </div>
+  <router-view />
+  <passport-form v-model:passportDialogVisible="passportDialogVisible" />
 </template>
 
 <script setup lang="ts">

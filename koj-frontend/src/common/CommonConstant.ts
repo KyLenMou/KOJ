@@ -22,4 +22,11 @@ const VerdictList = [
     { name: 'Stack Limit Exceeded', short: 'SLE', verdict: 404 },
     { name: 'System Error', short: 'SE', verdict: 500 }
 ]
-export { LanguageList,VerdictList }
+const VerdictProgressColors = [
+  { color: '#1376FF', percentage: 21 },
+  { color: '#FF8800', percentage: 41 },
+  { color: '#5CB300', percentage: 61 },
+  { color: '#6E51E0', percentage: 81 },
+  { color: '#191919', percentage: 101 }
+]
+export { LanguageList,VerdictList,VerdictProgressColors }

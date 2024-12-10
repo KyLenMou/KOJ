@@ -130,14 +130,14 @@
         </template>
       </tiny-tab-item>
       <tiny-tab-item name="submissionList" title="提交记录" style="margin: 0 20px" lazy>
-        <problem-submisson-list v-model:problem-id="problemDetail.id" />
+        <problem-submisson-list ref="submissionListRef" v-model:problem-id="problemDetail.id" />
       </tiny-tab-item>
-      <tiny-tab-item name="discussion" title="讨论区" style="margin: 0 20px">
-        本质就是帖子
+      <tiny-tab-item name="discussion" title="讨论区" style="margin: 0 20px" lazy>
+        帖子
       </tiny-tab-item>
     </tiny-tabs>
   </div>
-  <div style="height: 50px; border-top: 1px solid #ebeef5; padding: 10px">
+  <div style="height: 50px; border-top: 1px solid #ebeef5; padding: 10px 0 10px 20px">
     <div style="display: flex">
       <tiny-button
         @click="debug([activeSubTab] as number[])"
@@ -274,12 +274,19 @@ const getDebugResult = async (debugId: string, ids: number[]) => {
     testCases.value[id].isLoading = false
   })
 }
-// todo 提交后来个进度条
+
+// 子组件的获取评测的方法
+const submissionListRef = ref<any>([])
+
+// 提交代码
 const submit = async () => {
   console.log(problemSubmitDTO.value)
   const { code, data } = await SubmitControllerService.submitUsingPost(problemSubmitDTO.value)
   if (code) return
+  // 跳转到提交记录
   activeTab.value = 'submissionList'
+  // 刷新提交记录
+  submissionListRef.value.getSubmissionList()
 }
 // 切换测试用例
 const switchTab = (index: any) => {

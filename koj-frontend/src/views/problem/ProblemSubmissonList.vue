@@ -1,16 +1,12 @@
 <template>
   <div v-loading="isLoading" tiny-loading__background="rgba(0,0,0,0.2)">
+    <!-- 表单栏 -->
     <div style="display: flex; gap: 10px">
-      <!-- 只看我的 -->
-      <tiny-base-select v-model="submissonVerdictQuery.onlyMine" style="width: 120px">
-        <tiny-option label="只看我的" :value="true" />
-        <tiny-option label="查看所有" :value="false" />
-      </tiny-base-select>
       <!-- 编程语言 -->
       <tiny-base-select
         v-model="submissonVerdictQuery.language"
         clearable
-        placeholder="编程语言"
+        placeholder="语言"
         style="width: 120px"
       >
         <tiny-option
@@ -34,8 +30,16 @@
           :value="item.verdict"
         />
       </tiny-base-select>
+      <!-- 只看我的 -->
+      <tiny-checkbox-button
+        v-model="submissonVerdictQuery.onlyMine"
+        label="只看我的"
+        style="margin: 0"
+      />
+      <!-- 刷新 -->
       <tiny-button :icon="IconConmentRefresh" @click="getSubmissionList" />
     </div>
+    <!-- 提交列表栏 -->
     <div v-for="(submission, index) in submissionList" :key="index" class="submisson-box">
       <div style="display: flex; justify-content: space-between">
         <div style="margin: 5px">
@@ -52,7 +56,7 @@
         </div>
         <!-- 非最终状态，显示进度条 -->
         <div
-          v-if="submission.verdict !== undefined && [1, 100, 200, 201].includes(submission.verdict)"
+          v-if="submission.verdict !== undefined && isSubmissionRunning(submission.verdict)"
           style="flex: 1"
         >
           <div style="font-size: 15px; font-weight: 600; margin: 5px; text-align: center">
@@ -60,22 +64,21 @@
               style="display: flex; justify-content: center; gap: 5px"
               :style="
                 'color:' +
-                getProgressModel(submission.verdict).color +
+                getVerdictProgressModel(submission.verdict).color +
                 '; fill: ' +
-                getProgressModel(submission.verdict).color
+                getVerdictProgressModel(submission.verdict).color
               "
             >
-              {{ getProgressModel(submission.verdict).text }}
+              {{ getVerdictProgressModel(submission.verdict).text }}
               <IconLoadingShadow />
             </div>
             <tiny-progress
               style="margin: 10px"
               :stroke-width="6"
-              :percentage="getProgressModel(submission.verdict).percentage"
-              :color="progressColors"
+              :percentage="getVerdictProgressModel(submission.verdict).percentage"
+              :color="VerdictProgressColors"
               :show-text="false"
             />
-            <!-- todo 渐变效果，不要直接消失进度条 -->
           </div>
         </div>
         <!-- 最终状态，显示tag -->
@@ -98,94 +101,23 @@
 <script setup lang="ts">
 import { SubmissionControllerService, type SubmissionListVO, type SubmissionVerdictVO } from '@/api'
 import VerdictDiv from '@/components/VerdictDiv.vue'
-import { LanguageList, VerdictList } from '@/common/CommonConstant'
+import { LanguageList, VerdictList, VerdictProgressColors } from '@/common/CommonConstant'
 import { iconConmentRefresh, iconLoadingShadow } from '@opentiny/vue-icon'
-import { onMounted, ref } from 'vue'
-import { getLanguageByShortName, fromNow } from '@/utils'
+import { onMounted, ref, watch } from 'vue'
+import {
+  getLanguageByShortName,
+  fromNow,
+  getVerdictProgressModel,
+  isSubmissionRunning
+} from '@/utils'
 import { TinyLoading } from '@opentiny/vue'
 const vLoading = TinyLoading.directive
 const IconConmentRefresh = iconConmentRefresh()
 const IconLoadingShadow = iconLoadingShadow()
 const problemId = defineModel<number>('problemId')
-const progressValue = ref(60)
-const progressColors = ref([
-  { color: '#1376FF', percentage: 21 },
-  { color: '#FF8800', percentage: 41 },
-  { color: '#5CB300', percentage: 61 },
-  { color: '#6E51E0', percentage: 81 },
-  { color: '#191919', percentage: 101 }
-])
-const getProgressModel = (verdict: number) => {
-  switch (verdict) {
-    case 1:
-      return {
-        text: 'In Queue',
-        percentage: 20,
-        color: '#1376FF'
-      }
-    case 100:
-      return {
-        text: 'Compiling',
-        percentage: 40,
-        color: '#FF8800'
-      }
-    case 200:
-      return {
-        text: 'Running',
-        percentage: 60,
-        color: '#5CB300'
-      }
-    case 201:
-      return {
-        text: 'Judging',
-        percentage: 80,
-        color: '#6E51E0'
-      }
-    default:
-      return {
-        text: '',
-        percentage: 100,
-        color: '#191919'
-      }
-  }
-}
-// const getSubmissionVerdict = async () => {
-//   // 目前认为60秒内一定会有结果，只查询60秒
-//   for (let i = 1; i < 60; i++) {
-//     // 一秒获取一次
-//     await new Promise((resolve) => setTimeout(resolve, 1000))
-//     const { code, data } = await SubmissionControllerService.getSubmissionVerdictUsingGet(
-//       submissionId.value as number
-//     )
-//     if (code) return
-//     const currentVerdict = data?.verdict
-//     switch (currentVerdict) {
-//       case 1:
-//         // in queue
-//         progressValue.value = 20
-//         break
-//       case 100:
-//         // compiling
-//         progressValue.value = 40
-//         break
-//       case 200:
-//         // running
-//         progressValue.value = 60
-//         break
-//       case 201:
-//         // judging
-//         progressValue.value = 80
-//         break
-//       default:
-//         submissionId.value = 0
-//         break
-//     }
-//     if (submissionId.value) submissionVerdict.value = data
-//   }
-// }
 const currentSize = ref(10)
 const currentPage = ref(1)
-const submissionList = ref<SubmissionListVO[]>()
+const submissionList = ref<SubmissionListVO[] | any>()
 const submissonVerdictQuery = ref({
   onlyMine: true,
   verdict: undefined,
@@ -193,6 +125,9 @@ const submissonVerdictQuery = ref({
   // todo 无限滚动
 })
 const isLoading = ref(false)
+const runningSubmissionList = ref<number[]>([])
+let isRunning = false
+let askTimes = 30
 const getSubmissionList = async () => {
   isLoading.value = true
   try {
@@ -202,19 +137,71 @@ const getSubmissionList = async () => {
       submissonVerdictQuery.value.language,
       submissonVerdictQuery.value.onlyMine,
       undefined,
-      undefined,
+      problemId.value,
       undefined,
       undefined,
       submissonVerdictQuery.value.verdict
     )
     if (code) return
     submissionList.value = data?.records
+    for (const submission of submissionList.value) {
+      if (isSubmissionRunning(submission.verdict)) {
+        runningSubmissionList.value.push(submission.id as number)
+      }
+    }
+    if (runningSubmissionList.value.length) {
+      if (!isRunning) {
+        getRunningSubmissionVerdict()
+      } else {
+        askTimes = 30
+      }
+    }
   } finally {
     isLoading.value = false
   }
 }
+const getRunningSubmissionVerdict = async () => {
+  isRunning = true
+  try {
+    while (askTimes-- > 0) {
+      // 如果询问列表空了，就不用询问了
+      if (!runningSubmissionList.value.length) return
+      // 2秒获取一次
+      await new Promise((resolve) => setTimeout(resolve, 2000))
+      const { code, data } = await SubmissionControllerService.getSubmissionVerdictListUsingGet(
+        runningSubmissionList.value
+      )
+      if (code || !data) return
+      let tempList = [] as number[]
+      for (const resultSubmission of data) {
+        // 获取resultSubmission的submissionId
+        const submissionId = resultSubmission.submissionId as number
+        // 更新submissionList中的submission的状态为resultSubmission的状态
+        for (const submission of submissionList.value) {
+          if (submission.id === submissionId) {
+            submission.verdict = resultSubmission.verdict
+            submission.runTime = resultSubmission.runTime
+            submission.runMemory = resultSubmission.runMemory
+            break
+          }
+        }
+        // 如果resultSubmission的状态是running状态，继续询问了
+        if (isSubmissionRunning(resultSubmission.verdict)) {
+          tempList.push(submissionId)
+        }
+      }
+      runningSubmissionList.value = tempList
+    }
+  } finally {
+    isRunning = false
+  }
+}
 onMounted(async () => {
   await getSubmissionList()
+})
+// 暴露方法给父组件
+defineExpose({
+  getSubmissionList
 })
 </script>
 
@@ -225,5 +212,11 @@ onMounted(async () => {
   margin-top: 10px;
   height: 55px;
   padding: 5px 5px 0 5px;
+}
+:deep(.tiny-loading) {
+  border-radius: 6px !important;
+}
+:deep(.tiny-checkbox-button__inner) {
+  padding: 0 10px;
 }
 </style>

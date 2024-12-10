@@ -212,11 +212,105 @@ const fromNow = (date: string) => {
   return dayjs(date).fromNow()
 }
 
+const getVerdictProgressModel = (verdict: number) => {
+  switch (verdict) {
+    case 1:
+      return {
+        text: 'In Queue',
+        percentage: 20,
+        color: '#1376FF'
+      }
+    case 100:
+      return {
+        text: 'Compiling',
+        percentage: 40,
+        color: '#FF8800'
+      }
+    case 200:
+      return {
+        text: 'Running',
+        percentage: 60,
+        color: '#5CB300'
+      }
+    case 201:
+      return {
+        text: 'Judging',
+        percentage: 80,
+        color: '#6E51E0'
+      }
+    case 300:
+      return {
+        text: 'Accepted',
+        percentage: 100,
+        color: '#5CB300'
+      }
+    case 301:
+      return {
+        text: 'Partially Accepted',
+        percentage: 100,
+        color: '#5CB300'
+      }
+    case 400:
+      return {
+        text: 'Wrong Answer',
+        percentage: 100,
+        color: '#F23030'
+      }
+    case 401:
+      return {
+        text: 'Runtime Error',
+        percentage: 100,
+        color: '#F23030'
+      }
+    case 402:
+      return {
+        text: 'Time Limit Exceeded',
+        percentage: 100,
+        color: '#F23030'
+      }
+    case 403:
+      return {
+        text: 'Memory Limit Exceeded',
+        percentage: 100,
+        color: '#F23030'
+      }
+    case 404:
+      return {
+        text: 'Stack Limit Exceeded',
+        percentage: 100,
+        color: '#F23030'
+      }
+    case 405:
+      return {
+        text: 'Output Limit Exceeded',
+        percentage: 100,
+        color: '#F23030'
+      }
+    case 500:
+      return {
+        text: 'System Error',
+        percentage: 100,
+        color: '#191919'
+      }
+    default:
+      return {
+        text: '',
+        percentage: 100,
+        color: '#191919'
+      }
+  }
+}
+
+const isSubmissionRunning = (verdict: number | any) => {
+  return [1, 100, 200, 201].includes(verdict)
+}
 export {
   getDiffcultyColor,
   getDiffcultyTagColor,
   difficultyTagArray,
   getVerdictModel,
   getLanguageByShortName,
-  fromNow
+  fromNow,
+  getVerdictProgressModel,
+  isSubmissionRunning
 }

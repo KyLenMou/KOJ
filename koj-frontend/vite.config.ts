@@ -12,6 +12,9 @@ export default defineConfig({
     autoImportPlugin('vite'),
     ViteMonacoPlugin({})
   ],
+  define: {
+    'process.env': { ...process.env }
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
