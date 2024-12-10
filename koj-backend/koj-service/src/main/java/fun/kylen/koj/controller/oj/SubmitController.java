@@ -22,10 +22,19 @@ public class SubmitController {
     @Autowired
     private SubmitService submitService;
 
+    /**
+     * 对于出现系统错误的提交，用户可以重测
+     * @param submissionId
+     * @return
+     */
+    @PostMapping
+    public R<Void> reJudge(@RequestParam(value = "submissionId") Long submissionId) {
+        return R.okWithMessage("重测成功");
+    }
+
     @PostMapping("/submit")
-    public R<Void> submit(@Validated @RequestBody SubmissionDTO submission) {
-        submitService.submit(submission);
-        return R.okWithMessage("提交成功");
+    public R<String> submit(@Validated @RequestBody SubmissionDTO submission) {
+        return R.ok(submitService.submit(submission),"提交成功");
     }
 
     @PostMapping("/debug")

@@ -14,13 +14,6 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface SubmissionMapper extends BaseMapper<Submission> {
 
-    Page<SubmissionListVO> listSubmissionByPage(Page<SubmissionListVO> page,
-                                                @Param("problemId") Long problemId,
-                                                @Param("problemDisplayId") String problemDisplayId,
-                                                @Param("userId") String userId,
-                                                @Param("username") String username,
-                                                @Param("language") String language);
-
 }
 
 

@@ -19,8 +19,8 @@ public class SubmitServiceImpl implements SubmitService {
     private SubmitManager submitManager;
 
     @Override
-    public void submit(SubmissionDTO submission) {
-        submitManager.submit(submission);
+    public String submit(SubmissionDTO submission) {
+        return submitManager.submit(submission);
     }
 
     @Override

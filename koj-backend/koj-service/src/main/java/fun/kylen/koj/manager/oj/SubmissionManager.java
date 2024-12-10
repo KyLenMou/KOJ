@@ -1,21 +1,25 @@
 package fun.kylen.koj.manager.oj;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import fun.kylen.koj.common.BusinessException;
 import fun.kylen.koj.common.ResultEnum;
+import fun.kylen.koj.dao.ProblemEntityService;
 import fun.kylen.koj.dao.SubmissionCaseEntityService;
 import fun.kylen.koj.dao.SubmissionEntityService;
-import fun.kylen.koj.dao.UserInfoEntityService;
+import fun.kylen.koj.domain.Problem;
 import fun.kylen.koj.domain.Submission;
 import fun.kylen.koj.domain.SubmissionCase;
-import fun.kylen.koj.domain.UserInfo;
 import fun.kylen.koj.model.oj.vo.SubmissionDetailVO;
 import fun.kylen.koj.model.oj.vo.SubmissionListVO;
 import fun.kylen.koj.model.oj.vo.SubmissionVerdictVO;
+import fun.kylen.koj.utils.PassportUtil;
+import fun.kylen.koj.validator.CommonValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Author: KyLen
@@ -27,9 +31,11 @@ public class SubmissionManager {
     @Autowired
     private SubmissionEntityService submissionEntityService;
     @Autowired
-    private UserInfoEntityService userInfoEntityService;
-    @Autowired
     private SubmissionCaseEntityService submissionCaseEntityService;
+    @Autowired
+    private ProblemEntityService problemEntityService;
+    @Autowired
+    private CommonValidator commonValidator;
 
     public Page<SubmissionListVO> listSubmissionByPage(Long current,
                                                        Long size,
@@ -37,76 +43,79 @@ public class SubmissionManager {
                                                        String problemDisplayId,
                                                        String userId,
                                                        String username,
+                                                       Integer verdict,
+                                                       Boolean onlyMine,
                                                        String language) {
-        return submissionEntityService.listSubmissionByPage(new Page<>(current, size),
-                                                            problemId,
-                                                            problemDisplayId,
-                                                            userId,
-                                                            username,
-                                                            language);
+        commonValidator.between(size, "页大小", 1, 100);
+        if (onlyMine != null && onlyMine) {
+            userId = PassportUtil.getCurrentUserIfLogin().getId();
+        }
+        Page<Submission> submissionPage = submissionEntityService.lambdaQuery()
+                .eq(problemId != null, Submission::getProblemId, problemId)
+                .eq(problemDisplayId != null, Submission::getProblemDisplayId, problemDisplayId)
+                .eq(userId != null, Submission::getUserId, userId)
+                .eq(username != null, Submission::getUsername, username)
+                .eq(verdict != null, Submission::getVerdict, verdict)
+                .eq(language != null, Submission::getLanguage, language)
+                .orderByDesc(Submission::getSubmitTime)
+                .page(new Page<>(current, size));
+        Page<SubmissionListVO> submissionListVOPage = new Page<>();
+        submissionListVOPage.setCurrent(submissionPage.getCurrent());
+        submissionListVOPage.setTotal(submissionPage.getTotal());
+        submissionListVOPage.setSize(submissionPage.getSize());
+        submissionListVOPage.setRecords(submissionPage.getRecords().stream().map(s -> {
+            SubmissionListVO submissionListVO = new SubmissionListVO();
+            BeanUtil.copyProperties(s, submissionListVO);
+            return submissionListVO;
+        }).collect(Collectors.toList()));
+        return submissionListVOPage;
     }
 
-    public SubmissionVerdictVO getSubmissionVerdict(Long submissionId) {
-        Submission submission = submissionEntityService.lambdaQuery()
-                .eq(Submission::getId, submissionId)
-                .one();
-        if (submission == null) {
-            // 不抛异常，直接返回空
-            return null;
-        }
-        // 根据提交id获取到对应所有的测试用例状态
-        List<SubmissionCase> submissionCases = submissionCaseEntityService.lambdaQuery()
-                .eq(SubmissionCase::getSubmissionId, submissionId)
-                .list();
-        // 返回信息
-        SubmissionVerdictVO submissionVerdictVO = new SubmissionVerdictVO();
-        submissionVerdictVO.setVerdict(submissionVerdictVO.getVerdict());
-        submissionVerdictVO.setVerdictIndex(submissionCases.size() + 1);
-        submissionVerdictVO.setTime(submission.getRunTime());
-        submissionVerdictVO.setMemory(submissionVerdictVO.getMemory());
-
-        /*
-          遍历到下标第i-1个即第i个测试用例
-          如果为0，则verdict 0， index i （RUNNING ON TEST i）
-          如果不为200， 则verdict x，index i （{ERROR_STATUS} ON TEST i）
-          如果为200，继续遍历；全部是200，则verdict 200，index max_i （ACCEPTED）
-         */
-
-        for (int i = 0; i < submissionCases.size(); i++) {
-            Integer verdict = submissionCases.get(i).getVerdict();
-            Integer time = submissionCases.get(i).getTime();
-            Integer memory = submissionCases.get(i).getMemory();
-            if (verdict != 200) {
-                submissionVerdictVO.setVerdict(verdict);
-                submissionVerdictVO.setVerdictIndex(i + 1);
-                submissionVerdictVO.setTime(time);
-                submissionVerdictVO.setMemory(memory);
-                break;
-            }
-        }
-        return submissionVerdictVO;
+    public List<SubmissionVerdictVO> getSubmissionVerdict(List<Long> submissionIds) {
+        // 获取提交
+        return submissionEntityService.lambdaQuery().select(Submission::getId,
+                                                            Submission::getVerdict,
+                                                            Submission::getRunTime,
+                                                            Submission::getRunMemory).in(Submission::getId,
+                                                                                         submissionIds).list().stream().map(
+                submission -> {
+                    SubmissionVerdictVO submissionVerdictVO = new SubmissionVerdictVO();
+                    submissionVerdictVO.setSubmissionId(submission.getId());
+                    submissionVerdictVO.setVerdict(submission.getVerdict());
+                    submissionVerdictVO.setRunTime(submission.getRunTime());
+                    submissionVerdictVO.setRunMemory(submission.getRunMemory());
+                    return submissionVerdictVO;
+                }).collect(Collectors.toList());
     }
 
     public SubmissionDetailVO getSubmissionDetail(Long submissionId) {
-        Submission submission = submissionEntityService.lambdaQuery()
-                .eq(Submission::getId, submissionId)
-                .one();
+        // 获取提交
+        Submission submission = submissionEntityService.lambdaQuery().eq(Submission::getId, submissionId).one();
         if (submission == null) {
             throw new BusinessException(ResultEnum.NOT_FOUND, "提交不存在");
         }
+        // 获取题目
+        Long problemId = submission.getProblemId();
+        Problem problem = problemEntityService.lambdaQuery().eq(Problem::getId, problemId).one();
+        // 获取该提交的所有测试用例情况
+        List<SubmissionCase> submissionCases = submissionCaseEntityService.lambdaQuery().eq(SubmissionCase::getSubmissionId,
+                                                                                            submissionId).orderByDesc(
+                SubmissionCase::getId).list();
         SubmissionDetailVO submissionDetailVO = new SubmissionDetailVO();
         submissionDetailVO.setSubmissionId(submissionId);
-        // 查用户信息
-        String userId = submission.getUserId();
-        UserInfo userInfo = userInfoEntityService.lambdaQuery()
-                .eq(UserInfo::getId, userId)
-                .one();
-        if (userInfo == null) {
-            throw new BusinessException(ResultEnum.NOT_LOGIN, "用户不存在");
-        }
-        String username = userInfo.getUsername();
-        submissionDetailVO.setUserId(userId);
-        submissionDetailVO.setUsername(username);
-        return null;
+        submissionDetailVO.setProblemId(problemId);
+        submissionDetailVO.setProblemDisplayId(submission.getProblemDisplayId());
+        submissionDetailVO.setProblemTitle(problem.getTitle());
+        submissionDetailVO.setUserId(submission.getUserId());
+        submissionDetailVO.setUsername(submission.getUsername());
+        submissionDetailVO.setLanguage(submission.getLanguage());
+        submissionDetailVO.setCode(submission.getCode());
+        submissionDetailVO.setDate(submission.getSubmitTime());
+        submissionDetailVO.setRunTime(submission.getRunTime());
+        submissionDetailVO.setRunMemory(submission.getRunMemory());
+        submissionDetailVO.setVerdict(submission.getVerdict());
+        submissionDetailVO.setSubmissionCaseList(submissionCases);
+
+        return submissionDetailVO;
     }
 }

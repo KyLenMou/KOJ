@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
@@ -78,21 +79,25 @@ public class CodeExecutor {
                                   Integer timeLimit,
                                   Integer memoryLimit,
                                   Integer stackLimit,
+                                  List<Integer> maxOutputSizeList,
                                   String fileId) {
         List<String> runEnvs = languageCmdArgs.getRunEnvs();
         List<String> runArgs = JudgeUtil.getArgs(languageCmdArgs.getRunCommand());
         String exeName = languageCmdArgs.getExeName();
 
-        List<CompletableFuture<RunResult>> completableFutureList = userInputList.stream().map(
-                userInput -> run(userInput,
-                                 runArgs,
-                                 runEnvs,
-                                 timeLimit,
-                                 memoryLimit,
-                                 stackLimit,
-                                 exeName,
-                                 fileId)
-        ).collect(Collectors.toList());
+        List<CompletableFuture<RunResult>> completableFutureList = new ArrayList<>(userInputList.size());
+        for (int i = 0; i < userInputList.size(); i++) {
+            completableFutureList.add(
+                    run(userInputList.get(i),
+                        runArgs,
+                        runEnvs,
+                        timeLimit,
+                        memoryLimit,
+                        stackLimit,
+                        maxOutputSizeList.get(i),
+                        exeName,
+                        fileId));
+        }
 
         return completableFutureList.stream().map(CompletableFuture::join).collect(Collectors.toList());
     }
@@ -116,6 +121,7 @@ public class CodeExecutor {
                                             Integer timeLimit,
                                             Integer memoryLimit,
                                             Integer stackLimit,
+                                            Integer maxOutputSize,
                                             String exeName,
                                             String fileId) {
 
@@ -125,6 +131,7 @@ public class CodeExecutor {
                                              timeLimit,
                                              memoryLimit,
                                              stackLimit,
+                                             maxOutputSize,
                                              exeName,
                                              fileId);
         // 获取result的评测状态，判断是否出现error
@@ -158,6 +165,7 @@ public class CodeExecutor {
 
     /**
      * 根据fileId删除文件
+     *
      * @param fileId
      */
     public void delete(String fileId) {

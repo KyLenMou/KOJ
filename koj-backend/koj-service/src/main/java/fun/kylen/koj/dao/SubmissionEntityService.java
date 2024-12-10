@@ -6,10 +6,9 @@ import fun.kylen.koj.domain.Submission;
 import fun.kylen.koj.model.oj.vo.SubmissionListVO;
 
 /**
-* @author KyLen
-* @description 针对表【submission】的数据库操作Service
-* @createDate 2024-09-05 21:51:51
-*/
+ * @author KyLen
+ * @description 针对表【submission】的数据库操作Service
+ * @createDate 2024-09-05 21:51:51
+ */
 public interface SubmissionEntityService extends IService<Submission> {
-    Page<SubmissionListVO> listSubmissionByPage(Page<SubmissionListVO> page, Long problemId, String problemDisplayId, String userId,String username, String language);
 }

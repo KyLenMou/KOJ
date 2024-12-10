@@ -26,6 +26,6 @@ public class PassportUtil {
         if (currentUser == null) {
             throw new BusinessException(ResultEnum.NOT_LOGIN, "未登录，请先登录");
         }
-        return (UserInfoVO) StpUtil.getSession().get(StpConstant.CURRENT_USER);
+        return currentUser;
     }
 }

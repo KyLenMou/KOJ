@@ -53,7 +53,7 @@ public class SandboxRunner {
         } catch (RestClientResponseException ex) {
             if (ex.getRawStatusCode() != 200) {
                 // 无法连接
-                throw new SystemError("无法连接到代码沙箱");
+                throw new SystemError("代码沙箱出错" + ex.getMessage());
             }
             throw new SystemError("连接代码沙箱出错");
         } catch (Exception e) {
@@ -97,8 +97,8 @@ public class SandboxRunner {
         cmd.set("env", envs);
         cmd.set("files", COMPILE_FILES);
         // ms-->ns
-        cmd.set("cpuLimit", maxCpuTime * 1000 * 1000L);
-        cmd.set("clockLimit", maxRealTime * 1000 * 1000L);
+        cmd.set("cpuLimit", maxCpuTime * 1000L * 1000);
+        cmd.set("clockLimit", maxRealTime * 1000L * 1000);
         // byte
         cmd.set("memoryLimit", maxMemory);
         cmd.set("procLimit", maxProcessNumber);
@@ -161,6 +161,7 @@ public class SandboxRunner {
                          Integer maxTime,
                          Integer maxMemory,
                          Integer maxStack,
+                         Integer maxOutputSize,
                          String exeName,
                          String fileId) {
 
@@ -176,7 +177,7 @@ public class SandboxRunner {
 
         JSONObject stdout = new JSONObject();
         stdout.set("name", "stdout");
-        stdout.set("max", MAX_OUTPUT_SIZE);
+        stdout.set("max", Math.min((maxOutputSize * 2), MAX_OUTPUT_SIZE));
         files.put(stdout);
 
         JSONObject stderr = new JSONObject();
@@ -187,12 +188,12 @@ public class SandboxRunner {
         cmd.set("files", files);
 
         // ms --> ns
-        cmd.set("cpuLimit", maxTime * 1000 * 1000L);
-        cmd.set("clockLimit", maxTime * 1000 * 1000L * 3);
+        cmd.set("cpuLimit", maxTime * 1000L * 1000);
+        cmd.set("clockLimit", maxTime * 1000L * 1000 * 3);
         // mb --> byte
-        cmd.set("memoryLimit", (maxMemory + 100) * 1024 * 1024L);
+        cmd.set("memoryLimit", (maxMemory + 100L) * 1024 * 1024);
         cmd.set("procLimit", maxProcessNumber);
-        cmd.set("stackLimit", maxStack * 1024 * 1024L);
+        cmd.set("stackLimit", maxStack * 1024L * 1024);
 
         JSONObject exeFile = new JSONObject();
         exeFile.set("fileId", fileId);

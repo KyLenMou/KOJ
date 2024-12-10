@@ -21,6 +21,7 @@ import fun.kylen.koj.utils.RedisUtil;
 import fun.kylen.koj.validator.JudgeValidator;
 import fun.kylen.koj.vo.DebugVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,8 +54,9 @@ public class SubmitManager {
     @Autowired
     private RedisUtil redisUtil;
 
+    @Transactional
     @RateLimit(RateLimit.Type.SUBMIT)
-    public void submit(SubmissionDTO submissionDTO) {
+    public String submit(SubmissionDTO submissionDTO) {
         UserInfoVO currentUser = PassportUtil.getCurrentUserIfLogin();
         Long problemId = submissionDTO.getProblemId();
         // 先获取题目
@@ -79,6 +81,9 @@ public class SubmitManager {
         submission.setUsername(currentUser.getUsername());
         // 设置提交时间
         submission.setSubmitTime(new Date());
+        // 设置运行时间和内存
+        submission.setRunTime(0);
+        submission.setRunMemory(0);
         // 设置提交状态，此时还没有发到消息队列
         submission.setVerdict(JudgeVerdictConstant.NULL);
         // 设置乐观锁
@@ -107,6 +112,12 @@ public class SubmitManager {
             submissionCase.setVerdict(JudgeVerdictConstant.NULL);
             submissionCaseEntityService.save(submissionCase);
         });
+        dispatchJudgeMessage(submissionId);
+        return submissionId.toString();
+    }
+
+    @Async
+    public void dispatchJudgeMessage(Long submissionId) {
         try {
             // 发送判题任务到消息队列
             judgeMessageDispatcher.dispatch(submissionId);
@@ -118,7 +129,7 @@ public class SubmitManager {
         } catch (Exception e) {
             // 发送到消息队列失败，设置提交失败
             submissionEntityService.lambdaUpdate()
-                    .set(Submission::getVerdict, JudgeVerdictConstant.SUBMIT_FAIL)
+                    .set(Submission::getVerdict, JudgeVerdictConstant.SUBMIT_FAILED)
                     .eq(Submission::getId, submissionId)
                     .update();
         }

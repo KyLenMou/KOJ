@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * @Author: KyLen
  * @Date: 2024/9/9 11:42
@@ -22,15 +24,26 @@ import org.springframework.web.bind.annotation.RestController;
 public class SubmissionController {
     @Autowired
     private SubmissionService submissionService;
+
     @GetMapping
-    public R<Page<SubmissionListVO>> listSubmissionByPage(@RequestParam(value = "current",required = true) Long current,
-                                                          @RequestParam(value = "size",required = true) Long size,
-                                                          @RequestParam(value = "problemId",required = false) Long problemId,
-                                                          @RequestParam(value = "problemDisplayId",required = false) String problemDisplayId,
-                                                          @RequestParam(value = "userId",required = false) String userId,
-                                                          @RequestParam(value = "username",required = false) String username,
-                                                          @RequestParam(value = "language",required = false) String language) {
-        return R.ok(submissionService.listSubmissionByPage(current, size, problemId, problemDisplayId, userId, username, language));
+    public R<Page<SubmissionListVO>> listSubmissionByPage(@RequestParam(value = "current", required = true) Long current,
+                                                          @RequestParam(value = "size", required = true) Long size,
+                                                          @RequestParam(value = "problemId", required = false) Long problemId,
+                                                          @RequestParam(value = "problemDisplayId", required = false) String problemDisplayId,
+                                                          @RequestParam(value = "userId", required = false) String userId,
+                                                          @RequestParam(value = "username", required = false) String username,
+                                                          @RequestParam(value = "verdict", required = false) Integer verdict,
+                                                          @RequestParam(value = "onlyMine", required = false) Boolean onlyMine,
+                                                          @RequestParam(value = "language", required = false) String language) {
+        return R.ok(submissionService.listSubmissionByPage(current,
+                                                           size,
+                                                           problemId,
+                                                           problemDisplayId,
+                                                           userId,
+                                                           username,
+                                                           verdict,
+                                                           onlyMine,
+                                                           language));
     }
 
     @GetMapping("/detail")
@@ -38,8 +51,8 @@ public class SubmissionController {
         return R.ok(submissionService.getSubmissionDetail(submissionId));
     }
 
-    @GetMapping("/verdict") // todo 列表
-    public R<SubmissionVerdictVO> getSubmissionVerdict(@RequestParam(value = "submissionId") Long submissionId) {
-        return R.ok(submissionService.getSubmissionVerdict(submissionId));
+    @GetMapping("/verdict")
+    public R<List<SubmissionVerdictVO>> getSubmissionVerdictList(@RequestParam(value = "submissionId") List<Long> submissionIds) {
+        return R.ok(submissionService.getSubmissionVerdict(submissionIds));
     }
 }

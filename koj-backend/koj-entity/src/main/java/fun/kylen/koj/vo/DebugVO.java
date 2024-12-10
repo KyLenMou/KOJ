@@ -13,6 +13,7 @@ import java.util.List;
 @Data
 public class DebugVO implements Serializable {
     private String debugId;
+    private String userId;
     private String language;
     private String code;
     private Integer timeLimit;

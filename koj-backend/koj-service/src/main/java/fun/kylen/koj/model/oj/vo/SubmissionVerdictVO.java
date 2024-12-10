@@ -11,8 +11,8 @@ import java.util.Date;
  */
 @Data
 public class SubmissionVerdictVO {
+    private Long submissionId;
     private Integer verdict;
-    private Integer verdictIndex;
-    private Integer time;
-    private Integer memory;
+    private Integer runTime;
+    private Integer runMemory;
 }

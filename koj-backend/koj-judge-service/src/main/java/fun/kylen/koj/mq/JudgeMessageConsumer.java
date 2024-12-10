@@ -22,10 +22,10 @@ public class JudgeMessageConsumer {
     private JudgeManager judgeManager;
 
     @RabbitListener(queues = MqConstant.JUDGE_QUEUE)
-    public void consumeJudgeMessage(Long submitId) {
+    public void consumeJudgeMessage(Long submissionId) {
         try {
-            judgeManager.judge(submitId);
-        } catch (Exception e) {
+            judgeManager.judge(submissionId);
+        } catch (RuntimeException e) {
             // 进入死信队列
             throw new AmqpRejectAndDontRequeueException(e);
         }

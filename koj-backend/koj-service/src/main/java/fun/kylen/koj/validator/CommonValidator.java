@@ -57,14 +57,14 @@ public class CommonValidator {
      * @param min
      * @param max
      */
-    public void between(Integer number, String item, int min, int max) {
+    public void between(Number number, String item, int min, int max) {
         if (number == null) {
             throw new BusinessException(ResultEnum.FAIL, item + "不能为空");
         }
-        if (number < min) {
+        if (number.intValue() < min) {
             throw new BusinessException(ResultEnum.FAIL, item + "不能小于" + min);
         }
-        if (number > max) {
+        if (number.intValue() > max) {
             throw new BusinessException(ResultEnum.FAIL, item + "不能大于" + max);
         }
     }

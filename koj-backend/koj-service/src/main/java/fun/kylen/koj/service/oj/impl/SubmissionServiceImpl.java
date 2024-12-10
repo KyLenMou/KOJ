@@ -9,24 +9,42 @@ import fun.kylen.koj.service.oj.SubmissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
-* @author KyLen
-* @description 针对表【submission】的数据库操作Service实现
-* @createDate 2024-09-05 21:51:51
-*/
+ * @author KyLen
+ * @description 针对表【submission】的数据库操作Service实现
+ * @createDate 2024-09-05 21:51:51
+ */
 @Service
 public class SubmissionServiceImpl implements SubmissionService {
     @Autowired
     private SubmissionManager submissionManager;
 
     @Override
-    public Page<SubmissionListVO> listSubmissionByPage(Long current, Long size, Long problemId, String problemDisplayId, String userId, String username, String language) {
-        return submissionManager.listSubmissionByPage(current, size, problemId, problemDisplayId, userId,username, language);
+    public Page<SubmissionListVO> listSubmissionByPage(Long current,
+                                                       Long size,
+                                                       Long problemId,
+                                                       String problemDisplayId,
+                                                       String userId,
+                                                       String username,
+                                                       Integer verdict,
+                                                       Boolean onlyMine,
+                                                       String language) {
+        return submissionManager.listSubmissionByPage(current,
+                                                      size,
+                                                      problemId,
+                                                      problemDisplayId,
+                                                      userId,
+                                                      username,
+                                                      verdict,
+                                                      onlyMine,
+                                                      language);
     }
 
     @Override
-    public SubmissionVerdictVO getSubmissionVerdict(Long submissionId) {
-        return submissionManager.getSubmissionVerdict(submissionId);
+    public List<SubmissionVerdictVO> getSubmissionVerdict(List<Long> submissionIds) {
+        return submissionManager.getSubmissionVerdict(submissionIds);
     }
 
     @Override
