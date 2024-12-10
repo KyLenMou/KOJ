@@ -2,9 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { R_List_SubmissionVerdictVO_ } from '../models/R_List_SubmissionVerdictVO_';
 import type { R_Page_SubmissionListVO_ } from '../models/R_Page_SubmissionListVO_';
 import type { R_SubmissionDetailVO_ } from '../models/R_SubmissionDetailVO_';
-import type { R_SubmissionVerdictVO_ } from '../models/R_SubmissionVerdictVO_';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
@@ -14,10 +14,12 @@ export class SubmissionControllerService {
      * @param current current
      * @param size size
      * @param language language
+     * @param onlyMine onlyMine
      * @param problemDisplayId problemDisplayId
      * @param problemId problemId
      * @param userId userId
      * @param username username
+     * @param verdict verdict
      * @returns R_Page_SubmissionListVO_ OK
      * @throws ApiError
      */
@@ -25,10 +27,12 @@ export class SubmissionControllerService {
         current: number,
         size: number,
         language?: string,
+        onlyMine?: boolean,
         problemDisplayId?: string,
         problemId?: number,
         userId?: string,
         username?: string,
+        verdict?: number,
     ): CancelablePromise<R_Page_SubmissionListVO_> {
         return __request(OpenAPI, {
             method: 'GET',
@@ -36,11 +40,13 @@ export class SubmissionControllerService {
             query: {
                 'current': current,
                 'language': language,
+                'onlyMine': onlyMine,
                 'problemDisplayId': problemDisplayId,
                 'problemId': problemId,
                 'size': size,
                 'userId': userId,
                 'username': username,
+                'verdict': verdict,
             },
             errors: {
                 401: `Unauthorized`,
@@ -72,14 +78,14 @@ export class SubmissionControllerService {
         });
     }
     /**
-     * getSubmissionVerdict
+     * getSubmissionVerdictList
      * @param submissionId submissionId
-     * @returns R_SubmissionVerdictVO_ OK
+     * @returns R_List_SubmissionVerdictVO_ OK
      * @throws ApiError
      */
-    public static getSubmissionVerdictUsingGet(
-        submissionId: number,
-    ): CancelablePromise<R_SubmissionVerdictVO_> {
+    public static getSubmissionVerdictListUsingGet(
+        submissionId: Array<number>,
+    ): CancelablePromise<R_List_SubmissionVerdictVO_> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/submission/verdict',

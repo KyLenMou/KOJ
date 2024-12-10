@@ -1,7 +1,7 @@
 <template>
   <div style="height: calc(100% - 50px); overflow-y: auto">
     <tiny-tabs v-model="activeTab" size="small" class="tabClass">
-        <!-- 被选中的tab需要高亮 -->
+      <!-- 被选中的tab需要高亮 -->
       <tiny-tab-item name="editCase" title="测试用例" style="margin: 0 20px">
         <!-- testCase栏 -->
         <div class="test-case-tabs">
@@ -129,14 +129,12 @@
           </div>
         </template>
       </tiny-tab-item>
-      <tiny-tab-item name="judgeQueue" title="提交记录" style="margin: 0 20px">
-        切换到这里，默认显示自己的提交记录
-        设置一个仅查看自己的按钮，取消之后可以查看所有人的提交记录
+      <tiny-tab-item name="submissionList" title="提交记录" style="margin: 0 20px" lazy>
+        <problem-submisson-list v-model:problem-id="problemDetail.id" />
       </tiny-tab-item>
       <tiny-tab-item name="discussion" title="讨论区" style="margin: 0 20px">
         本质就是帖子
       </tiny-tab-item>
-
     </tiny-tabs>
   </div>
   <div style="height: 50px; border-top: 1px solid #ebeef5; padding: 10px">
@@ -148,19 +146,20 @@
         ghost
         >测试样例 #{{ activeSubTab + 1 }}</tiny-button
       >
-      <tiny-button @click="debugAll" :disabled="isButtonLoading" type="success"
-        > 
-        <img src="@/assets/images/debug.svg"/>测试全部</tiny-button
+      <tiny-button @click="debugAll" :disabled="isButtonLoading" type="success">
+        <img src="@/assets/images/debug.svg" />测试全部</tiny-button
       >
       <tiny-button type="primary" @click="submit" :disabled="isButtonLoading">
-        <img src="@/assets/images/submit.svg"/>
-        提交评测</tiny-button>
+        <img src="@/assets/images/submit.svg" />
+        提交评测</tiny-button
+      >
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { SubmitControllerService, type DebugDTO, type ProblemDetailVO } from '@/api'
+import ProblemSubmissonList from './ProblemSubmissonList.vue'
 import { getVerdictModel } from '@/utils'
 import { TinyModal } from '@opentiny/vue'
 import { iconPlus, iconTime, iconCode } from '@opentiny/vue-icon'
@@ -174,6 +173,7 @@ const activeSubTab = ref<number>(0)
 const problemSubmitDTO = defineModel<any>('problemSubmitDTO')
 const problemDetail = defineModel<any>('problemDetail')
 const testCases = ref<any>([])
+
 // 初始化测试用例
 try {
   const problemTestCaseTemp = JSON.parse(problemDetail.value.examples as string)
@@ -267,8 +267,6 @@ const getDebugResult = async (debugId: string, ids: number[]) => {
         testCases.value[id].expectedOutput = data.expectedOutputList?.[idx]
         idx++
       })
-      console.log(ids)
-      console.log(testCases.value)
       break
     }
   }
@@ -279,8 +277,9 @@ const getDebugResult = async (debugId: string, ids: number[]) => {
 // todo 提交后来个进度条
 const submit = async () => {
   console.log(problemSubmitDTO.value)
-  const { code } = await SubmitControllerService.submitUsingPost(problemSubmitDTO.value)
+  const { code, data } = await SubmitControllerService.submitUsingPost(problemSubmitDTO.value)
   if (code) return
+  activeTab.value = 'submissionList'
 }
 // 切换测试用例
 const switchTab = (index: any) => {

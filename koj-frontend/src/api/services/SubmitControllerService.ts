@@ -12,6 +12,29 @@ import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 export class SubmitControllerService {
     /**
+     * reJudge
+     * @param submissionId submissionId
+     * @returns R_Void_ OK
+     * @returns any Created
+     * @throws ApiError
+     */
+    public static reJudgeUsingPost(
+        submissionId: number,
+    ): CancelablePromise<R_Void_ | any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/',
+            query: {
+                'submissionId': submissionId,
+            },
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+    /**
      * getDebugResult
      * @param debugId debugId
      * @returns R_DebugVO_ OK
@@ -57,13 +80,13 @@ export class SubmitControllerService {
     /**
      * submit
      * @param submission submission
-     * @returns R_Void_ OK
+     * @returns R_string_ OK
      * @returns any Created
      * @throws ApiError
      */
     public static submitUsingPost(
         submission: SubmissionDTO,
-    ): CancelablePromise<R_Void_ | any> {
+    ): CancelablePromise<R_string_ | any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/submit',

@@ -3,9 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 export type SubmissionVerdictVO = {
-    memory?: number;
-    time?: number;
+    runMemory?: number;
+    runTime?: number;
+    submissionId?: number;
     verdict?: number;
-    verdictIndex?: number;
 };
 

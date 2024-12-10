@@ -3,21 +3,19 @@
 /* tslint:disable */
 /* eslint-disable */
 export type SubmissionListVO = {
-    errorMessage?: string;
+    code?: string;
     id?: number;
     isManual?: number;
     language?: string;
     length?: number;
-    memory?: number;
-    oiScore?: number;
     problemDisplayId?: string;
     problemId?: number;
+    runMemory?: number;
+    runMessage?: string;
+    runTime?: number;
     submitTime?: string;
-    time?: number;
-    title?: string;
     userId?: string;
     username?: string;
     verdict?: number;
-    verdictIndex?: number;
 };
 

@@ -252,7 +252,7 @@ const tabActiveName = ref('1')
 const isLoadingForm = ref(true)
 const tagOptions = ref<any>([])
 const isUpdate = ref(false)
-const vLoading = TinyLoading.directiv
+const vLoading = TinyLoading.directive
 
 // 样例JSON
 interface exampleJson {

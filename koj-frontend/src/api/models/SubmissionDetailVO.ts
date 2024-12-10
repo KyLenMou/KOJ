@@ -7,16 +7,15 @@ export type SubmissionDetailVO = {
     code?: string;
     date?: string;
     language?: string;
-    memory?: number;
     problemDisplayId?: string;
-    problemId?: string;
+    problemId?: number;
     problemTitle?: string;
+    runMemory?: number;
+    runTime?: number;
     submissionCaseList?: Array<SubmissionCase>;
     submissionId?: number;
-    time?: number;
     userId?: string;
     username?: string;
     verdict?: number;
-    verdictIndex?: number;
 };
 

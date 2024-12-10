@@ -14,6 +14,7 @@ export type DebugVO = {
     runTime?: Array<number>;
     stackLimit?: number;
     timeLimit?: number;
+    userId?: string;
     userInputList?: Array<string>;
     userOutputList?: Array<string>;
     verdict?: Array<number>;
