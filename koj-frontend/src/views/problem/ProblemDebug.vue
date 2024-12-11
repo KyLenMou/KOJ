@@ -297,13 +297,12 @@ const submissionListRef = ref<any>([])
 
 // 提交代码
 const submit = async () => {
-  console.log(problemSubmitDTO.value)
-  const { code, data } = await SubmitControllerService.submitUsingPost(problemSubmitDTO.value)
-  if (code) return
   // 跳转到提交记录
   activeTab.value = 'submissionList'
+  const { code, data } = await SubmitControllerService.submitUsingPost(problemSubmitDTO.value)
+  if (code) return
   // 刷新提交记录
-  submissionListRef.value.getSubmissionList()
+  submissionListRef.value.getSubmissionList(true)
 }
 // 切换测试用例
 const switchTab = (index: any) => {

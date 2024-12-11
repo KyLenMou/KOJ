@@ -119,7 +119,7 @@ const vLoading = TinyLoading.directive
 const IconConmentRefresh = iconConmentRefresh()
 const IconLoadingShadow = iconLoadingShadow()
 const problemId = defineModel<number>('problemId')
-const currentSize = 10
+const currentSize = 20
 const currentPage = ref(1)
 const submissionList = ref<SubmissionListVO[] | any>([])
 const submissonVerdictQuery = ref({
@@ -134,9 +134,13 @@ let isRunning = false
 let askTimes = 30
 const currentPageChange = () => {
   currentPage.value++
-  getSubmissionList()
+  getSubmissionList(false)
 }
-const getSubmissionList = async () => {
+const getSubmissionList = async (isSubmit: boolean) => {
+  if (isSubmit) {
+    currentPage.value = 1
+    submissionList.value = []
+  }
   isLoading.value = true
   try {
     const { code, data } = await SubmissionControllerService.listSubmissionByPageUsingGet(
@@ -208,7 +212,7 @@ const getRunningSubmissionVerdict = async () => {
   }
 }
 onMounted(async () => {
-  await getSubmissionList()
+  await getSubmissionList(false)
 })
 // 暴露方法给父组件
 defineExpose({
