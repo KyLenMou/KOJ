@@ -50,7 +50,7 @@
         </div>
         <!-- debug数据栏 -->
         <template v-for="(item, index) in testCases" :key="index">
-          <div v-show="index === activeSubTab" class="debug-container">
+          <div v-show="index === activeSubTab" class="debug-container is-error">
             <tiny-alert
               v-if="getVerdictModel(item.verdict) && item.isLoading === false"
               size="large"
@@ -118,11 +118,11 @@
               />
             </div>
             <div class="debug-input">
-              <!-- todo wa的话需要触发红色校验一秒钟 -->
               <tiny-tag style="margin-bottom: 5px" effect="plain">{{
                 `样例 #` + (index + 1) + ` 实际输出`
               }}</tiny-tag>
               <tiny-input
+                :class="(item.verdict >= 400 && item.verdict <= 405) ? 'is-error' : ''"
                 type="textarea"
                 :disabled="item.isLoading"
                 v-model="item.userOutput"
@@ -297,10 +297,10 @@ const submissionListRef = ref<any>([])
 
 // 提交代码
 const submit = async () => {
-  // 跳转到提交记录
-  activeTab.value = 'submissionList'
   const { code, data } = await SubmitControllerService.submitUsingPost(problemSubmitDTO.value)
   if (code) return
+  // 跳转到提交记录
+  activeTab.value = 'submissionList'
   // 刷新提交记录
   submissionListRef.value.getSubmissionList(true)
 }
@@ -368,6 +368,10 @@ onMounted(() => {
 .debug-input {
   flex: 1 1 calc(33.333% - 10px);
   box-sizing: border-box;
+}
+:deep(.is-error > .tiny-textarea-display-only > .tiny-textarea__inner) {
+  border: 1px solid #f23030;
+  box-shadow: 0 1px 4px 0 #f23030;
 }
 
 @container (max-width: 600px) {
