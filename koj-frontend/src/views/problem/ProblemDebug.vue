@@ -1,8 +1,14 @@
 <template>
-  <div style="height: calc(100% - 50px); overflow-y: auto">
+  <div ref="tabsContainer" style="height: calc(100% - 50px)">
     <tiny-tabs v-model="activeTab" size="small" class="tabClass">
       <!-- 被选中的tab需要高亮 -->
-      <tiny-tab-item name="editCase" title="测试用例" style="margin: 0 20px">
+      <tiny-tab-item
+        ref="debugContainer"
+        name="editCase"
+        title="测试用例"
+        :style="`height:` + subTabHeight + `px`"
+        style="margin-left: 20px; padding-right: 20px; overflow-y: auto"
+      >
         <!-- testCase栏 -->
         <div class="test-case-tabs">
           <div v-for="(item, index) in testCases" :key="index" style="position: relative">
@@ -129,10 +135,22 @@
           </div>
         </template>
       </tiny-tab-item>
-      <tiny-tab-item name="submissionList" title="提交记录" style="margin: 0 20px" lazy>
+      <tiny-tab-item
+        name="submissionList"
+        title="提交记录"
+        :style="`height:` + subTabHeight + `px`"
+        style="margin-left: 20px; padding-right: 20px; overflow-y: auto"
+        lazy
+      >
         <problem-submisson-list ref="submissionListRef" v-model:problem-id="problemDetail.id" />
       </tiny-tab-item>
-      <tiny-tab-item name="discussion" title="讨论区" style="margin: 0 20px" lazy>
+      <tiny-tab-item
+        name="discussion"
+        title="讨论区"
+        style="margin: 0 20px"
+        :style="`height:` + subTabHeight + `px`"
+        lazy
+      >
         帖子
       </tiny-tab-item>
     </tiny-tabs>
@@ -158,12 +176,12 @@
 </template>
 
 <script setup lang="ts">
-import { SubmitControllerService, type DebugDTO, type ProblemDetailVO } from '@/api'
+import { SubmitControllerService, type DebugDTO } from '@/api'
 import ProblemSubmissonList from './ProblemSubmissonList.vue'
 import { getVerdictModel } from '@/utils'
 import { TinyModal } from '@opentiny/vue'
 import { iconPlus, iconTime, iconCode } from '@opentiny/vue-icon'
-import { ref } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 const IconPlus = iconPlus()
 const IconTime = iconTime()
 const IconCode = iconCode()
@@ -173,7 +191,6 @@ const activeSubTab = ref<number>(0)
 const problemSubmitDTO = defineModel<any>('problemSubmitDTO')
 const problemDetail = defineModel<any>('problemDetail')
 const testCases = ref<any>([])
-
 // 初始化测试用例
 try {
   const problemTestCaseTemp = JSON.parse(problemDetail.value.examples as string)
@@ -319,6 +336,26 @@ const addCase = () => {
     verdict: 0
   })
 }
+// 限制子tab的高度
+const tabsContainer = ref()
+const subTabHeight = ref(0)
+onMounted(() => {
+  const observer = new ResizeObserver(() => {
+    if (tabsContainer.value) {
+      subTabHeight.value = tabsContainer.value.offsetHeight - 52
+    }
+  })
+
+  if (tabsContainer.value) {
+    observer.observe(tabsContainer.value)
+  }
+  // 清理监听器
+  onUnmounted(() => {
+    if (tabsContainer.value) {
+      observer.unobserve(tabsContainer.value)
+    }
+  })
+})
 </script>
 
 <style scoped>

@@ -40,57 +40,59 @@
       <tiny-button :icon="IconConmentRefresh" @click="getSubmissionList" />
     </div>
     <!-- 提交列表栏 -->
-    <div v-for="(submission, index) in submissionList" :key="index" class="submisson-box">
-      <div style="display: flex; justify-content: space-between">
-        <div style="margin: 5px">
-          <div style="font-size: 15px; font-weight: 600; margin-bottom: 5px">
-            {{ submission?.username }}
-          </div>
-          <div style="color: gray">
-            {{
-              getLanguageByShortName(submission.language) +
-              ' • ' +
-              fromNow(submission.submitTime as any)
-            }}
-          </div>
-        </div>
-        <!-- 非最终状态，显示进度条 -->
-        <div
-          v-if="submission.verdict !== undefined && isSubmissionRunning(submission.verdict)"
-          style="flex: 1"
-        >
-          <div style="font-size: 15px; font-weight: 600; margin: 5px; text-align: center">
-            <div
-              style="display: flex; justify-content: center; gap: 5px"
-              :style="
-                'color:' +
-                getVerdictProgressModel(submission.verdict).color +
-                '; fill: ' +
-                getVerdictProgressModel(submission.verdict).color
-              "
-            >
-              {{ getVerdictProgressModel(submission.verdict).text }}
-              <IconLoadingShadow />
+    <div v-infinite-scroll="currentPageChange">
+      <div v-for="(submission, index) in submissionList" :key="index" class="submisson-box">
+        <div style="display: flex; justify-content: space-between">
+          <div style="margin: 5px">
+            <div style="font-size: 15px; font-weight: 600; margin-bottom: 5px">
+              {{ submission?.username }}
             </div>
-            <tiny-progress
-              style="margin: 10px"
-              :stroke-width="6"
-              :percentage="getVerdictProgressModel(submission.verdict).percentage"
-              :color="VerdictProgressColors"
-              :show-text="false"
-            />
+            <div style="color: gray">
+              {{
+                getLanguageByShortName(submission.language) +
+                ' • ' +
+                fromNow(submission.submitTime as any)
+              }}
+            </div>
           </div>
-        </div>
-        <!-- 最终状态，显示tag -->
-        <div
-          v-else-if="submission.verdict !== undefined"
-          style="flex: 1; display: flex; flex-direction: column"
-        >
-          <div style="margin-left: auto; font-size: 15px; font-weight: 600; margin-bottom: 5px">
-            <verdict-div v-model:verdict="submission.verdict" />
+          <!-- 非最终状态，显示进度条 -->
+          <div
+            v-if="submission.verdict !== undefined && isSubmissionRunning(submission.verdict)"
+            style="flex: 1"
+          >
+            <div style="font-size: 15px; font-weight: 600; margin: 5px; text-align: center">
+              <div
+                style="display: flex; justify-content: center; gap: 5px"
+                :style="
+                  'color:' +
+                  getVerdictProgressModel(submission.verdict).color +
+                  '; fill: ' +
+                  getVerdictProgressModel(submission.verdict).color
+                "
+              >
+                {{ getVerdictProgressModel(submission.verdict).text }}
+                <IconLoadingShadow />
+              </div>
+              <tiny-progress
+                style="margin: 10px"
+                :stroke-width="6"
+                :percentage="getVerdictProgressModel(submission.verdict).percentage"
+                :color="VerdictProgressColors"
+                :show-text="false"
+              />
+            </div>
           </div>
-          <div style="margin-left: auto; color: gray">
-            {{ submission.runTime + 'ms • ' + submission.runMemory + 'KB' }}
+          <!-- 最终状态，显示tag -->
+          <div
+            v-else-if="submission.verdict !== undefined"
+            style="flex: 1; display: flex; flex-direction: column"
+          >
+            <div style="margin-left: auto; font-size: 15px; font-weight: 600; margin-bottom: 5px">
+              <verdict-div v-model:verdict="submission.verdict" />
+            </div>
+            <div style="margin-left: auto; color: gray">
+              {{ submission.runTime + 'ms • ' + submission.runMemory + 'KB' }}
+            </div>
           </div>
         </div>
       </div>
@@ -99,6 +101,8 @@
 </template>
 
 <script setup lang="ts">
+import InfiniteScroll from '@opentiny/vue-renderless/common/deps/infinite-scroll'
+const vInfiniteScroll = InfiniteScroll
 import { SubmissionControllerService, type SubmissionListVO, type SubmissionVerdictVO } from '@/api'
 import VerdictDiv from '@/components/VerdictDiv.vue'
 import { LanguageList, VerdictList, VerdictProgressColors } from '@/common/CommonConstant'
@@ -110,14 +114,14 @@ import {
   getVerdictProgressModel,
   isSubmissionRunning
 } from '@/utils'
-import { TinyLoading } from '@opentiny/vue'
+import { TinyButton, TinyLoading } from '@opentiny/vue'
 const vLoading = TinyLoading.directive
 const IconConmentRefresh = iconConmentRefresh()
 const IconLoadingShadow = iconLoadingShadow()
 const problemId = defineModel<number>('problemId')
-const currentSize = ref(10)
+const currentSize = 10
 const currentPage = ref(1)
-const submissionList = ref<SubmissionListVO[] | any>()
+const submissionList = ref<SubmissionListVO[] | any>([])
 const submissonVerdictQuery = ref({
   onlyMine: true,
   verdict: undefined,
@@ -128,12 +132,16 @@ const isLoading = ref(false)
 const runningSubmissionList = ref<number[]>([])
 let isRunning = false
 let askTimes = 30
+const currentPageChange = () => {
+  currentPage.value++
+  getSubmissionList()
+}
 const getSubmissionList = async () => {
   isLoading.value = true
   try {
     const { code, data } = await SubmissionControllerService.listSubmissionByPageUsingGet(
       currentPage.value,
-      currentSize.value,
+      currentSize,
       submissonVerdictQuery.value.language,
       submissonVerdictQuery.value.onlyMine,
       undefined,
@@ -143,7 +151,10 @@ const getSubmissionList = async () => {
       submissonVerdictQuery.value.verdict
     )
     if (code) return
-    submissionList.value = data?.records
+    // 合并数据
+    if (data?.records) {
+      submissionList.value.push(...data.records)
+    }
     for (const submission of submissionList.value) {
       if (isSubmissionRunning(submission.verdict)) {
         runningSubmissionList.value.push(submission.id as number)
