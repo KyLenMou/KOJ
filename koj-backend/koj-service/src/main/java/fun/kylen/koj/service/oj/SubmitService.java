@@ -11,7 +11,7 @@ import fun.kylen.koj.vo.DebugVO;
 */
 public interface SubmitService {
 
-    String submit(SubmissionDTO submission);
+    Long submit(SubmissionDTO submission);
 
     String debug(DebugDTO debugDTO);
 

@@ -1,4 +1,4 @@
-package fun.kylen.koj.job;
+package fun.kylen.koj.schedule;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;

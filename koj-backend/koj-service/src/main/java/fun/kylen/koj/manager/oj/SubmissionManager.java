@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import fun.kylen.koj.common.BusinessException;
 import fun.kylen.koj.common.ResultEnum;
+import fun.kylen.koj.constant.RedisKeyConstant;
 import fun.kylen.koj.dao.ProblemEntityService;
 import fun.kylen.koj.dao.SubmissionCaseEntityService;
 import fun.kylen.koj.dao.SubmissionEntityService;
@@ -14,7 +15,9 @@ import fun.kylen.koj.domain.SubmissionCase;
 import fun.kylen.koj.model.oj.vo.SubmissionDetailVO;
 import fun.kylen.koj.model.oj.vo.SubmissionListVO;
 import fun.kylen.koj.model.oj.vo.SubmissionVerdictVO;
+import fun.kylen.koj.mq.JudgeQueueManager;
 import fun.kylen.koj.utils.PassportUtil;
+import fun.kylen.koj.utils.RedisUtil;
 import fun.kylen.koj.validator.CommonValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -37,6 +40,10 @@ public class SubmissionManager {
     private ProblemEntityService problemEntityService;
     @Autowired
     private CommonValidator commonValidator;
+    @Autowired
+    private RedisUtil redisUtil;
+    @Autowired
+    private JudgeQueueManager judgeQueueManager;
 
     public Page<SubmissionListVO> listSubmissionByPage(Long current,
                                                        Long size,
@@ -99,9 +106,10 @@ public class SubmissionManager {
         Long problemId = submission.getProblemId();
         Problem problem = problemEntityService.lambdaQuery().eq(Problem::getId, problemId).one();
         // 获取该提交的所有测试用例情况
-        List<SubmissionCase> submissionCases = submissionCaseEntityService.lambdaQuery().eq(SubmissionCase::getSubmissionId,
-                                                                                            submissionId).orderByDesc(
-                SubmissionCase::getId).list();
+        List<SubmissionCase> submissionCases = submissionCaseEntityService.lambdaQuery()
+                .eq(SubmissionCase::getSubmissionId, submissionId)
+                .orderByDesc(SubmissionCase::getId)
+                .list();
         SubmissionDetailVO submissionDetailVO = new SubmissionDetailVO();
         submissionDetailVO.setSubmissionId(submissionId);
         submissionDetailVO.setProblemId(problemId);
@@ -118,5 +126,9 @@ public class SubmissionManager {
         submissionDetailVO.setSubmissionCaseList(submissionCases);
 
         return submissionDetailVO;
+    }
+
+    public Long getQueueWaiting(Long submissionId) {
+        return null;
     }
 }

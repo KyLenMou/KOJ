@@ -8,7 +8,7 @@ package fun.kylen.koj.constant;
 public class JudgeVerdictConstant {
     /**
      * 提交状态
-     * 0 已提交(Submission)/未评测(SubmissionCase)
+     * 0 未评测(SubmissionCase)
      * 1 正在排队
      * -1 提交失败
      * 2 评测被取消

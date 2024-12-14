@@ -33,7 +33,7 @@ public class SubmitController {
     }
 
     @PostMapping("/submit")
-    public R<String> submit(@Validated @RequestBody SubmissionDTO submission) {
+    public R<Long> submit(@Validated @RequestBody SubmissionDTO submission) {
         return R.ok(submitService.submit(submission),"提交成功");
     }
 

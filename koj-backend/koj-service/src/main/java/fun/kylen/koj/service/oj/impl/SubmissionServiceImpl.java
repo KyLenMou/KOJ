@@ -51,6 +51,11 @@ public class SubmissionServiceImpl implements SubmissionService {
     public SubmissionDetailVO getSubmissionDetail(Long submissionId) {
         return submissionManager.getSubmissionDetail(submissionId);
     }
+
+    @Override
+    public Long getQueueWaiting(Long submissionId) {
+        return submissionManager.getQueueWaiting(submissionId);
+    }
 }
 
 

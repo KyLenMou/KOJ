@@ -44,8 +44,9 @@ public class RateLimitAspect {
         // 获取注解类型
         RateLimit.Type type = ((MethodSignature) joinPoint.getSignature()).getMethod().getAnnotation(RateLimit.class).value();
         // 提交的限制
+        Long expireTime;
         if (type == RateLimit.Type.SUBMIT) {
-            Long expireTime = redisUtil.getExpireTime(RedisKeyConstant.JUDGE_LAST + user.getId());
+            expireTime = redisUtil.getExpireTime(RedisKeyConstant.JUDGE_LAST + user.getId());
             // 还在冷却时间内
             if (expireTime > 0) {
                 throw new BusinessException(ResultEnum.FAIL, "提交过于频繁，请等" + expireTime + "s后再试");
@@ -59,11 +60,10 @@ public class RateLimitAspect {
                 }
             }
             redisUtil.set(RedisKeyConstant.JUDGE_LAST + user.getId(), submissionDTO, 5L);
-            return joinPoint.proceed();
         }
         // 调试的限制
         else {
-            Long expireTime = redisUtil.getExpireTime(RedisKeyConstant.DEBUG_LAST + user.getId());
+            expireTime = redisUtil.getExpireTime(RedisKeyConstant.DEBUG_LAST + user.getId());
             // 还在冷却时间内
             if (expireTime > 0) {
                 throw new BusinessException(ResultEnum.FAIL, "调试过于频繁，请等" + expireTime + "s后再试");
@@ -78,7 +78,7 @@ public class RateLimitAspect {
                 }
             }
             redisUtil.set(RedisKeyConstant.DEBUG_LAST + user.getId(), testCount, testCount * 2L + 2);
-            return joinPoint.proceed();
         }
+        return joinPoint.proceed();
     }
 }

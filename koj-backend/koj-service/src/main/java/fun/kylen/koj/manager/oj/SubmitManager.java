@@ -15,13 +15,12 @@ import fun.kylen.koj.domain.SubmissionCase;
 import fun.kylen.koj.model.oj.dto.DebugDTO;
 import fun.kylen.koj.model.oj.dto.SubmissionDTO;
 import fun.kylen.koj.model.oj.vo.UserInfoVO;
-import fun.kylen.koj.mq.JudgeMessageDispatcher;
+import fun.kylen.koj.mq.JudgeQueueManager;
 import fun.kylen.koj.utils.PassportUtil;
 import fun.kylen.koj.utils.RedisUtil;
 import fun.kylen.koj.validator.JudgeValidator;
 import fun.kylen.koj.vo.DebugVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,7 +41,7 @@ public class SubmitManager {
     @Autowired
     private UserInfoEntityService userInfoEntityService;
     @Autowired
-    private JudgeMessageDispatcher judgeMessageDispatcher;
+    private JudgeQueueManager judgeQueueManager;
     @Autowired
     private SubmissionCaseEntityService submissionCaseEntityService;
     @Autowired
@@ -56,7 +55,7 @@ public class SubmitManager {
 
     @Transactional
     @RateLimit(RateLimit.Type.SUBMIT)
-    public String submit(SubmissionDTO submissionDTO) {
+    public Long submit(SubmissionDTO submissionDTO) {
         UserInfoVO currentUser = PassportUtil.getCurrentUserIfLogin();
         Long problemId = submissionDTO.getProblemId();
         // 先获取题目
@@ -84,7 +83,7 @@ public class SubmitManager {
         // 设置运行时间和内存
         submission.setRunTime(0);
         submission.setRunMemory(0);
-        // 设置提交状态，此时还没有发到消息队列
+        // 事务包括了发送评测消息，对于用户而言提交完之后直接显示排队中，故这里的NULL没有用
         submission.setVerdict(JudgeVerdictConstant.NULL);
         // 设置乐观锁
         submission.setVersion(0);
@@ -112,15 +111,9 @@ public class SubmitManager {
             submissionCase.setVerdict(JudgeVerdictConstant.NULL);
             submissionCaseEntityService.save(submissionCase);
         });
-        dispatchJudgeMessage(submissionId);
-        return submissionId.toString();
-    }
-
-    @Async
-    public void dispatchJudgeMessage(Long submissionId) {
         try {
             // 发送判题任务到消息队列
-            judgeMessageDispatcher.dispatch(submissionId);
+            judgeQueueManager.dispatch(submissionId);
             // 设置提交状态为正在排队
             submissionEntityService.lambdaUpdate()
                     .set(Submission::getVerdict, JudgeVerdictConstant.IN_QUEUE)
@@ -133,6 +126,7 @@ public class SubmitManager {
                     .eq(Submission::getId, submissionId)
                     .update();
         }
+        return submissionId;
     }
 
     @RateLimit(RateLimit.Type.DEBUG)
@@ -153,7 +147,7 @@ public class SubmitManager {
             // 60s之内调试
             redisUtil.set(RedisKeyConstant.DEBUG + debugId, debugVO, 60);
 
-            judgeMessageDispatcher.debug(debugId);
+            judgeQueueManager.debug(debugId);
             return debugId;
         } catch (Exception e) {
             throw new BusinessException(ResultEnum.FAIL, "调试失败，请稍后重试");

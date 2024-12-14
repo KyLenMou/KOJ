@@ -1,6 +1,6 @@
 package fun.kylen.koj.dao;
 
-import fun.kylen.koj.job.Job;
+import fun.kylen.koj.schedule.Job;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

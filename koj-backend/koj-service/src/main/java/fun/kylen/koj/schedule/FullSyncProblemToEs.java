@@ -1,10 +1,9 @@
-package fun.kylen.koj.job.once;
+package fun.kylen.koj.schedule;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import fun.kylen.koj.dao.JobEntityService;
 import fun.kylen.koj.dao.ProblemEntityService;
-import fun.kylen.koj.job.Job;
 import fun.kylen.koj.domain.Problem;
 import fun.kylen.koj.es.ProblemEsDTO;
 import fun.kylen.koj.es.ProblemEsDao;

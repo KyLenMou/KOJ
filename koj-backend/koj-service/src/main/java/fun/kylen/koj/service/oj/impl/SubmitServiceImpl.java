@@ -19,7 +19,7 @@ public class SubmitServiceImpl implements SubmitService {
     private SubmitManager submitManager;
 
     @Override
-    public String submit(SubmissionDTO submission) {
+    public Long submit(SubmissionDTO submission) {
         return submitManager.submit(submission);
     }
 
