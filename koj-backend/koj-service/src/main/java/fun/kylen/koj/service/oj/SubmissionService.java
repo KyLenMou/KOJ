@@ -18,6 +18,4 @@ public interface SubmissionService {
     List<SubmissionVerdictVO> getSubmissionVerdict(List<Long> submissionIds);
 
     SubmissionDetailVO getSubmissionDetail(Long submissionId);
-
-    Long getQueueWaiting(Long submissionId);
 }

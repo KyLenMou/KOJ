@@ -56,8 +56,4 @@ public class SubmissionController {
         return R.ok(submissionService.getSubmissionVerdict(submissionIds));
     }
 
-    @GetMapping("/queue-waiting")
-    public R<Long> getQueueWaiting(@RequestParam(value = "submissionId") Long submissionId) {
-        return R.ok(submissionService.getQueueWaiting(submissionId));
-    }
 }

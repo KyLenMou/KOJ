@@ -7,5 +7,6 @@ export type SubmissionVerdictVO = {
     runTime?: number;
     submissionId?: number;
     verdict?: number;
+    waitQueueSize?: number;
 };
 

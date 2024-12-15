@@ -17,4 +17,6 @@ public class RedisKeyConstant {
     public final static String JUDGE_LAST = "judge:last:";
     // 评测队列大小
     public final static String JUDGE_QUEUE_SIZE = "judge:queue:size";
+    // 评测队列最新正在评测的submissionId
+    public final static String JUDGE_QUEUE_FRONT = "judge:queue:front";
 }

@@ -75,6 +75,9 @@
               "
             >
               {{ getVerdictModel(submission.verdict)?.full }}
+              <span v-if="submission.verdict === 1">
+                {{ '(' + (submission.waitQueueSize ? submission.waitQueueSize : 0) + ' Waiting)' }}
+              </span>
               <IconLoadingShadow />
             </div>
             <tiny-progress
@@ -125,9 +128,9 @@ const vLoading = TinyLoading.directive
 const IconConmentRefresh = iconConmentRefresh()
 const IconLoadingShadow = iconLoadingShadow()
 const problemId = defineModel<number>('problemId')
-const currentSize = 12
+const currentSize = 15
 const currentPage = ref(1)
-const submissionList = ref<SubmissionListVO[] | any>([])
+const submissionList = ref<any>([])
 const submissonVerdictQuery = ref({
   onlyMine: true,
   verdict: undefined,
@@ -137,7 +140,7 @@ const isLoading = ref(false)
 const runningSubmissionList = ref<number[]>([])
 let isRunning = false
 let askTimes = 30
-const submissionDetail = ref<SubmissionDetailVO | any>({
+const submissionDetail = ref<any>({
   code: '',
   date: '',
   language: '',
@@ -150,7 +153,8 @@ const submissionDetail = ref<SubmissionDetailVO | any>({
   submissionId: 0,
   userId: '',
   username: '',
-  verdict: 0
+  verdict: 0,
+  waitQueueSize: 1
 })
 const detailDialogVisible = ref(false)
 const showDetailDialog = async (submissionId: number) => {
@@ -226,6 +230,10 @@ const getRunningSubmissionVerdict = async () => {
             submission.verdict = resultSubmission.verdict
             submission.runTime = resultSubmission.runTime
             submission.runMemory = resultSubmission.runMemory
+            // 如果是在等待队列中，显示等待队列大小
+            if (submission.verdict === 1) {
+              submission.waitQueueSize = resultSubmission.waitQueueSize
+            }
             break
           }
         }

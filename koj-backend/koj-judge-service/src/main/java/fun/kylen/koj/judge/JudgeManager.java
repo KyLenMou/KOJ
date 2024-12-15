@@ -47,6 +47,8 @@ public class JudgeManager {
      * @param submissionId
      */
     public void judge(Long submissionId) {
+        // 设置最新正在评测的submissionId，用于获得某一提交的前方排队数量
+        redisUtil.setQueueFront(submissionId);
         // 拿到代码
         Submission submission = daoUtil.getSubmissionById(submissionId);
         if (submission == null) {
@@ -98,6 +100,11 @@ public class JudgeManager {
             submission.setVerdict(JudgeVerdictConstant.COMPILE_ERROR);
             submission.setRunMessage(e.getErrorMessage());
             daoUtil.updateSubmissionVerdict(submission);
+            // 更新各个测试点的状态
+            submissionCaseList.forEach(s -> {
+                s.setVerdict(JudgeVerdictConstant.COMPILE_ERROR);
+                daoUtil.updateSubmissionCase(s);
+            });
             return;
         } catch (SystemError e) {
             // 系统错误
@@ -105,12 +112,22 @@ public class JudgeManager {
             submission.setVerdict(JudgeVerdictConstant.SYSTEM_ERROR);
             submission.setRunMessage(e.getErrorMessage());
             daoUtil.updateSubmissionVerdict(submission);
+            // 更新各个测试点的状态
+            submissionCaseList.forEach(s -> {
+                s.setVerdict(JudgeVerdictConstant.SYSTEM_ERROR);
+                daoUtil.updateSubmissionCase(s);
+            });
             throw new RuntimeException();
         } catch (Exception e) {
             log.error("编译代码出现了错误，submissionId: {} ，报错： {}", submissionId, e.getMessage());
             submission.setVerdict(JudgeVerdictConstant.SYSTEM_ERROR);
             submission.setRunMessage("编译时出现了问题，请联系管理员");
             daoUtil.updateSubmissionVerdict(submission);
+            // 更新各个测试点的状态
+            submissionCaseList.forEach(s -> {
+                s.setVerdict(JudgeVerdictConstant.SYSTEM_ERROR);
+                daoUtil.updateSubmissionCase(s);
+            });
             throw new RuntimeException();
         }
 

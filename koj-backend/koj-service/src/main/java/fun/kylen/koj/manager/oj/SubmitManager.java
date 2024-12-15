@@ -109,6 +109,8 @@ public class SubmitManager {
             submissionCase.setProblemCaseId(p.getId());
             // 默认未评测
             submissionCase.setVerdict(JudgeVerdictConstant.NULL);
+            submissionCase.setTime(0);
+            submissionCase.setMemory(0);
             submissionCaseEntityService.save(submissionCase);
         });
         try {
