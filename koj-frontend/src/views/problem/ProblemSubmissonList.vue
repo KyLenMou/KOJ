@@ -75,8 +75,8 @@
               "
             >
               {{ getVerdictModel(submission.verdict)?.full }}
-              <span v-if="submission.verdict === 1">
-                {{ '(' + (submission.waitQueueSize ? submission.waitQueueSize : 0) + ' Waiting)' }}
+              <span v-if="submission.verdict === 1 && submission.waitQueueSize">
+                {{ '(' + submission.waitQueueSize + ' Waiting)' }}
               </span>
               <IconLoadingShadow />
             </div>

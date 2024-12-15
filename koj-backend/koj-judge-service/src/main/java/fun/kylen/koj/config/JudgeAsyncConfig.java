@@ -1,16 +1,10 @@
 package fun.kylen.koj.config;
 
-import com.baomidou.mybatisplus.core.toolkit.ArrayUtils;
-import fun.kylen.koj.utils.LogUtil;
-import org.apache.tomcat.util.buf.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import java.util.Objects;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -19,13 +13,15 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @Date: 2024/12/4 16:10
  * @Description:
  */
+@Slf4j
 @Configuration
-public class JudgeAsyncConfig implements AsyncConfigurer {
+public class JudgeAsyncConfig {
 
-    @Override
+    @Bean("judgeAsyncExecutor")
     public Executor getAsyncExecutor() {
         // Java虚拟机可用的处理器数
         int processors = Runtime.getRuntime().availableProcessors();
+        log.info("当前处理器数：{}", processors);
         // 定义线程池
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
         // 核心线程数
@@ -54,14 +50,8 @@ public class JudgeAsyncConfig implements AsyncConfigurer {
         taskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         // 初始化
         taskExecutor.initialize();
-
+        log.info("线程池初始化完成");
         return taskExecutor;
     }
 
-    @Override
-    public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-        return (throwable, method, objects) -> {
-            LogUtil.error("Exception message -> " + throwable.getMessage());
-        };
-    }
 }
