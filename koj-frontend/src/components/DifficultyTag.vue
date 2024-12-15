@@ -2,18 +2,13 @@
   <tiny-tag
     :color="[getDiffcultyTagColor(difficulty), getDiffcultyColor(difficulty)]"
     class="difficulty-div"
-    >{{ '*'+difficulty }}</tiny-tag
+    >{{ '*' + difficulty }}</tiny-tag
   >
 </template>
 
 <script setup lang="ts">
 import { getDiffcultyTagColor, getDiffcultyColor } from '@/utils'
-const props = defineProps({
-  difficulty: {
-    type: Number,
-    required: true
-  }
-})
+defineProps<{ difficulty: number }>()
 </script>
 
 <style scoped>

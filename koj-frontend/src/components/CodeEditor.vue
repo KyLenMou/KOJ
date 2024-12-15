@@ -1,5 +1,6 @@
 <template>
   <div class="code-editor-toolBar">
+    
     <tiny-select v-model="language" style="width: 100px; margin: auto 5px" size="mini">
       <tiny-option label="C" value="c"></tiny-option>
       <tiny-option label="C++" value="cpp"></tiny-option>
@@ -7,6 +8,15 @@
       <tiny-option label="Python" value="python"></tiny-option>
       <tiny-option label="Go" value="go"></tiny-option>
     </tiny-select>
+    <tiny-popover
+      style="margin-top: 5px"
+      trigger="hover"
+    >
+    <template #default>代码长度限制：64KB</template>
+      <template #reference>
+        <TinyIconHelpQuery />
+      </template>
+    </tiny-popover>
     <tiny-switch
       v-model="isDark"
       :true-value="true"
@@ -99,8 +109,9 @@
 <script setup lang="ts">
 import * as monaco from 'monaco-editor'
 import { onMounted, ref, toRaw, withDefaults, defineProps, watch } from 'vue'
-import { IconDel, IconSetting } from '@opentiny/vue-icon'
+import { IconDel, IconSetting, IconHelpQuery } from '@opentiny/vue-icon'
 
+const TinyIconHelpQuery = IconHelpQuery()
 // todo 性能问题，以及拖拽时导致的问题
 const TinyIconDel = IconDel()
 const TinyIconSetting = IconSetting()
@@ -162,7 +173,7 @@ const props = withDefaults(defineProps<Props>(), {
     console.log(toRaw(v))
   }
 })
-
+// todo 加个koj主题，以及多种主题
 const codeEditorRef = ref()
 const codeEditor = ref()
 

@@ -24,13 +24,9 @@
 </template>
 
 <script setup lang="ts">
-import { useDialogStore } from '@/stores/dialog'
-import useUserStore from '@/stores/user'
 import { iconPublicNotice } from '@opentiny/vue-icon'
-import { storeToRefs } from 'pinia'
 import UserButton from './UserButton.vue'
-import { onMounted, ref, watchEffect, defineEmits } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, watchEffect, defineEmits } from 'vue'
 
 const IconPublicNotice = iconPublicNotice()
 
@@ -67,10 +63,10 @@ watchEffect(() => {
     emit('update:modelValue', true)
   }
 })
-const props = defineProps([
-  'modelValue' // 接收父组件使用 v-model 传进来的值，必须用 modelValue 这个名字来接收
+defineProps([
+  'modelValue'
 ])
-const emit = defineEmits(['update:modelValue']) // 必须用 update:modelValue 这个名字来通知父组件修改值
+const emit = defineEmits(['update:modelValue'])
 </script>
 
 <style scoped>

@@ -114,9 +114,6 @@
 import ProblemDetailDialog from '../../components/ProblemDetailDialog.vue'
 import {
   SubmissionControllerService,
-  type SubmissionListVO,
-  type SubmissionVerdictVO,
-  type SubmissionDetailVO
 } from '@/api'
 import VerdictTag from '@/components/VerdictTag.vue'
 import { LanguageList, VerdictList, VerdictProgressColors } from '@/common/CommonConstant'

@@ -6,12 +6,7 @@
 
 <script setup lang="ts">
 import { getDiffcultyColor } from '@/utils'
-const props = defineProps({
-  difficulty: {
-    type: Number,
-    required: true
-  }
-})
+defineProps<{ difficulty: number }>()
 </script>
 
 <style scoped>

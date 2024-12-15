@@ -1,7 +1,7 @@
 <template>
   <div id="mdPreview">
     <mavon-editor
-      style="min-height: 0;"
+      style="min-height: 0"
       :default-open="'preview'"
       :modelValue="text"
       :language="language"
@@ -16,19 +16,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref } from 'vue'
 
-const language = ref("en");
-const props = defineProps({
-  text: String
-})
+const language = ref('en')
+defineProps<{ text: string }>()
 </script>
 
 <style scoped>
 #mdPreview {
-
 }
-:deep(.v-note-wrapper .v-note-panel .v-note-show .v-show-content, .v-note-wrapper .v-note-panel .v-note-show .v-show-content-html) {
+:deep(
+    .v-note-wrapper .v-note-panel .v-note-show .v-show-content,
+    .v-note-wrapper .v-note-panel .v-note-show .v-show-content-html
+  ) {
   padding: 10px;
 }
 :deep(.markdown-body) {
