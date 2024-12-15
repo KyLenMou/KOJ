@@ -1,36 +1,48 @@
-# KOJ - Kode Online Judge - 在线评测系统
+
+<div  align="center">
+<img src="./KOJ-LOGO.png" alt="KOJ" style="zoom:50%;" />
+</div>
+<h2 align="center">
+KOJ - Kode Online Judge - 在线评测系统
+</h2>
+<div align="center">
+KOJ采用 <strong>SpringBoot + Vue 3</strong> 前后端分离架构，通过消息队列解耦提交与判题任务处理
+</div>
+<div align="center">
+KOJ前端采用 <strong><a href="https://github.com/opentiny/tiny-vue">TinyVue</a></strong> 组件库，提供简洁高效的用户界面
+</div>
+
+### 功能概览
+
+- 完善的做题与调试体验：支持双布局做题界面，可同时调试多个测试用例并实时获取反馈
+- 完善的提交与判题体验：提交后实时反馈评测状态，支持查看各个测试用例结果
+- 安全的用户代码运行环境：使用go-judge安全代码沙箱隔离用户代码
+- 可扩展的评测机调度：使用消息队列解耦用户提交与判题，实现评测机的可扩展性
+- 完善的用户登录认证体验：支持用户名密码、邮箱、Github、QQ和微信多端注册与登录
+- 待补充...
 
 
 
-<img src="./KOJ-LOGO.png" alt="image-20241017105532938" style="zoom:50%;" />
+### 项目架构
 
-## 技术选型
+待补充...
 
-KOJ基于Springboot+Vue3前后端分离框架构建，数据库为Mysql，使用[go-judge](https://github.com/criyle/go-judge)作为安全的代码沙箱。作者热爱[Codeforces](https://codeforces.com/)，故前端自定义大量组件模仿并重构了其UI界面
 
-| 后端技术                                       | 前端技术                             |
-| ---------------------------------------------- | ------------------------------------ |
-| 使用**Springboot**作为后端开发框架             | 使用**Vue3**作为前端开发框架         |
-| 使用**Mybatis Plus**作为数据库操作框架         | 使用**Element Plus**作为主要UI框架   |
-| 使用**Sa-Token**作为用户登录权限管理框架       | 使用**Monaco Editor**作为代码编辑器  |
-| 使用**Redis**作为缓存中间件                    | 使用**Mavon Editor**作为富文本编辑器 |
-| 使用**RabbitMQ**作为评测队列解耦提交与判题模块 | 使用**ECharts**作为数据可视化组件    |
 
-## 前端展示
+### 界面预览
 
-- 评测队列
+- 题目集
+  ![image-20241216001756221](README.assets/image-20241216001756221.png)
 
-  ![image-20241031154643833](README.assets/image-20241031154643833.png)
+- 做题界面（三列布局）
+  ![image-20241216001932710](README.assets/image-20241216001932710.png)
 
-- 做题界面
-  
-  ![image-20241031154920573](README.assets/image-20241031154920573.png)
+- 做题界面（传统布局+代码编辑器黑夜模式+代码编辑器设置）
 
-- 沉浸做题
-  ![image-20241031155027977](README.assets/image-20241031155027977.png)
+  ![image-20241216002106809](README.assets/image-20241216002106809.png)
 
-- 添加题目页面
-  ![image-20241031155121169](README.assets/image-20241031155121169.png)
+- 提交列表
+  ![image-20241216002403176](README.assets/image-20241216002403176.png)
 
-- 题目管理页面
-  ![image-20241031155143622](README.assets/image-20241031155143622.png)
+- 提交详情
+  ![image-20241216002433676](README.assets/image-20241216002433676.png)
