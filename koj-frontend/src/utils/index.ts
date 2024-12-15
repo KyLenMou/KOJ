@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import { shouldTransformRef } from 'vue/compiler-sfc'
 
 const getDiffcultyColor = (difficulty: number): string => {
   if (difficultyColorMap[difficulty]) {
@@ -107,13 +108,55 @@ const getVerdictModel = (verdict: number) => {
   switch (verdict) {
     case 0:
       return undefined
+    case 1:
+      return {
+        short: 'IQ',
+        full: 'In Queue',
+        zh: '正在排队',
+        type: 'warning',
+        description: '您的评测正在排队中',
+        percentage: 20,
+        color: '#1376FF'
+      }
+    case 100:
+      return {
+        short: 'Compiling',
+        full: 'Compiling',
+        zh: '正在编译',
+        type: 'warning',
+        description: '您的代码正在编译中',
+        percentage: 40,
+        color: '#FF8800'
+      }
     case 101:
       return {
         short: 'CE',
         full: 'Compile Error',
         zh: '编译错误',
         type: 'warning',
-        description: '您的程序未通过编译'
+        description: '您的程序未通过编译',
+        percentage: 100,
+        color: '#FF8800'
+      }
+    case 200:
+      return {
+        short: 'Running',
+        full: 'Running',
+        zh: '正在运行',
+        type: 'info',
+        description: '您的程序正在运行中',
+        percentage: 60,
+        color: '#5CB300'
+      }
+    case 201:
+      return {
+        short: 'Judging',
+        full: 'Judging',
+        zh: '正在评测',
+        type: 'info',
+        description: '您的程序正在评测中',
+        percentage: 80,
+        color: '#6E51E0'
       }
     case 300:
       return {
@@ -121,7 +164,9 @@ const getVerdictModel = (verdict: number) => {
         full: 'Accepted',
         zh: '答案正确',
         type: 'success',
-        description: '您的程序通过了该测试用例'
+        description: '您的程序通过了该测试用例',
+        percentage: 100,
+        color: '#5CB300'
       }
     case 301:
       return {
@@ -129,7 +174,9 @@ const getVerdictModel = (verdict: number) => {
         full: 'Partially Accepted',
         zh: '部分正确',
         type: 'info',
-        description: '您的程序通过了部分测试用例'
+        description: '您的程序通过了部分测试用例',
+        percentage: 100,
+        color: '#5CB300'
       }
     case 400:
       return {
@@ -137,7 +184,9 @@ const getVerdictModel = (verdict: number) => {
         full: 'Wrong Answer',
         zh: '答案错误',
         type: 'danger',
-        description: '您的程序未通过该测试用例'
+        description: '您的程序未通过该测试用例',
+        percentage: 100,
+        color: '#F23030'
       }
     case 401:
       return {
@@ -145,7 +194,9 @@ const getVerdictModel = (verdict: number) => {
         full: 'Runtime Error',
         zh: '运行时错误',
         type: 'danger',
-        description: '您的程序在运行时发生错误'
+        description: '您的程序在运行时发生错误',
+        percentage: 100,
+        color: '#F23030'
       }
     case 402:
       return {
@@ -153,7 +204,9 @@ const getVerdictModel = (verdict: number) => {
         full: 'Time Limit Exceeded',
         zh: '时间超限',
         type: 'danger',
-        description: '您的程序运行时间超过了限制'
+        description: '您的程序运行时间超过了限制',
+        percentage: 100,
+        color: '#F23030'
       }
     case 403:
       return {
@@ -161,7 +214,9 @@ const getVerdictModel = (verdict: number) => {
         full: 'Memory Limit Exceeded',
         zh: '内存超限',
         type: 'danger',
-        description: '您的程序使用的内存超过了限制'
+        description: '您的程序使用的内存超过了限制',
+        percentage: 100,
+        color: '#F23030'
       }
     case 404:
       return {
@@ -169,7 +224,9 @@ const getVerdictModel = (verdict: number) => {
         full: 'Stack Limit Exceeded',
         zh: '栈空间超限',
         type: 'danger',
-        description: '您的程序使用的栈空间超过了限制'
+        description: '您的程序使用的栈空间超过了限制',
+        percentage: 100,
+        color: '#F23030'
       }
     case 405:
       return {
@@ -177,7 +234,9 @@ const getVerdictModel = (verdict: number) => {
         full: 'Output Limit Exceeded',
         zh: '输出超限',
         type: 'danger',
-        description: '您的程序输出内容超过了限制'
+        description: '您的程序输出内容超过了限制',
+        percentage: 100,
+        color: '#F23030'
       }
     case 500:
       return {
@@ -185,7 +244,9 @@ const getVerdictModel = (verdict: number) => {
         full: 'System Error',
         zh: '系统错误',
         type: 'primary',
-        description: '系统发生了错误，请联系管理员或稍后再试'
+        description: '系统发生了错误，请联系管理员或稍后再试',
+        percentage: 100,
+        color: '#191919'
       }
     default:
       return undefined
@@ -212,94 +273,10 @@ const fromNow = (date: string) => {
   return dayjs(date).fromNow()
 }
 
-const getVerdictProgressModel = (verdict: number) => {
-  switch (verdict) {
-    case 1:
-      return {
-        text: 'In Queue',
-        percentage: 20,
-        color: '#1376FF'
-      }
-    case 100:
-      return {
-        text: 'Compiling',
-        percentage: 40,
-        color: '#FF8800'
-      }
-    case 200:
-      return {
-        text: 'Running',
-        percentage: 60,
-        color: '#5CB300'
-      }
-    case 201:
-      return {
-        text: 'Judging',
-        percentage: 80,
-        color: '#6E51E0'
-      }
-    case 300:
-      return {
-        text: 'Accepted',
-        percentage: 100,
-        color: '#5CB300'
-      }
-    case 301:
-      return {
-        text: 'Partially Accepted',
-        percentage: 100,
-        color: '#5CB300'
-      }
-    case 400:
-      return {
-        text: 'Wrong Answer',
-        percentage: 100,
-        color: '#F23030'
-      }
-    case 401:
-      return {
-        text: 'Runtime Error',
-        percentage: 100,
-        color: '#F23030'
-      }
-    case 402:
-      return {
-        text: 'Time Limit Exceeded',
-        percentage: 100,
-        color: '#F23030'
-      }
-    case 403:
-      return {
-        text: 'Memory Limit Exceeded',
-        percentage: 100,
-        color: '#F23030'
-      }
-    case 404:
-      return {
-        text: 'Stack Limit Exceeded',
-        percentage: 100,
-        color: '#F23030'
-      }
-    case 405:
-      return {
-        text: 'Output Limit Exceeded',
-        percentage: 100,
-        color: '#F23030'
-      }
-    case 500:
-      return {
-        text: 'System Error',
-        percentage: 100,
-        color: '#191919'
-      }
-    default:
-      return {
-        text: '',
-        percentage: 100,
-        color: '#191919'
-      }
-  }
+const formatTime = (date: string) => {
+  return dayjs(date).format('YYYY-MM-DD HH:mm:ss')
 }
+
 
 const isSubmissionRunning = (verdict: number | any) => {
   return [1, 100, 200, 201].includes(verdict)
@@ -311,6 +288,6 @@ export {
   getVerdictModel,
   getLanguageByShortName,
   fromNow,
-  getVerdictProgressModel,
+  formatTime,
   isSubmissionRunning
 }

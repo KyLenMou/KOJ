@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { R_List_SubmissionVerdictVO_ } from '../models/R_List_SubmissionVerdictVO_';
+import type { R_long_ } from '../models/R_long_';
 import type { R_Page_SubmissionListVO_ } from '../models/R_Page_SubmissionListVO_';
 import type { R_SubmissionDetailVO_ } from '../models/R_SubmissionDetailVO_';
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -67,6 +68,28 @@ export class SubmissionControllerService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/submission/detail',
+            query: {
+                'submissionId': submissionId,
+            },
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+    /**
+     * getQueueWaiting
+     * @param submissionId submissionId
+     * @returns R_long_ OK
+     * @throws ApiError
+     */
+    public static getQueueWaitingUsingGet(
+        submissionId: number,
+    ): CancelablePromise<R_long_> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/submission/queue-waiting',
             query: {
                 'submissionId': submissionId,
             },

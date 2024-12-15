@@ -37,101 +37,130 @@
         style="margin: 0"
       />
       <!-- 刷新 -->
-      <tiny-button :icon="IconConmentRefresh" @click="getSubmissionList" />
+      <tiny-button :icon="IconConmentRefresh" @click="getSubmissionList(true)" />
     </div>
     <!-- 提交列表栏 -->
-    <div v-infinite-scroll="currentPageChange">
-      <div v-for="(submission, index) in submissionList" :key="index" class="submisson-box">
-        <div style="display: flex; justify-content: space-between">
-          <div style="margin: 5px">
-            <div style="font-size: 15px; font-weight: 600; margin-bottom: 5px">
-              {{ submission?.username }}
-            </div>
-            <div style="color: gray">
-              {{
-                getLanguageByShortName(submission.language) +
-                ' • ' +
-                fromNow(submission.submitTime as any)
-              }}
-            </div>
+    <div
+      v-for="(submission, index) in submissionList"
+      :key="index"
+      class="submisson-box"
+      @click="showDetailDialog(submission.id)"
+    >
+      <div style="display: flex; justify-content: space-between">
+        <div style="margin: 5px">
+          <tiny-link type="primary" style="font-size: 15px; font-weight: 600; margin-bottom: 5px">
+            {{ submission?.username }}
+          </tiny-link>
+          <div style="color: gray">
+            {{
+              getLanguageByShortName(submission.language) +
+              ' • ' +
+              fromNow(submission.submitTime as any)
+            }}
           </div>
-          <!-- 非最终状态，显示进度条 -->
-          <div
-            v-if="submission.verdict !== undefined && isSubmissionRunning(submission.verdict)"
-            style="flex: 1"
-          >
-            <div style="font-size: 15px; font-weight: 600; margin: 5px; text-align: center">
-              <div
-                style="display: flex; justify-content: center; gap: 5px"
-                :style="
-                  'color:' +
-                  getVerdictProgressModel(submission.verdict).color +
-                  '; fill: ' +
-                  getVerdictProgressModel(submission.verdict).color
-                "
-              >
-                {{ getVerdictProgressModel(submission.verdict).text }}
-                <IconLoadingShadow />
-              </div>
-              <tiny-progress
-                style="margin: 10px"
-                :stroke-width="6"
-                :percentage="getVerdictProgressModel(submission.verdict).percentage"
-                :color="VerdictProgressColors"
-                :show-text="false"
-              />
+        </div>
+        <!-- 非最终状态，显示进度条 -->
+        <div
+          v-if="submission.verdict !== undefined && isSubmissionRunning(submission.verdict)"
+          style="flex: 1"
+        >
+          <div style="font-size: 15px; font-weight: 600; margin: 5px; text-align: center">
+            <div
+              style="display: flex; justify-content: center; gap: 5px"
+              :style="
+                'color:' +
+                getVerdictModel(submission.verdict)?.color +
+                '; fill: ' +
+                getVerdictModel(submission.verdict)?.color
+              "
+            >
+              {{ getVerdictModel(submission.verdict)?.full }}
+              <IconLoadingShadow />
             </div>
+            <tiny-progress
+              style="margin: 10px"
+              :stroke-width="6"
+              :percentage="getVerdictModel(submission.verdict)?.percentage"
+              :color="VerdictProgressColors"
+              :show-text="false"
+            />
           </div>
-          <!-- 最终状态，显示tag -->
-          <div
-            v-else-if="submission.verdict !== undefined"
-            style="flex: 1; display: flex; flex-direction: column"
-          >
-            <div style="margin-left: auto; font-size: 15px; font-weight: 600; margin-bottom: 5px">
-              <verdict-div v-model:verdict="submission.verdict" />
-            </div>
-            <div style="margin-left: auto; color: gray">
-              {{ submission.runTime + 'ms • ' + submission.runMemory + 'KB' }}
-            </div>
+        </div>
+        <!-- 最终状态，显示tag -->
+        <div
+          v-else-if="submission.verdict !== undefined"
+          style="flex: 1; display: flex; flex-direction: column"
+        >
+          <div style="margin-left: auto; font-size: 15px; font-weight: 600; margin-bottom: 5px">
+            <verdict-tag :verdict="submission.verdict" />
+          </div>
+          <div style="margin-left: auto; color: gray">
+            {{ submission.runTime + 'ms • ' + submission.runMemory + 'KB' }}
           </div>
         </div>
       </div>
     </div>
   </div>
+  <problem-detail-dialog
+    v-model:show-detail-dialog="detailDialogVisible"
+    v-model:submission-detail="submissionDetail"
+  />
 </template>
 
 <script setup lang="ts">
-import InfiniteScroll from '@opentiny/vue-renderless/common/deps/infinite-scroll'
-const vInfiniteScroll = InfiniteScroll
-import { SubmissionControllerService, type SubmissionListVO, type SubmissionVerdictVO } from '@/api'
-import VerdictDiv from '@/components/VerdictDiv.vue'
+import ProblemDetailDialog from '../../components/ProblemDetailDialog.vue'
+import {
+  SubmissionControllerService,
+  type SubmissionListVO,
+  type SubmissionVerdictVO,
+  type SubmissionDetailVO
+} from '@/api'
+import VerdictTag from '@/components/VerdictTag.vue'
 import { LanguageList, VerdictList, VerdictProgressColors } from '@/common/CommonConstant'
 import { iconConmentRefresh, iconLoadingShadow } from '@opentiny/vue-icon'
 import { onMounted, ref, watch } from 'vue'
-import {
-  getLanguageByShortName,
-  fromNow,
-  getVerdictProgressModel,
-  isSubmissionRunning
-} from '@/utils'
+import { getLanguageByShortName, fromNow, isSubmissionRunning, getVerdictModel } from '@/utils'
 import { TinyButton, TinyLoading } from '@opentiny/vue'
 const vLoading = TinyLoading.directive
 const IconConmentRefresh = iconConmentRefresh()
 const IconLoadingShadow = iconLoadingShadow()
 const problemId = defineModel<number>('problemId')
-const currentSize = 20
+const currentSize = 12
 const currentPage = ref(1)
 const submissionList = ref<SubmissionListVO[] | any>([])
 const submissonVerdictQuery = ref({
   onlyMine: true,
   verdict: undefined,
   language: undefined
-  // todo 无限滚动
 })
 const isLoading = ref(false)
 const runningSubmissionList = ref<number[]>([])
 let isRunning = false
 let askTimes = 30
+const submissionDetail = ref<SubmissionDetailVO | any>({
+  code: '',
+  date: '',
+  language: '',
+  problemDisplayId: '',
+  problemId: 0,
+  problemTitle: '',
+  runMemory: 0,
+  runTime: 0,
+  submissionCaseList: [],
+  submissionId: 0,
+  userId: '',
+  username: '',
+  verdict: 0
+})
+const detailDialogVisible = ref(false)
+const showDetailDialog = async (submissionId: number) => {
+  console.log(submissionId)
+  detailDialogVisible.value = true
+  const { code, data } = await SubmissionControllerService.getSubmissionDetailUsingGet(submissionId)
+  if (code) return
+  submissionDetail.value = data
+}
+
 const currentPageChange = () => {
   currentPage.value++
   getSubmissionList(false)
@@ -216,7 +245,8 @@ onMounted(async () => {
 })
 // 暴露方法给父组件
 defineExpose({
-  getSubmissionList
+  getSubmissionList,
+  currentPageChange
 })
 </script>
 
@@ -227,7 +257,16 @@ defineExpose({
   margin-top: 10px;
   height: 55px;
   padding: 5px 5px 0 5px;
+  transition:
+    box-shadow,
+    background-color 0.3s ease-out;
 }
+
+.submisson-box:hover {
+  box-shadow: 1px 1px 5px 0 #c4c4c4;
+  cursor: pointer;
+}
+
 :deep(.tiny-loading) {
   border-radius: 6px !important;
 }

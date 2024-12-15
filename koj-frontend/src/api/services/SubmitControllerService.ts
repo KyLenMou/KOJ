@@ -4,6 +4,7 @@
 /* eslint-disable */
 import type { DebugDTO } from '../models/DebugDTO';
 import type { R_DebugVO_ } from '../models/R_DebugVO_';
+import type { R_long_ } from '../models/R_long_';
 import type { R_string_ } from '../models/R_string_';
 import type { R_Void_ } from '../models/R_Void_';
 import type { SubmissionDTO } from '../models/SubmissionDTO';
@@ -80,13 +81,13 @@ export class SubmitControllerService {
     /**
      * submit
      * @param submission submission
-     * @returns R_string_ OK
+     * @returns R_long_ OK
      * @returns any Created
      * @throws ApiError
      */
     public static submitUsingPost(
         submission: SubmissionDTO,
-    ): CancelablePromise<R_string_ | any> {
+    ): CancelablePromise<R_long_ | any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/submit',

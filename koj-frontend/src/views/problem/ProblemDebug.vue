@@ -122,7 +122,7 @@
                 `样例 #` + (index + 1) + ` 实际输出`
               }}</tiny-tag>
               <tiny-input
-                :class="(item.verdict >= 400 && item.verdict <= 405) ? 'is-error' : ''"
+                :class="item.verdict >= 400 && item.verdict <= 405 ? 'is-error' : ''"
                 type="textarea"
                 :disabled="item.isLoading"
                 v-model="item.userOutput"
@@ -139,7 +139,8 @@
         name="submissionList"
         title="提交记录"
         :style="`height:` + subTabHeight + `px`"
-        style="margin-left: 20px; padding-right: 20px; overflow-y: auto"
+        style="margin-left: 15px; padding-right: 20px; padding-left: 5px; overflow-y: auto"
+        @scroll="handleScroll"
         lazy
       >
         <problem-submisson-list ref="submissionListRef" v-model:problem-id="problemDetail.id" />
@@ -293,8 +294,15 @@ const getDebugResult = async (debugId: string, ids: number[]) => {
 }
 
 // 子组件的获取评测的方法
-const submissionListRef = ref<any>([])
-
+const submissionListRef = ref<any>()
+// 判断滚动是否到底部的函数
+const handleScroll = (event: Event) => {
+  const element = event.target as HTMLElement
+  // 判断是否滚动到底部
+  if (element.scrollTop + element.clientHeight >= element.scrollHeight) {
+    submissionListRef.value.currentPageChange()
+  }
+}
 // 提交代码
 const submit = async () => {
   const { code, data } = await SubmitControllerService.submitUsingPost(problemSubmitDTO.value)
@@ -371,7 +379,6 @@ onMounted(() => {
 }
 :deep(.is-error > .tiny-textarea-display-only > .tiny-textarea__inner) {
   border: 1px solid #f23030;
-  box-shadow: 0 1px 4px 0 #f23030;
 }
 
 @container (max-width: 600px) {

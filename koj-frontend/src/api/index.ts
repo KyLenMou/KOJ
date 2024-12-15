@@ -21,6 +21,7 @@ export type { ProblemInfoCardVO } from './models/ProblemInfoCardVO';
 export type { ProblemsetVO } from './models/ProblemsetVO';
 export type { R_AdminEditProblemDTO_ } from './models/R_AdminEditProblemDTO_';
 export type { R_DebugVO_ } from './models/R_DebugVO_';
+export type { R_int_ } from './models/R_int_';
 export type { R_List_SubmissionVerdictVO_ } from './models/R_List_SubmissionVerdictVO_';
 export type { R_List_Tag_ } from './models/R_List_Tag_';
 export type { R_List_TagVO_ } from './models/R_List_TagVO_';
@@ -50,6 +51,7 @@ export type { UserRegisterDTO } from './models/UserRegisterDTO';
 
 export { AdminProblemControllerService } from './services/AdminProblemControllerService';
 export { AdminTagControllerService } from './services/AdminTagControllerService';
+export { CommonControllerService } from './services/CommonControllerService';
 export { HealthControllerService } from './services/HealthControllerService';
 export { PassportControllerService } from './services/PassportControllerService';
 export { ProblemControllerService } from './services/ProblemControllerService';
