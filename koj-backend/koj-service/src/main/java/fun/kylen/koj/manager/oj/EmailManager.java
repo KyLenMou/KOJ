@@ -14,11 +14,11 @@ import java.nio.charset.StandardCharsets;
  */
 @Component
 public class EmailManager {
-    @Value("${spring.mail.host}")
+    @Value("${mail.host}")
     private String host;
-    @Value("${spring.mail.username}")
+    @Value("${mail.username}")
     private String username;
-    @Value("${spring.mail.password}")
+    @Value("${mail.password}")
     private String password;
 
     public void sendRegisterCode(String to, String registerCode) {
@@ -29,6 +29,7 @@ public class EmailManager {
         mailAccount.setFrom(username);
         mailAccount.setPass(password);
         mailAccount.setCharset(StandardCharsets.UTF_8);
+        mailAccount.setSslEnable(true);
         String content = "<h3>你的注册验证码是:</h3><h1>" + registerCode + "</h1>";
         MailUtil.send(mailAccount, to, "KOJ注册邮件", content, true);
     }

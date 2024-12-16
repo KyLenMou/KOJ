@@ -37,25 +37,15 @@ spring:
     listener:
       simple:
         prefetch: 1
-  # 邮箱配置
-  mail:
-    host: smtp.qq.com
-    #服务协议
-    protocol: smtp
-    # 编码集
-    default-encoding: UTF-8
-    #发送邮件的账户
-    username: kkkylen@qq.com
-    #授权码
-    password: xxx
-    test-connection: true
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-            required: true
+
+# 邮箱配置
+mail:
+  host: smtp.qq.com
+  #发送邮件的账户
+  username: kkkylen@qq.com
+  #授权码
+  password: uhetuazrorerdgae
+
 # mybatis plus配置
 mybatis-plus:
   configuration:
