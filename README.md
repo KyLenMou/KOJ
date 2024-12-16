@@ -1,7 +1,7 @@
-
 <div  align="center">
-<img src="./KOJ-LOGO.png" alt="KOJ" style="zoom:50%;" />
+<img src="./KOJ-LOGO.png" alt="KOJ" width="500" />
 </div>
+
 <h2 align="center">
 KOJ - Kode Online Judge - 在线评测系统
 </h2>
@@ -25,7 +25,7 @@ KOJ前端采用 <strong><a href="https://github.com/opentiny/tiny-vue">TinyVue</
 
 ### 项目架构
 
-待补充...
+<img src="README.assets/99a4027742ee4ccc88801fb518bea0f7.png" alt="99a4027742ee4ccc88801fb518bea0f7" width="600" style="margin-left:0" />
 
 
 
